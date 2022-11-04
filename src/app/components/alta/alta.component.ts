@@ -325,7 +325,7 @@ export class AltaComponent implements OnInit {
       return true;
     }
 
-    if (!this.create && !this.esModificar) {
+    if (formValid == "VALID" && !this.create && !this.esModificar) {
       return true;
     } else {
       return false;
