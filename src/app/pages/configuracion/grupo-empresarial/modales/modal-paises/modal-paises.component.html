@@ -1,0 +1,50 @@
+
+   <div class="modal" *ngIf="data.tipoModal == 1" >
+    <div class="titulo-modal">
+        <div><b>{{data.titulo}}</b></div>
+        <div class="cerrar-modal" (click)="cerrarModal()"></div>
+    </div>
+    <div class="contenedor-modal" [formGroup]="addBanderaForm">
+        <div class="tb-modal-paises">
+
+            <div class="cll-modal-paises">
+                <label class="label">País</label>  
+                <input type="text" class="input upperCase" formControlName="paisCampo">
+                <span class="requerido" *ngIf="paisValida('paisCampo')">Obligatorio</span>
+            </div>
+
+            <div class="cll-modal-paises">
+                <label class="label">Id país</label>
+                <input type="text" class="input" formControlName="idCampo" (keydown)="comunicacionService.SoloNumeros($event)" maxlength="2" minlength="1">
+                <span class="requerido" *ngIf="paisValida('idCampo')">Máximo dos caracteres</span>
+                <div class="requerido" *ngIf="iderror">El Id ya existe</div>
+            </div>
+
+            <div class="cll-modal-paises">
+                <label class="label">Código</label>
+                <input type="text" class="input upperCase" formControlName="codigoCampo" maxlength="3"> 
+                <span class="requerido" *ngIf="paisValida('codigoCampo')">Obligatorio</span>
+            </div>
+
+            <div class="cll-modal-paises">
+                <label class="label">Agregar bandera (png)</label>
+                <div class="upload-campo">
+                    <input readonly="readonly" type="text" class="input" formControlName="imagenCampo">
+                    <div class="cont-upload">
+                        <input class="inputfile" type="file" id="input-file" (change)="onSelectFile($event)">
+                        <label for="input-file" class="btn-upload"></label> 
+                    </div>
+                </div>
+                <span class="requerido" *ngIf="paisValida('imagenCampo')">Obligatorio</span>
+
+                
+            </div>
+        </div>
+
+        <div class="bnt-center btn-modal-anuncio">
+            <button mat-dialog-close class="btn btn-secundario">Cancelar</button>
+            <button class="btn" (click)="addPais()">{{data.editarData ? 'Aceptar' : 'Agregar'}}</button>
+        </div>
+    </div>
+</div>
+

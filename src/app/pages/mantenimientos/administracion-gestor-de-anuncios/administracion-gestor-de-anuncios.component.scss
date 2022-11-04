@@ -1,0 +1,247 @@
+.contenedor-auncios{
+    width: 93%;
+    max-width: 1024px;
+    margin: 0 auto;
+    margin-bottom: 100px;
+}
+
+.contenedor-carts{
+    display:flex;
+    flex-wrap: wrap;
+    align-items:flex-start;
+}
+
+.contenedor-instrucciones{
+    margin-bottom:30px;
+    margin-top: 20px;
+    border-bottom: 2px solid #ffcc00;
+}
+
+.intrucciones-gestor {
+    font-size: 11px;
+    margin-bottom: 10px;
+    margin-top: 4px;
+}
+
+.intrucciones-gestor img {
+    width: 12px;
+    vertical-align: middle;
+}
+
+
+.cdk-drag{
+    margin:1%;
+}
+
+.cart-anuncio{
+    margin:4px 4px 4px 0px;
+    position: relative;
+    background-color: #ffffff;
+    text-align: center;
+    border-radius:0px 0px 10px 10px;
+    width:188px;
+    min-width:188px;
+    height:300px;
+    overflow:hidden;
+    -moz-box-shadow: 0 0px 25px rgba(17, 17, 17, 0.1);
+    -webkit-box-shadow: 0 0px 25px rgba(17, 17, 17, 0.1);
+    box-shadow: 0 0px 25px rgba(17, 17, 17, 0.1);
+    transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+  
+}
+  
+.cart-anuncio img{
+    width:100%; 
+}
+
+.contador-anuncio{
+    width:22px;
+    height:22px;
+    background-color:#464646;
+    color:#fff; 
+    position:absolute;
+    left:0px;
+    top:0px;
+    font-weight: bold;
+    line-height: 22px;    
+}
+  
+.btn-eliminar-anuncio{
+    width: 22px;
+    height:22px; 
+    position:absolute;
+    right:0;
+    top:0;
+    outline:none;
+    border:none;
+    cursor:pointer;
+}
+
+
+.editar-anuncio{
+    display:flex;
+    padding:10px 0px 10px 0px;
+    box-sizing:border-box;
+    border-bottom:1px solid #ffcd00;
+}
+
+.editar-anuncio img{
+    width:100%;
+    margin-top:-3px;
+    margin-left:10px;
+}
+
+.editar-anuncio > div:nth-child(1){
+    text-align:left;
+    text-transform:uppercase;
+    padding-left:10px;
+    max-width:150px;
+    overflow:hidden;
+}
+
+.editar-anuncio > div:nth-child(2){
+    width:20px;
+    height:20px;
+    cursor: pointer;
+}
+
+.informacion-anuncio{
+    padding:10px;
+    box-sizing:border-box;
+    text-align:left;
+}
+
+.informacion-anuncio > .bloque-texto-anuncio{
+    margin-bottom:10px;
+    border-bottom:1px solid #e8e8e8;
+
+}
+
+.informacion-anuncio > .bloque-texto-anuncio:last-child{
+    border-bottom:1px solid transparent;
+}
+
+.agregar-anuncio{
+    text-align: center;
+    font-size: 12px;
+    background-color:transparent;
+    border:none;
+    outline:none;
+    cursor: pointer;
+    margin-top:10px;
+}
+.agregar-anuncio > div > img{
+    width: 40px;
+}
+
+.consultaManual{
+    font-size: 12px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+}
+.consultaManual img {
+    width: 26px;
+}
+
+.img-anuncio {
+    width: 100%;
+    height: 43px;
+    overflow: hidden;
+}
+.img-anuncio > img{
+    width:100%;
+}
+
+.cdk-drop-list-dragging .cdk-drag { 
+    transition: transform .5s cubic-bezier(0.88, -0.19, 0.26, 1.27)!important;
+  }
+
+
+  .mat-tree-node {
+	 background-color: white!important;
+	 user-select: none!important;
+	 cursor: move!important;
+}
+ .mat-tree-node.cdk-drag-placeholder {
+	 opacity: 0!important;
+}
+ 
+
+/* items moving away to make room for drop */
+.cdk-drop-list-dragging .mat-tree-node:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1)!important;
+}
+/* item being dropped */
+.cdk-drag-animating {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1)!important;
+}
+
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1)!important;
+}
+
+.example-custom-placeholder {
+    width:200px;
+    height:300px;
+    background: #fff0b2!important;
+    border: dotted 2px #ffcc00!important;
+    min-height: 60px!important;
+    transition: transform 250ms cubic-bezier(0.2, 0, 0, 1)!important;
+}
+  
+.agregar-movil{display:none;}
+
+
+.example-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;   
+    padding: 0;                                                                                                                                                                                                                                       
+    margin-top: 0;
+    cursor: move;
+
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  
+  .example-list {
+     display: flex;
+    flex-direction: row;
+    margin:1%;
+    
+  }
+  
+
+
+@media screen and (max-width:690px){
+
+    .agregar-movil{
+        display:block;
+        width: 100%;
+        margin-bottom: 30px;
+    }
+    .agregar-desktop{display:none;}
+
+    .contenedor-carts{
+        justify-content:center;
+    }
+    .example-container{
+        justify-content:center;
+    }
+
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,106 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" (click)="cerrarModal()" ></button>
+        </div>
+    </div>
+
+    <div class="obligatorio alerta-modal-url">*Campos obligatorios</div>
+
+    <div class="contenedo-modal-url" [formGroup]="FormURLS">
+
+        <div class="input-url">
+            <div class="label">
+                <span class="obligatorio">*</span>
+                Sistema
+            </div>
+            <mat-select formControlName="sistema">
+                <mat-option *ngFor="let sistemas of sistema"[value]="sistemas.id">
+                    {{sistemas.nombre}} 
+                </mat-option>
+            </mat-select>
+            <div class="obligatorio" *ngIf="comunicacionService.Valida(FormURLS, 'sistema')">Obligatorio</div>
+        </div>
+
+        <div class="input-url">
+            <div class="label">
+                <span class="obligatorio">*</span>
+                Alias
+            </div>
+            <input type="text" class="input" formControlName="alias"/>
+            <div class="obligatorio" *ngIf="comunicacionService.Valida(FormURLS, 'alias')">Obligatorio</div>
+        </div>
+
+        <div class="input-url">
+            <div class="label">
+                <span class="obligatorio">*</span>
+                Descripción
+            </div>
+            <input type="text" class="input" formControlName="descripcion"/>
+            <div class="obligatorio" *ngIf="comunicacionService.Valida(FormURLS, 'descripcion')">Obligatorio</div>
+        </div>
+
+        <div class="tb-url">
+
+            <div class="cll-url">
+                <div class="label">
+                    <span class="obligatorio">*</span>
+                    Tipo
+                </div>
+                <mat-select formControlName="tipo">
+                    <mat-option *ngFor="let tipos of tipo"[value]="tipos.id">
+                        {{tipos.nombre}} 
+                    </mat-option>
+                </mat-select>
+                <div class="obligatorio" *ngIf="comunicacionService.Valida(FormURLS, 'tipo')">Obligatorio</div>
+            </div>
+
+            <div class="cll-url">
+                <div class="label">Protocolo</div>
+                <mat-select formControlName="protocolo">
+                    <mat-option *ngFor="let protocolos of protocolo"[value]="protocolos.id">
+                        {{protocolos.nombre}} 
+                    </mat-option>
+                </mat-select>
+            </div>
+
+            <div class="cll-url">
+                <label class="label">Servidor / Dato</label>
+                <input type="text" class="input" formControlName="servidor"/>
+            </div>
+
+            <div class="cll-url">
+                <label class="label">Puerto</label>
+                <input type="text" class="input" formControlName="puerto"/>
+            </div>
+            
+        </div>
+
+        <div class="input-url">
+            <label class="label">Contexto</label>
+            <input type="text" class="input" formControlName="contexto"/>
+        </div>
+
+        <div class="input-url">
+            <label class="label">Valor</label>
+            <input type="text" class="input" formControlName="valor"/>
+        </div>
+
+        <div class="bnt-center btn-modal-urls">
+            <button
+                class="btn btn-secundario" 
+                (click)="cerrarModal()"
+            >
+                Cancelar
+            </button>
+            <button
+                class="btn" 
+                (click)="GetData()"
+            >
+                {{textoBoton}}
+            </button>
+        </div>
+
+    </div>
+</div>

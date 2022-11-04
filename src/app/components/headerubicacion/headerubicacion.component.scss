@@ -1,0 +1,28 @@
+.contenedor-header-ubicacion{
+    width: 100%;
+    min-height: 50px;
+    padding: 16px 2%;
+    background-color: #faf9f9;
+    margin-top:72px;
+}
+
+.titulo-ubicacion{
+    font-size: 1.3em;
+    transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+}
+
+.link-ubicacion{
+    color: #999c9e;
+}
+
+@media screen and (max-width:480px){
+    .titulo-ubicacion{
+        font-size: 1.2em;
+        transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -webkit-transition: all 0.3s ease-out;
+    }
+
+}

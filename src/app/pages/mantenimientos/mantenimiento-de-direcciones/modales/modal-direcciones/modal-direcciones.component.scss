@@ -1,0 +1,27 @@
+.campos-obligatorios{
+    margin-top:10px;
+    font-size:12px;
+    text-align:right;
+    box-sizing:border-box;
+    color:#FA6262;
+}
+.tb-modal-direcciones{
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.cll-modal-direcciones{
+    width: 46%;
+    min-height:70px;
+}
+
+@media screen and (max-width:500px){
+    .cll-modal-direcciones{
+        width:100%;
+    }
+
+}

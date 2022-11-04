@@ -1,0 +1,44 @@
+.alerta-input-raiz{
+    font-size:12px;
+    margin-top:6px;
+ }
+ .color-input-alerta-error{
+     color:#9b0707;
+ }
+ 
+ .color-input-alerta-ok{
+     color:#079b4a;
+ }
+ 
+ .tb-agregar-grupo-empresarial {
+     margin-top: 14px;
+ }
+ 
+ .tb-agregar-grupo-empresarial > .cll-agregar-grupo-empresarial:nth-child(1){
+     width:50%;
+ }
+ 
+ .cll-agregar-grupo-empresarial {
+     height: 76px;
+ }
+
+.requerido {
+    font-size: 11px;
+    color: #f44336;
+    font-family: "AvenirNextLTPro-Medium";
+}
+
+.id-valido{
+    font-size: 11px;
+    color: #079b4a;
+    font-family: "AvenirNextLTPro-Medium";
+}
+ 
+ @media screen and (max-width:500px){
+     .tb-agregar-grupo-empresarial > .cll-agregar-grupo-empresarial:nth-child(1){
+         width:100%;
+     }
+ 
+ }
+ 
+ 

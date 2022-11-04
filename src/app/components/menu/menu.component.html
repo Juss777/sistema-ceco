@@ -1,0 +1,80 @@
+<div  [ngClass]="{muestroMenu:comunicacionService.posicionMenu}" class="menu-principal">
+	<div id="menuPrincipal">
+        <div class="search-fixed">
+            <div class="header-usuario">
+                <div>
+                    <img class="logo-menu" src="assets/img/iconos/logoGrupoSalinas.svg" alt="logoSeco">
+                </div>
+                <div id="inf-usuario">
+                    <span>Ceco</span><br>
+                    Menú Principal<br>
+                </div>
+            </div>
+
+            <div class="buscador-menu">
+                <input type="text" class="input search-menu" id="buscaMenu" name="buscaMenu" (keyup)="filtrarMenu($event);">
+            </div> 
+        </div>
+         
+        <div id="menu">
+            <ng-container *ngIf="!buscar">
+                <!-- *******************NIVEL 1****************** -->
+                <ul class="l-navegacion nivel1"> 
+                    <li class="dropdown2" *ngFor="let menu of mainMenu">
+                        <a (click)="abrirCerrar(menu.id, 'main')">
+                            <div>{{menu.texto}}</div>
+                            <div *ngIf="menu.child.length > 0" class="flecha"></div> 
+                        </a>
+
+                        <ng-container *ngIf="menu.child.length > 0">
+                            <!-- *******************NIVEL 2****************** -->
+                            <ul id="{{menu.id}}" class="nivel2 dropdown-content2">
+                                <li class="dropdown3" *ngFor="let submenu of menu.child">
+                                    <a (click)="abrirCerrar(submenu.id, menu.id)" routerLink="{{submenu.link}}">
+                                        <div class="menutexto">{{submenu.texto}}</div>
+                                        <div *ngIf="submenu.child.length > 0" class="flecha"></div>
+                                    </a>
+
+                                    <ng-container *ngIf="submenu.child.length > 0">
+                                        <!-- *******************NIVEL 3****************** -->
+                                        <ul id="{{submenu.id}}" class="nivel3 dropdown-content3">
+                                            <li class="dropdown4" *ngFor="let subsubmenu of submenu.child">
+                                                <a (click)="abrirCerrar(subsubmenu.id, submenu.id)">
+                                                    <div class="menutexto">{{subsubmenu.texto}}</div>
+                                                    <div *ngIf="subsubmenu.child.length > 0" class="flecha"></div>
+                                                </a> 
+
+                                                <ng-container *ngIf="subsubmenu.child.length > 0">
+                                                    <!-- *******************NIVEL 4****************** -->
+                                                    <ul id="{{subsubmenu.id}}" class="nivel4 dropdown-content4">
+                                                        <li *ngFor="let subm of subsubmenu.child">
+                                                            <a>
+                                                                <div class="menutexto">{{subm.texto}}</div>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </ng-container>
+                                            </li>
+                                        </ul>
+                                    </ng-container>
+                                </li>
+                            </ul>
+                        </ng-container>
+                    </li>
+                </ul>
+            </ng-container>
+
+            <ng-container *ngIf="buscar">
+                <ul class="l-navegacion nivel1">
+                    <li class="dropdown2" *ngFor="let menu of itemEncontrado">
+                        <a [href]="menu.link">
+                            <div>{{menu.texto}}</div>
+                        </a>
+                    </li>
+                </ul>
+            </ng-container>
+        </div>
+
+	</div>
+</div>
+

@@ -1,0 +1,130 @@
+.contenedor-seccion-administracion{width:100%;}
+.contenido-tabs-administracion{margin-top:20px;}
+
+.padding-tabs-administracion{
+    width: 100%;
+    height:100%;
+    padding:15px;
+    box-sizing:border-box;
+}
+
+.tb-titulo-administracion-url{
+    display:flex;
+    align-items:center;
+    border-bottom:2px solid #FFCD00;
+}
+
+.cll-titulo-administracion-url{width:50%;}
+
+.tb-titulo-administracion-satelites{
+    display:flex;
+    align-items:center;
+    border-bottom:2px solid #FFCD00;
+}
+
+.cll-titulo-administracion-satelites{width:50%;}
+
+.tb-botones-edicion{
+    max-width:280px;
+    display:flex;
+    align-items:center;
+}
+
+.cll-botones-edicion{
+    width:50%;
+    text-align:left;
+}
+.tb-botones-edicion > div {
+    margin-right: 6px;
+}
+
+.buscador-tabla-url{
+    float: right;
+    width: 260px !important;
+    margin-top: -2px;
+}
+
+.borde-tabla{
+    background-color: #fff;
+    border-left: 1px solid #E0DDD2;
+    border-right: 1px solid #E0DDD2;
+    border-bottom: 1px solid #E0DDD2;
+    border-style: dashed;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.buscador-tipo-de-usuario{
+    width: 100%;
+    max-width: 260px;
+    margin:0px 0px 30px 0px;
+}
+
+.FiltroURLS-movil,
+.FiltroWS-movil{
+    display:none;
+}
+
+.search-tabla{
+    float: right;
+    width: 200px !important;
+}
+
+.contenedor-tab-sistemas{
+    height: 100%;
+    width: 100%;
+    text-align:center;
+    line-height:51px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.FiltroSatelites-pc{display:block;}
+.FiltroSatelites-movil{display:none;}
+
+@media screen and (max-width:600px){
+
+    .tb-titulo-administracion-url{
+        display:block;
+        width:100%;
+    }
+    .cll-titulo-administracion-url{width:100%;}
+
+    .FiltroURLS-movil,
+    .FiltroWS-movil{
+        display:block;
+        width:100%!important;
+        float:none;
+        margin-bottom:16px;
+        
+    }
+
+    .FiltroURLS-pc,
+    .FiltroWS-pc{
+        display:none;
+    }
+
+    .tb-selec-usuario{width:100%;}
+
+    .FiltroSatelites-pc{display:none;}
+    .FiltroSatelites-movil{
+        display:block;
+        float:none;
+        width:100%!important;
+        margin-bottom:10px;
+    }
+
+    .tb-titulo-administracion-satelites{
+        display:block;
+    }
+    .cll-titulo-administracion-satelites{
+        width:100%;
+    }
+
+
+}
+
+

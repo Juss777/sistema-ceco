@@ -1,0 +1,75 @@
+.tb-input-canales{
+    display:flex;
+}
+
+.cll-input-nombres,
+.cll-input-canales{
+    margin-top:10px;
+    width: 48%;
+    min-height: 76px;
+}
+
+.input-modal-canales{
+    background-color: #fff;
+    color: #2e2925;
+    position: relative;
+    font-size: 11px;
+    height: 29px;
+    width: 100%;
+    border: 1px solid #bfbfbf;
+    outline: none;
+    padding: 0px 10px 0px 10px;
+}
+
+.label-canales{
+    color: #333333;
+    font-family: "AvenirNextLTPro-Medium";
+    width: 100%;
+    margin: auto;
+    font-size: 12px;
+    margin-bottom: 2px;
+    display: inline-block;
+}
+
+.btn-modal-canales > button {
+    margin: 3%;
+}
+
+.mr{margin-right:20px;}
+
+.requerido {
+    font-size: 11px;
+    color: #f44336;
+    font-family: "AvenirNextLTPro-Medium";
+}
+
+
+
+@media screen and (max-width:460px){
+
+    .bnt-center.btn-modal-canales{
+        margin: 0px;
+        margin-top: 12px;
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        width:100%;
+        display:block;
+    }
+
+    .bnt-center.btn-modal-canales > button {
+        margin: 0px;
+        margin-bottom:10px;
+        width:100%;
+    }
+
+    .tb-input-canales,
+    .cll-input-canales{
+        display:block;
+        width:100%;
+    }
+    .mr{margin-right:0px;}
+
+ 
+    
+  }

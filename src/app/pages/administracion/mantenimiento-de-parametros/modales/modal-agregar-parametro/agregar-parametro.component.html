@@ -1,0 +1,44 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" mat-dialog-close></button>
+        </div>
+    </div>
+
+    <div [formGroup]="parametroForm">
+        <div class="tb-input-parametro">
+            <div class="cll-input-parametro">
+                 <label class="label">Clasificación</label>
+                 <input type="hidden" formControlName="id"/>
+                 <input type="hidden" formControlName="idClasificacion"/>
+                 <input type="text" class="input disabledInput" formControlName="clasificacion" readonly/>
+                 <span class="obligatorio" *ngIf="Valida('clasificacion')">Obligatorio</span>
+            </div>
+     
+            <div class="cll-input-parametro">
+                 <label class="label">Descripción</label>
+                 <input type="text" class="input" formControlName="parametro"/>
+                 <span class="obligatorio" *ngIf="Valida('parametro')">Obligatorio</span>
+            </div>
+         </div>
+     
+         <div class="tb-empresarial">
+             <div class="cll-empresarial">
+                 <label class="label">Grupos empresariales</label>
+                 <mat-select formControlName="grupos" multiple>
+                     <mat-option *ngFor="let grupo of listaGrupos" [value]="grupo.id">{{grupo.name}}</mat-option>
+                 </mat-select>
+             </div>
+         </div>
+    </div>
+
+    <div class="bnt-center btn-modal-canales">
+        <button mat-dialog-close class="btn btn-secundario">
+            {{bntCancelar}}
+        </button>
+        <button class="btn" (click)="GetData()">
+            {{bntAceptar}}
+        </button>
+    </div>
+</div>

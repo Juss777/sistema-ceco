@@ -1,0 +1,56 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" (click)="cerrarModal()" ></button>
+        </div>
+    </div>
+
+    <div class="obligatorio alerta-modal-satelites">*Campos obligatorios</div>
+
+    <div class="contenedo-modal-url" [formGroup]="FormSatelites">
+
+        <div class="input-satelites">
+            <div class="label">
+                <span class="obligatorio">*</span>
+                Nombre
+            </div>
+            <input type="text" class="input" formControlName="nombre"/>
+            <div class="obligatorio" *ngIf="comunicacionService.Valida(FormSatelites,'nombre')">Obligatorio</div>
+        </div>
+
+        <div class="input-satelites">
+            <div class="label">
+                <span class="obligatorio">*</span>
+                Responsable
+            </div>
+            <input type="text" class="input" formControlName="responsable"/>
+            <div class="obligatorio" *ngIf="comunicacionService.Valida(FormSatelites,'responsable')">Obligatorio</div>
+        </div>
+
+        <div class="input-satelites">
+            <div class="label">
+                <span class="obligatorio">*</span>
+                Correo electrónico
+            </div>
+            <input type="text" class="input" formControlName="correo"/>
+            <div class="obligatorio" *ngIf="comunicacionService.Valida(FormSatelites,'correo')">Obligatorio</div>
+        </div>
+
+        <div class="bnt-center btn-modal-urls">
+            <button
+                class="btn btn-secundario" 
+                (click)="cerrarModal()"
+            >
+                Cancelar
+            </button>
+            <button
+                class="btn" 
+                (click)="GetData()"
+            >
+                {{textoBoton}}
+            </button>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="modalAviso modalMediano">
+    <div class="contenidoModal">
+        <img src="assets/img/iconos/{{imagen}}.svg" alt="imgAlerta" class="imgAlerta-modal-canales">
+        <div class="sub-modal-canales">{{tituloModal}}</div>
+
+        <div id="TextoAlerta" class="textoAlerta txt-alerta-canal">{{textoAlerta}}</div>
+
+        <div *ngIf="!data.dosBotones" class="bnt-center top-botones-modal">
+            <button class="btn" (click)="cerrarModal(false)">
+                {{textoBoton}}
+            </button>
+        </div>
+        <div *ngIf="data.dosBotones" class="bnt-center top-botones-modal">
+            <button class="btn btn-secundario" (click)="cerrarModal(false)">Cancelar</button>
+            <button class="btn" (click)="cerrarModal(true)">Aceptar</button>
+        </div><br>
+    </div>
+</div>
+
+

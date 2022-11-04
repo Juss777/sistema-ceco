@@ -1,0 +1,113 @@
+<ceco-headerubicacion ></ceco-headerubicacion>
+
+<div class="contenedor margin-componente">
+    <div class="contenedor-auncios"> 
+        <div class="contenedor-instrucciones">
+            <div class="titulo-gestor"><b>Anuncios Activos en el carrusel del Home</b></div>
+            <div class="intrucciones-gestor">
+                Si lo requieres puedes: Editarlos
+                ( <img src="assets/img/iconos/editar.svg"> ), 
+                
+                Eliminarlos ( <img src="assets/img/iconos/cerrar.svg"> ) o Añadir nuevos ( <img src="assets/img/iconos/agregar.svg"> ). 
+                También podrás arrastrar la tarjeta del anuncio para cambiar el orden de aparición en el carrusel.
+            </div>
+        </div>
+
+        <div 
+            cdkDropListGroup 
+            accessibleList class="example-container"  
+            role="listbox"
+        >     
+             
+            <button class="agregar-anuncio agregar-movil"  (click)="openModal(undefined)">
+                <div><img src="assets/img/iconos/agregar.svg"></div>
+                <div>Nuevo anuncio</div>
+            </button>
+
+            <div 
+                cdkDropList
+                *ngFor="let movie of temporalmovies; let i = index" 
+                class="example-list"
+                cdkDropListOrientation="horizontal"
+                [cdkDropListData]="temporalmovies"
+                (cdkDropListDropped)="drop($event, i)"      
+                (cdkDropListEntered)="entered(i)"
+                (cdkDropListSorted)="sorted($event, i)"
+            >
+            
+                <div class="example-box" 
+                    cdkDrag 
+                    (cdkDragStarted)="picked(i)" 
+                    (cdkDragReleased)="released(i)"
+                    draggable="true"
+                    tabindex="0"
+                    role="option">
+                        <div class="cart-anuncio">
+                            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                            
+                            <div class="img-anuncio" >
+                                <img [src]="movie.src" [alt]="movie.alt" [title]="movie.title">
+                                <div class="contador-anuncio">{{i+1}}</div>
+                                <button class="btn-eliminar-anuncio" (click)="delete(i)">
+                                    <img src="assets/img/iconos/eliminarRed.svg" alt="eliminar" title="eliminar" />
+                                </button>
+                            </div>
+
+                            <div class="editar-anuncio">
+                                <div>{{movie.tituloBanner}}</div>
+                                <div (click)='editarDatos(movie)'>
+                                    <img src="assets/img/iconos/editar.svg" alt="editar" title="editra" />
+                                </div>
+                            </div>
+
+                            <div class="informacion-anuncio">
+
+                                <div class="bloque-texto-anuncio">
+                                    <b>Texto principal</b>
+                                    <div  [innerHTML]="movie.textPrincipal | safe: 'html' "></div>
+                                </div>
+
+                                <div class="bloque-texto-anuncio">
+                                    <b>Texto secundario</b>
+                                    <div [innerHTML]="movie.textSecundario | safe: 'html' "></div>
+                                </div>
+
+                                <div class="bloque-texto-anuncio">
+                                    <b>Texto del botón</b>
+                                    <div>{{movie.textBoton}}</div>
+                                </div>
+
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+            <button class="agregar-anuncio agregar-desktop"  (click)="openModal(undefined)">
+                <div><img src="assets/img/iconos/agregar.svg"></div>
+                <div>Nuevo anuncio</div>
+            </button>
+        
+        </div>
+
+
+        <div class="bnt-center">
+            <button class="btn btn-secundario"   (click)="cancelarCambios()">Cancelar cambios</button>
+            <button class="btn" (click)="guardarAnuncio()">Guardar nuevo orden de anuncios</button>
+        </div>
+
+        <div class="consultaManual">
+            <div>
+                <img src="assets/img/iconos/manoderecha.svg">
+            </div>
+            <div>
+                <a href="#" class="btnManual"><b>Consulta nuestro manual para crear un anuncio excepcional</b></a>
+            </div>
+            <div>
+                <img src="assets/img/iconos/manoizquierda.svg">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

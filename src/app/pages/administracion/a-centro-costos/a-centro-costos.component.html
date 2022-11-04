@@ -1,0 +1,50 @@
+<ceco-headerubicacion></ceco-headerubicacion>
+
+<mat-tab-group class="tabs-administracion">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span class="titulo-tabs">Alta CECO</span>
+    </ng-template>
+    <ceco-alta [nombreSecciones]="'Alta'"></ceco-alta>
+  </mat-tab>
+
+  <mat-tab [disabled]="false">
+    <ng-template mat-tab-label>
+      <span class="titulo-tabs">Modificación / Copia de CECO</span>
+    </ng-template>
+    <div class="contenido-tabs-administracion">
+      <!-- <div class="padding-tabs-administracion">2</div> -->
+      <ceco-alta [create]="false" [nombreSecciones]="'Modificación de CECO'"></ceco-alta>
+    </div>
+  </mat-tab>
+
+  <!-- <mat-tab [disabled]="true">
+    <ng-template mat-tab-label>
+      <span class="titulo-tabs">Copia de CECO</span>
+    </ng-template>
+  </mat-tab> -->
+
+  <mat-tab [disabled]="true">
+    <ng-template mat-tab-label>
+      <span class="titulo-tabs">Asignación de parámetros</span>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab [disabled]="true">
+    <ng-template mat-tab-label>
+      <span class="titulo-tabs">Parámetros libres</span>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab [disabled]="true">
+    <ng-template mat-tab-label>
+      <span class="titulo-tabs">Administración de padres</span>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab [disabled]="true">
+    <ng-template mat-tab-label>
+      <span class="titulo-tabs">Asignación de sociedades</span>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

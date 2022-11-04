@@ -1,0 +1,203 @@
+<div class="modal">
+  <div class="titulo-modal">
+    <div>
+      <b>{{ tituloModal }}</b>
+    </div>
+    <div>
+      <button class="cerrar-modal" (click)="cerrarModal()"></button>
+    </div>
+  </div>
+
+  <div>
+    <div class="content-inputs">
+      <div class="grid-column" [formGroup]="formCP">
+        <div class="label label-alta">Código postal</div>
+        <div class="buscador">
+          <input
+            type="text"
+            id="inputCPModal"
+            class="input input-alta-busqueda"
+            placeholder="INGRESA C.P."
+            (keyup.enter)="buscarDatosInputCP()"
+            (keydown)="comunicacionService.SoloNumeros($event)"
+            [ngClass]="{ disabledInput: disabledInputCP }"
+            [disabled]="disabledInputCP"
+            formControlName="cp"
+          />
+          <button
+            type="submit"
+            (click)="buscarDatosInputCP()"
+            [disabled]="disabledInputCP"
+            [ngClass]="{ disabledInput: disabledInputCP }"
+          ></button>
+        </div>
+        <!-- <div
+          class="obligatorio"
+          *ngIf="
+            comunicacionService.Valida(formCP, 'cp') && !busquedaAvanzadaActiva
+          "
+        >
+          Requerido para la búsqueda
+        </div> -->
+      </div>
+
+      <ng-container [formGroup]="FormBusquedaDireccion">
+        <div class="grid-column">
+          <div class="check-asignacion">
+            <input
+              type="checkbox"
+              id="busquedaAvanzada"
+              style="padding: 0px"
+              formControlName="busquedaAvanzada"
+              (click)="catchValueCheck($event)"
+            />
+            <label for="busquedaAvanzada">
+              <div class="label-asignacion label-alta">Búsqueda avanzada</div>
+            </label>
+          </div>
+        </div>
+
+        <ng-container *ngIf="busquedaAvanzadaActiva">
+          <div class="grid-column">
+            <label class="label-alta">Estado *</label>
+            <mat-select formControlName="estado">
+              <mat-option [value]="0" (click)="SeleccionaMunicipio(0)"
+                >ELIGE UNA OPCIÓN</mat-option
+              >
+              <mat-option
+                *ngFor="let estado of estados"
+                [value]="estado.id"
+                (click)="SeleccionaMunicipio(estado.id)"
+                >{{ estado.nombre }}</mat-option
+              >
+            </mat-select>
+          </div>
+
+          <div class="grid-column">
+            <label class="label-alta">Alcaldía / Municipio *</label>
+            <mat-select formControlName="municipio">
+              <mat-option *ngIf="municipios.length == 0" [value]="0"
+                >Sin Datos</mat-option
+              >
+              <mat-option
+                *ngIf="municipios.length > 0"
+                [value]="0"
+                (click)="SeleccionaColonia(0)"
+                >ELIGE UNA OPCIÓN</mat-option
+              >
+              <mat-option
+                *ngFor="let municipio of municipios"
+                [value]="municipio.id"
+                (click)="SeleccionaColonia(municipio.id)"
+                >{{ municipio.nombre }}</mat-option
+              >
+            </mat-select>
+          </div>
+
+          <div class="grid-column">
+            <label class="label-alta">Localidad / Colonia *</label>
+            <mat-select formControlName="colonia">
+              <mat-option *ngIf="colonias.length == 0" [value]="0"
+                >Sin Datos</mat-option
+              >
+              <mat-option *ngIf="colonias.length > 0" [value]="0"
+                >ELIGE UNA OPCIÓN</mat-option
+              >
+              <mat-option
+                *ngFor="let colonia of colonias"
+                [value]="colonia.id"
+                (click)="buscarDatosSelects()"
+                >{{ colonia.nombre }}</mat-option
+              >
+            </mat-select>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <div class="contenedor-tabla-cp">
+      <div class="overflow-tabla" style="min-height: 230px">
+        <table
+          mat-table
+          [dataSource]="dataTablaCp"
+          matSort
+          #tablaCp
+          class="tablaGeneral tablaCp"
+        >
+          <ng-container matColumnDef="cp">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <label class="label-alta">Código Postal</label>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.cp }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="pais">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <label class="label-alta">País</label>
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.pais }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <label class="label-alta">Estado</label>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.estado }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="municipio">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <label class="label-alta">Municipio / Alcaldía</label>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.municipio }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="localidad">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <label class="label-alta">Localidad / Colonia</label>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.colonia }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnasTablaCp"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; let i = index; columns: columnasTablaCp"
+            (click)="ObtenerCP(row)"
+          ></tr>
+        </table>
+
+        <table
+          style="width: 100%"
+          *ngIf="
+            dataTablaCp.filteredData.length == 0 || codigoPostal.length == 0
+          "
+        >
+          <tbody>
+            <tr>
+              <td colspan="5" class="alerta-tabla">
+                No se encontraron registros con el criterio de búsqueda.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <mat-paginator
+        #paginadorCp
+        [pageSize]="10"
+        [pageSizeOptions]="[10, 25, 100]"
+        class="paginador-tabla"
+      ></mat-paginator>
+    </div>
+  </div>
+</div>

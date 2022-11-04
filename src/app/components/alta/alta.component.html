@@ -1,0 +1,3209 @@
+<!-- <ceco-headerubicacion></ceco-headerubicacion> -->
+
+<div class="contenedor-seccion">
+  <!-- <ng-template mat-tab-label>
+    <span class="titulo-tabs">Alta CECO</span>
+  </ng-template> -->
+  <div class="contenido-tabs-acc">
+    <div class="padding-tabs-acc">
+      <div class="titulo-seccion titulo-alta">
+        <div>{{nombreSecciones}}</div>
+      </div>
+      <div class="contenedor-acc overflow-acc">
+        <div
+          class="error-formulario"
+          *ngIf="
+            comunicacionService.Valida(
+              FormGrupoEmpresarialCC,
+              'numeroCentroCosto'
+            ) ||
+            comunicacionService.Valida(
+              FormGrupoEmpresarialCC,
+              'nombreCentroCosto'
+            )
+          "
+        >
+          <div class="texto-error">
+            Completa por favor los <span>campos obligatorios</span>
+          </div>
+        </div>
+
+        <div
+          *ngIf="
+            FormGrupoEmpresarialCC.controls.numeroCentroCosto.value != '' &&
+            !salirForm && mensajeNumeroCC !== ''
+          "
+          [ngClass]="{
+            'success-formulario': numeroDisponible,
+            'error-formulario': !numeroDisponible
+          }"
+        >
+          <div
+            [ngClass]="{
+              'texto-success': numeroDisponible,
+              'texto-error': !numeroDisponible
+            }"
+            [innerHTML]="mensajeNumeroCC"
+          ></div>
+        </div>
+
+        <div class="box-filtros-alta">
+          <div class="obligatorio obligatorio-alta txt-bold">
+            *Campos obligatorios
+          </div>
+
+          <div *ngIf="!create">
+            <div
+              class="box-switch content-switch"
+              (click)="cambiarModo('checkModo')"
+            >
+              <span>Modificación</span>
+              <input id="checkModo" type="checkbox" />
+              <div
+                class="switch"
+                [ngClass]="esModificar ? 'switchOn' : 'switchOff'"
+              ></div>
+              <span>Copia</span>
+            </div>
+          </div>
+
+          <div class="tb-filtro-negocio" [formGroup]="FormGrupoEmpresarialCC">
+            <div class="cll-filtro-negocio">
+              <label class="label txt-bold text-overflow"
+                >Grupo empresarial</label
+              >
+              <mat-select formControlName="grupoEmpresarial">
+                <mat-select-trigger *ngIf="selectedGrupoEmpresarial.id > 0">
+                  <img
+                    src="assets/img/iconos/{{
+                      selectedGrupoEmpresarial.icon
+                    }}.svg"
+                    class="icono-select"
+                  />
+                  {{ selectedGrupoEmpresarial.name }}
+                </mat-select-trigger>
+
+                <mat-option
+                  *ngFor="let grupo of numerosAcc"
+                  [value]="grupo.id"
+                  (click)="SelectedGroup(grupo)"
+                >
+                  <img
+                    *ngIf="grupo.id > 0"
+                    src="assets/img/iconos/{{ grupo.icon }}.svg"
+                    class="icono-select"
+                  />
+                  {{ grupo.name }}
+                </mat-option>
+              </mat-select>
+              <div
+                class="obligatorio obligatorio-absoluto"
+                *ngIf="
+                  comunicacionService.Valida(
+                    FormGrupoEmpresarialCC,
+                    'grupoEmpresarial'
+                  )
+                "
+              >
+                Obligatorio
+              </div>
+            </div>
+
+            <div class="cll-filtro-negocio">
+              <div class="tb-numero-cc">
+                <div class="cll-numero-cc">
+                  <label class="label txt-bold text-overflow">Número del CC *</label>
+                  <input
+                    type="number"
+                    maxlength="30"
+                    class="input input-alta"
+                    placeholder="INGRESA NÚMERO DE CC"
+                    formControlName="numeroCentroCosto"
+                    (keypress)="
+                      !create
+                        ? deshabilitarInput()
+                        : comunicacionService.soloNumerico($event)
+                    "
+                    (keyup)="validarNumeroCC(FormGrupoEmpresarialCC, 'numeroCentroCosto')"
+                    (paste)="deshabilitarInput()"
+                    *ngIf="asignacionManual || !create"
+                    (change)="salirForm = true"
+                    [ngClass]="{
+                      'field-required': comunicacionService.Valida(
+                        FormGrupoEmpresarialCC,
+                        'numeroCentroCosto'
+                      ),
+                      'cc-ok':
+                        comunicacionService.ValidaCampo(
+                          FormGrupoEmpresarialCC,
+                          'numeroCentroCosto'
+                        ) == 'VALID' && create,
+                      'cc-error':
+                        comunicacionService.Valida(
+                          FormGrupoEmpresarialCC,
+                          'numeroCentroCosto'
+                        ) && create,
+                      search: !create
+                    }"
+                    (click)="
+                      !create
+                        ? abrirModalBusqueda(
+                            'CentroCosto',
+                            'Centro de Costo',
+                            'Número del empleado',
+                            'Número de empleado',
+                            'Nombre del empleado responsable',
+                            listCentrosCosto,
+                            true,
+                            true
+                          )
+                        : ''
+                    "
+                  />
+                  <input
+                    type="text"
+                    disabled
+                    class="input input-alta disabledInput"
+                    placeholder="INGRESA NÚMERO DE CC"
+                    *ngIf="!asignacionManual && create"
+                  />
+                  <div
+                    class="obligatorio obligatorio-absoluto"
+                    *ngIf="
+                      comunicacionService.Valida(
+                        FormGrupoEmpresarialCC,
+                        'numeroCentroCosto'
+                      )
+                    "
+                  >
+                    Obligatorio
+                  </div>
+                </div>
+                <div class="cll-numero-cc" *ngIf="create">
+                  <div class="check-asignacion">
+                    <input
+                      type="checkbox"
+                      id="asignacion"
+                      style="padding: 0px"
+                      (click)="activarAsignacionManual($event)"
+                    />
+                    <label for="asignacion" class="label-unico">
+                      <div class="label-asignacion txt-bold">
+                        Asignación manual
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="cll-filtro-negocio">
+              <label class="label txt-bold text-overflow">Nombre del CC *</label>
+              <div  [ngClass]="esModificar ? 'no-reduce' : 'reduce'">
+                <input
+                  type="text"
+                  class="input input-alta"
+                  placeholder="INGRESA NOMBRE DE CC"
+                  formControlName="nombreCentroCosto"
+                  (keypress)="
+                    !create
+                      ? deshabilitarInput()
+                      : comunicacionService.soloAlfaNumerico($event)
+                  "
+                  (paste)="deshabilitarInput()"
+                  [ngClass]="{
+                    'field-required': comunicacionService.Valida(
+                      FormGrupoEmpresarialCC,
+                      'nombreCentroCosto'
+                    ),
+                    search: !create
+                  }"
+                  (click)="
+                    !create
+                      ? abrirModalBusqueda(
+                          'CentroCosto',
+                          'Centro de Costo',
+                          'Número del empleado',
+                          'Número de empleado',
+                          'Nombre del empleado responsable',
+                          listCentrosCosto,
+                          true,
+                          true
+                        )
+                      : ''
+                  "
+                />
+              </div>
+              <!-- <input type="text" disabled class="input input-alta disabledInput" placeholder="INGRESA NOMBRE DE CC" *ngIf="!asignacionManual"> -->
+
+              <div *ngIf="!create && !esModificar" class="btn-limpiar-copia">
+                <button
+                  class="btn-limpiar"
+                  (click)="LimpiarCampos()"
+                >
+                  <img src="assets/img/iconos/limpiar.svg" />
+                </button>
+              </div>
+              <div
+                class="obligatorio obligatorio-absoluto"
+                *ngIf="
+                  comunicacionService.Valida(
+                    FormGrupoEmpresarialCC,
+                    'nombreCentroCosto'
+                  )
+                "
+              >
+                Obligatorio
+              </div>
+            </div>
+
+            <!-- <div class="cll-filtro-negocio" *ngIf="!create && !esModificar">
+              <button
+                class="btn-limpiar"
+
+                (click)="LimpiarCampos()"
+              >
+                <img src="assets/img/iconos/limpiar.svg" />
+              </button>
+            </div> -->
+          </div>
+
+          <div class="tb-filtro-copia" *ngIf="comunicacionService.ValidaFormulario(
+            FormGrupoEmpresarialCC) == 'VALID' && !esModificar" [formGroup]="FormGrupoEmpresarialCCCopia">
+            <div class="cll-filtro-copia">
+              <div class="tb-nuevo-nombre">
+                <div class="cll-nuevo-nombre">
+                  <label class="label txt-bold text-overflow"><span class="nuevoCC">Nuevo</span> número del CC *</label>
+                  <input
+                    type="number"
+                    maxlength="30"
+                    class="input input-alta"
+                    placeholder="INGRESA NÚMERO DE CC"
+                    formControlName="numeroCentroCostoCopia"
+                    (keypress)="comunicacionService.soloNumerico($event)"
+                    (keyup)="validarNumeroCC(FormGrupoEmpresarialCCCopia, 'numeroCentroCostoCopia')"
+                    (paste)="deshabilitarInput()"
+                    *ngIf="asignacionManual"
+                    (change)="salirForm = true"
+                    [ngClass]="{
+                      'field-required': comunicacionService.Valida(
+                        FormGrupoEmpresarialCCCopia,
+                        'numeroCentroCostoCopia'
+                      ),
+                      'cc-ok':
+                        comunicacionService.ValidaCampo(
+                          FormGrupoEmpresarialCCCopia,
+                          'numeroCentroCostoCopia'
+                        ) == 'VALID',
+                      'cc-error':
+                        comunicacionService.Valida(
+                          FormGrupoEmpresarialCCCopia,
+                          'numeroCentroCostoCopia'
+                        )
+                    }"
+                  />
+                  <input
+                    type="text"
+                    disabled
+                    class="input input-alta disabledInput"
+                    placeholder="INGRESA NÚMERO DE CC"
+                    *ngIf="!asignacionManual"
+                  />
+                  <div
+                    class="obligatorio obligatorio-absoluto"
+                    *ngIf="
+                      comunicacionService.Valida(
+                        FormGrupoEmpresarialCCCopia,
+                        'numeroCentroCostoCopia'
+                      )
+                    "
+                  >
+                    Obligatorio
+                  </div>
+                </div>
+                <div class="cll-nuevo-nombre">
+                  <div class="check-asignacion check-copia">
+                    <input
+                      type="checkbox"
+                      id="asignacion"
+                      style="padding: 0px"
+                      (click)="activarAsignacionManual($event)"
+                    />
+                    <label for="asignacion" class="label-unico label-space">
+                      <div class="txt-bold">
+                        Asignación manual
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="cll-filtro-copia">
+              <div class="tb-nuevo-nombre">
+                <div class="cll-nuevo-nombre paddingLeftNuevo">
+                  <label class="label txt-bold text-overflow"><span class="nuevoCC">Nuevo</span> Nombre del CC *</label>
+                  <input
+                    style="background-image:none;"
+                    type="text"
+                    class="input input-alta"
+                    placeholder="INGRESA NOMBRE DE CC"
+                    formControlName="nombreCentroCostoCopia"
+                    (keypress)="comunicacionService.soloAlfaNumerico($event)"
+                    (paste)="deshabilitarInput()"
+                    [ngClass]="{
+                      'field-required': comunicacionService.Valida(
+                        FormGrupoEmpresarialCCCopia,
+                        'nombreCentroCostoCopia'
+                      )
+                    }"
+                  />
+                </div>
+                <div class="cll-nuevo-nombre">
+                  <div class="check-asignacion check-copia">
+                    <input
+                      type="checkbox"
+                      id="copiaParametros"
+                      style="padding: 0px"
+                    />
+                    <label for="copiaParametros" class="label-unico label-space">
+                      <div class=" txt-bold">Copia con parámetros adicionales</div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <!-- <input type="text" disabled class="input input-alta disabledInput" placeholder="INGRESA NOMBRE DE CC" *ngIf="!asignacionManual"> -->
+
+              <div
+                class="obligatorio obligatorio-absoluto"
+                *ngIf="
+                  comunicacionService.Valida(
+                    FormGrupoEmpresarialCCCopia,
+                    'nombreCentroCostoCopia'
+                  )
+                "
+              >
+                Obligatorio
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="contenedor-categorias">
+          <mat-accordion class="listaAltas">
+            <div class="tb-acordeon">
+              <div class="cll-acordeon">
+                <mat-expansion-panel
+                  [disabled]="!expandirDatosGenerales()"
+                  (opened)="panelStateDG = true"
+                  (closed)="panelStateDG = false"
+                  [expanded]="expandirDatosGenerales()"
+                >
+                  <mat-expansion-panel-header
+                    #panel1
+                    (click)="abrirAcordeon($event)"
+                  >
+                    <div class="tb-expancion-header">
+                      <div class="cll-expancion-header">
+                        <div class="img-categoria">
+                          <img src="assets/img/iconos/datos-generales.svg" />
+                        </div>
+                      </div>
+
+                      <div class="cll-expancion-header txt-bold overflow-datos">
+                        DATOS GENERALES
+                      </div>
+
+                      <div class="cll-expancion-header">
+                        <!-- <button class="btn-limpiar" [ngClass]="idAcordeon == 1 && panelAbierto ? 'limpiar-activo' : 'limpiar-inactivo'" (click)="LimpiarCampos(1)"> 
+                                                            <img src="assets/img/iconos/limpiar.svg"/>
+                                                        </button> -->
+
+                        <button
+                          class="btn-limpiar"
+                          [ngClass]="
+                            panelStateDG ? 'limpiar-activo' : 'limpiar-inactivo'
+                          "
+                          (click)="panel1._toggle(); LimpiarCampos(1)"
+                        >
+                          <img src="assets/img/iconos/limpiar.svg" />
+                        </button>
+                      </div>
+
+                      <div class="cll-expancion-header">
+                        <!-- <button class="btn-panel-alta toggle-panel" (click)="togglePanel(1);" [ngClass]="idAcordeon == 1 && panelAbierto ? 'panel-abierto' : 'panel-cerrado'" *ngIf="valorGrupo > 0">
+                                                            <img src="assets/img/iconos/arrow-perfilamiento.svg"/>
+                                                        </button> -->
+
+                        <button
+                          class="btn-panel-alta toggle-panel"
+                          [ngClass]="
+                            panelStateDG ? 'panel-abierto' : 'panel-cerrado'
+                          "
+                          *ngIf="
+                            comunicacionService.ValidaFormulario(
+                              FormGrupoEmpresarialCC
+                            ) == 'VALID'
+                          "
+                        >
+                          <img
+                            src="assets/img/iconos/arrow-perfilamiento.svg"
+                          />
+                        </button>
+
+                        <button
+                          class="btn-panel-alta toggle-panel panel-cerrado"
+                          *ngIf="
+                            comunicacionService.ValidaFormulario(
+                              FormGrupoEmpresarialCC
+                            ) == 'INVALID'
+                          "
+                        >
+                          <img
+                            src="assets/img/iconos/arrow-perfilamiento.svg"
+                            class="disabled-color-icon"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </mat-expansion-panel-header>
+                  <div
+                    class="contenido-acordeon"
+                    [formGroup]="FormDatosGenerales"
+                  >
+                    <div
+                      class="error-formulario"
+                      *ngIf="
+                        (comunicacionService.Valida(
+                          FormDatosGenerales,
+                          'idPais'
+                        ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'entidad'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'segmento'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'idCanal'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'numeroCCPadre'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'nombreCCPadre'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'numeroEmpleadoResponsable'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'nombreEmpleadoResponsable'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'numeroEmpleadoResponsableAdmin'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'nombreEmpleadoResponsableAdmin'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'numeroEmpleadoResponsableAlterno'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'nombreEmpleadoResponsableAlterno'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'unidadNegocio'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDatosGenerales,
+                            'tipoSucursal'
+                          )) &&
+                        !modalBusquedaAbierto
+                      "
+                    >
+                      <div class="texto-error">
+                        Completa por favor los <span>campos obligatorios</span>
+                      </div>
+                    </div>
+
+                    <div class="grid-row">
+                      <!-- *****************TOTAL PLAY, TV AZTECA, BOFF************* -->
+                      <div class="grid-column">
+                        <label class="label-alta text-overflow">País *</label>
+                        <mat-select
+                          formControlName="idPais"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'idPais'
+                            )
+                          }"
+                        >
+                          <mat-select-trigger *ngIf="paisSelected.id > 0">
+                            <img
+                              src="assets/img/iconos/{{
+                                paisSelected.icon
+                              }}.png"
+                              class="icono-select"
+                            />
+                            {{ paisSelected.name }}
+                          </mat-select-trigger>
+
+                          <mat-option [value]="0" (click)="SelectPais()"
+                            >ELIGE UNA OPCIÓN</mat-option
+                          >
+                          <mat-option
+                            *ngFor="let pais of paises"
+                            [value]="pais.id"
+                            (click)="SelectPais(pais)"
+                          >
+                            <img
+                              src="assets/img/iconos/{{ pais.icon }}.png"
+                              class="icono-select"
+                            />
+                            {{ pais.name }}
+                          </mat-option>
+                        </mat-select>
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'idPais'
+                            )
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+
+                      <div class="grid-column">
+                        <label class="label-alta text-overflow"
+                          >Entidad *</label
+                        >
+                        <mat-select
+                          formControlName="entidad"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'entidad'
+                            )
+                          }"
+                        >
+                          <mat-option [value]="0">ELIGE UNA OPCIÓN</mat-option>
+                          <mat-option
+                            *ngFor="let entidad of entidades"
+                            [value]="entidad.id"
+                            >{{ entidad.id }} - {{ entidad.nombre }}</mat-option
+                          >
+                        </mat-select>
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'entidad'
+                            )
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                      <!-- *************************************************** -->
+
+                      <!-- *****************TOTAL PLAY, BOFF************* -->
+                      <!-- <div class="grid-column" *ngIf="valorGrupo == 3">
+                                                        <label class="label-alta text-overflow">Tipo Sucursal</label>
+                                                        <mat-select formControlName="tipoSucursal">
+                                                            <mat-option [value]="0">ELIGE UNA OPCIÓN</mat-option>
+                                                            <mat-option *ngFor="let tipoSucursal of tiposSucursal" [value]="tipoSucursal.id">{{tipoSucursal.nombre}}</mat-option>
+                                                        </mat-select>
+                                                    </div> -->
+                      <!-- *************************************** -->
+
+                      <!-- *****************TOTAL PLAY************* -->
+                      <div class="grid-column" *ngIf="valorGrupo == 3">
+                        <label class="label-alta text-overflow"
+                          >Unidad de negocio *</label
+                        >
+                        <mat-select
+                          formControlName="unidadNegocio"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'unidadNegocio'
+                            )
+                          }"
+                        >
+                          <mat-option [value]="0">ELIGE UNA OPCIÓN</mat-option>
+                          <mat-option
+                            *ngFor="let unidadNegocio of unidadesNegocio"
+                            [value]="unidadNegocio.id"
+                            >{{ unidadNegocio.nombre }}</mat-option
+                          >
+                        </mat-select>
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'unidadNegocio'
+                            )
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                      <!-- *************************************** -->
+
+                      <!-- *****************TV AZTECA Y ELEKTRA************* -->
+                      <div class="grid-column" *ngIf="valorGrupo == 2">
+                        <label class="label-alta text-overflow"
+                          >Segmento *</label
+                        >
+                        <mat-select
+                          formControlName="segmento"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'segmento'
+                            )
+                          }"
+                        >
+                          <mat-option [value]="0">ELIGE UNA OPCIÓN</mat-option>
+                          <mat-option
+                            *ngFor="let segmento of segmentos"
+                            [value]="segmento.id"
+                            >{{ segmento.nombre }}</mat-option
+                          >
+                        </mat-select>
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'segmento'
+                            )
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                      <!-- *************************************** -->
+
+                      <!-- *****************EU************* -->
+                      <div class="grid-column" *ngIf="valorGrupo == 5">
+                        <label class="label-alta text-overflow">Canal *</label>
+                        <mat-select
+                          formControlName="idCanal"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'idCanal'
+                            )
+                          }"
+                        >
+                          <mat-option [value]="0">ELIGE UNA OPCIÓN</mat-option>
+                          <mat-option
+                            *ngFor="let canal of canales"
+                            [value]="canal.idCanales"
+                            >{{ canal.nombreDelCanal }}</mat-option
+                          >
+                        </mat-select>
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'idCanal'
+                            )
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                      <!-- ******************************** -->
+                    </div>
+
+                    <!-- *****************TOTAL PLAY************* -->
+                    <div class="grid-row">
+                      <!-- *****************ELEKTRA, TOTAL PLAY, BOFF************* -->
+                      <div
+                        class="grid-column"
+                        *ngIf="
+                          valorGrupo == 1 || valorGrupo == 3 || valorGrupo == 4
+                        "
+                      >
+                        <label class="label-alta text-overflow"
+                          >Tipo Sucursal *</label
+                        >
+                        <mat-select
+                          formControlName="tipoSucursal"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'tipoSucursal'
+                            )
+                          }"
+                        >
+                          <mat-option [value]="0">ELIGE UNA OPCIÓN</mat-option>
+                          <mat-option
+                            *ngFor="let tipoSucursal of tiposSucursal"
+                            [value]="tipoSucursal.id"
+                            >{{ tipoSucursal.nombre }}</mat-option
+                          >
+                        </mat-select>
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'tipoSucursal'
+                            )
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                      <!-- *************************************** -->
+
+                      <!-- *****************TOTAL PLAY, BOOF************* -->
+                      <div
+                        class="grid-column"
+                        *ngIf="
+                          valorGrupo == 1 || valorGrupo == 3 || valorGrupo == 4
+                        "
+                      >
+                        <label class="label-alta text-overflow">Canal *</label>
+                        <mat-select
+                          formControlName="idCanal"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'idCanal'
+                            )
+                          }"
+                        >
+                          <mat-option [value]="0">ELIGE UNA OPCIÓN</mat-option>
+                          <mat-option
+                            *ngFor="let canal of canales"
+                            [value]="canal.idCanales"
+                            >{{ canal.nombreDelCanal }}</mat-option
+                          >
+                        </mat-select>
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'idCanal'
+                            )
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                      <!-- ********************************************** -->
+                    </div>
+                    <!-- *************************************** -->
+
+                    <!-- *****************TOTAL PLAY, TV AZTECA, BOFF************* -->
+                    <div class="grid-row">
+                      <div class="grid-column" *ngIf="valorGrupo != 5">
+                        <label class="label-alta text-overflow"
+                          >Número CC Padre *</label
+                        >
+                        <input
+                          type="text"
+                          class="input search input-alta disabled-carret"
+                          placeholder="INGRESA NÚMERO"
+                          formControlName="numeroCCPadre"
+                          (keypress)="deshabilitarInput()"
+                          [ngClass]="{
+                            'field-required':
+                              comunicacionService.Valida(
+                                FormDatosGenerales,
+                                'numeroCCPadre'
+                              ) && !modalBusquedaAbierto
+                          }"
+                          (click)="
+                            abrirModalBusqueda(
+                              'CCPadre',
+                              'Centro de Costo padre',
+                              'Número del Centro de Costo',
+                              'Número de Centro de Costo',
+                              'Nombre de Centro de Costo',
+                              centrosCostoPadre,
+                              true
+                            )
+                          "
+                        />
+                        <!-- <div class="buscador">
+                                                            <input type="number" class="input input-alta" placeholder="INGRESA NÚMERO" formControlName="numeroCCPadre" [ngClass]="{'field-required' : comunicacionService.Valida(FormDatosGenerales, 'numeroCCPadre')}" (keypress)="deshabilitarInput()">
+                                                            <button type="submit" (click)="abrirModalBusqueda('CCPadre', 'Centro de Costo padre','Número ó Nombre del Centro de Costo','Número de Centro de Costo','Nombre de Centro de Costo', centrosCostoPadre)"></button>
+                                                        </div> -->
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'numeroCCPadre'
+                            ) && !modalBusquedaAbierto
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+
+                      <div class="grid-column" *ngIf="valorGrupo != 5">
+                        <label class="label-alta text-overflow"
+                          >Nombre del CC Padre *</label
+                        >
+                        <input
+                          type="text"
+                          class="input search input-alta disabled-carret"
+                          placeholder="INGRESA INFORMACIÓN"
+                          formControlName="nombreCCPadre"
+                          [ngClass]="{
+                            'field-required':
+                              comunicacionService.Valida(
+                                FormDatosGenerales,
+                                'nombreCCPadre'
+                              ) && !modalBusquedaAbierto
+                          }"
+                          (keypress)="deshabilitarInput()"
+                          (click)="
+                            abrirModalBusqueda(
+                              'CCPadre',
+                              'Centro de Costo padre',
+                              'Nombre del Centro de Costo',
+                              'Número de Centro de Costo',
+                              'Nombre de Centro de Costo',
+                              centrosCostoPadre
+                            )
+                          "
+                        />
+                        <!-- <div class="buscador">
+                                                            <input type="text" class="input input-alta" placeholder="INGRESA INFORMACIÓN" formControlName="nombreCCPadre" [ngClass]="{'field-required' : comunicacionService.Valida(FormDatosGenerales, 'nombreCCPadre')}" (keypress)="deshabilitarInput()">
+                                                            <button type="submit" (click)="abrirModalBusqueda('CCPadre', 'Centro de Costo padre', 'Número ó Nombre del Centro de Costo', 'Número de Centro de Costo','Nombre de Centro de Costo', centrosCostoPadre)"></button>
+                                                        </div> -->
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'nombreCCPadre'
+                            ) && !modalBusquedaAbierto
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="grid-row">
+                      <div class="grid-column" *ngIf="valorGrupo != 5">
+                        <label class="label-alta text-overflow"
+                          >Responsable *</label
+                        >
+                        <input
+                          type="text"
+                          class="input search input-alta disabled-carret"
+                          placeholder="INGRESA NÚMERO"
+                          formControlName="numeroEmpleadoResponsable"
+                          (keypress)="deshabilitarInput()"
+                          [ngClass]="{
+                            'field-required':
+                              comunicacionService.Valida(
+                                FormDatosGenerales,
+                                'numeroEmpleadoResponsable'
+                              ) && !modalBusquedaAbierto
+                          }"
+                          (click)="
+                            abrirModalBusqueda(
+                              'EmpleadoResponsable',
+                              'responsable',
+                              'Número del empleado',
+                              'Número de empleado',
+                              'Nombre del empleado responsable',
+                              empleados,
+                              true
+                            )
+                          "
+                        />
+                        <!-- <div class="buscador">
+                                                            <input type="number" class="input input-alta" placeholder="INGRESA NÚMERO" formControlName="numeroEmpleadoResponsable" [ngClass]="{'field-required' : comunicacionService.Valida(FormDatosGenerales, 'numeroEmpleadoResponsable')}" (keypress)="deshabilitarInput()">
+                                                            <button type="submit" (click)="abrirModalBusqueda('EmpleadoResponsable','responsable', 'Número ó Nombre del empleado','Número de empleado','Nombre del empleado responsable',  empleados)"></button>
+                                                        </div> -->
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'numeroEmpleadoResponsable'
+                            ) && !modalBusquedaAbierto
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+
+                      <div class="grid-column" *ngIf="valorGrupo != 5">
+                        <label class="label-alta text-overflow"
+                          >Nombre del empleado responsable *</label
+                        >
+                        <input
+                          type="text"
+                          class="input search input-alta disabled-carret"
+                          placeholder="INGRESA INFORMACIÓN"
+                          formControlName="nombreEmpleadoResponsable"
+                          [ngClass]="{
+                            'field-required':
+                              comunicacionService.Valida(
+                                FormDatosGenerales,
+                                'nombreEmpleadoResponsable'
+                              ) && !modalBusquedaAbierto
+                          }"
+                          (keypress)="deshabilitarInput()"
+                          (click)="
+                            abrirModalBusqueda(
+                              'EmpleadoResponsable',
+                              'responsable',
+                              'Nombre del empleado',
+                              'Número de empleado',
+                              'Nombre del empleado responsable',
+                              empleados
+                            )
+                          "
+                        />
+                        <!-- <div class="buscador">
+                                                            <input type="text" class="input input-alta" placeholder="INGRESA INFORMACIÓN" formControlName="nombreEmpleadoResponsable" [ngClass]="{'field-required' : comunicacionService.Valida(FormDatosGenerales, 'nombreEmpleadoResponsable')}" (keypress)="deshabilitarInput()">
+                                                            <button type="submit" (click)="abrirModalBusqueda('EmpleadoResponsable','responsable', 'Número ó Nombre del empleado','Número de empleado','Nombre del empleado responsable', empleados)"></button>
+                                                        </div> -->
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'nombreEmpleadoResponsable'
+                            ) && !modalBusquedaAbierto
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                    </div>
+                    <!-- *************************************************** -->
+
+                    <!-- *****************TOTAL PLAY, TV AZTECA, BOFF************* -->
+                    <div class="grid-row">
+                      <div class="grid-column" *ngIf="valorGrupo != 5">
+                        <label class="label-alta text-overflow"
+                          >Responsable alterno *</label
+                        >
+                        <input
+                          type="text"
+                          class="input search input-alta disabled-carret"
+                          placeholder="INGRESA NÚMERO"
+                          formControlName="numeroEmpleadoResponsableAlterno"
+                          (keypress)="deshabilitarInput()"
+                          [ngClass]="{
+                            'field-required':
+                              comunicacionService.Valida(
+                                FormDatosGenerales,
+                                'numeroEmpleadoResponsableAlterno'
+                              ) && !modalBusquedaAbierto
+                          }"
+                          (click)="
+                            abrirModalBusqueda(
+                              'EmpleadoResponsableAlterno',
+                              'responsable (alterno)',
+                              'Número del empleado (alterno)',
+                              'Número de empleado (alterno)',
+                              'Nombre del empleado responsable (alterno)',
+                              empleados,
+                              true
+                            )
+                          "
+                        />
+                        <!-- <div class="buscador">
+                                                            <input type="number" class="input input-alta" placeholder="INGRESA NÚMERO" formControlName="numeroEmpleadoResponsableAlterno" [ngClass]="{'field-required' : comunicacionService.Valida(FormDatosGenerales, 'numeroEmpleadoResponsableAlterno')}" (keypress)="deshabilitarInput()">
+                                                            <button type="submit" (click)="abrirModalBusqueda('EmpleadoResponsableAlterno', 'responsable (alterno)', 'Número ó Nombre del empleado (alterno)','Número de empleado (alterno)','Nombre del empleado responsable (alterno)',  empleados)"></button>
+                                                        </div> -->
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'numeroEmpleadoResponsableAlterno'
+                            ) && !modalBusquedaAbierto
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+
+                      <div class="grid-column" *ngIf="valorGrupo != 5">
+                        <label class="label-alta text-overflow"
+                          >Nombre del empleado responsable alterno *</label
+                        >
+                        <input
+                          type="text"
+                          class="input search input-alta disabled-carret"
+                          placeholder="INGRESA INFORMACIÓN"
+                          formControlName="nombreEmpleadoResponsableAlterno"
+                          [ngClass]="{
+                            'field-required':
+                              comunicacionService.Valida(
+                                FormDatosGenerales,
+                                'nombreEmpleadoResponsableAlterno'
+                              ) && !modalBusquedaAbierto
+                          }"
+                          (keypress)="deshabilitarInput()"
+                          (click)="
+                            abrirModalBusqueda(
+                              'EmpleadoResponsableAlterno',
+                              'responsable (alterno)',
+                              'Nombre del empleado (alterno)',
+                              'Número de empleado (alterno)',
+                              'Nombre del empleado responsable (alterno)',
+                              empleados
+                            )
+                          "
+                        />
+                        <!-- <div class="buscador">
+                                                            <input type="text" class="input input-alta" placeholder="INGRESA INFORMACIÓN" formControlName="nombreEmpleadoResponsableAlterno" [ngClass]="{'field-required' : comunicacionService.Valida(FormDatosGenerales, 'nombreEmpleadoResponsableAlterno')}" (keypress)="deshabilitarInput()">
+                                                            <button type="submit" (click)="abrirModalBusqueda('EmpleadoResponsableAlterno', 'responsable (alterno)', 'Número ó Nombre del empleado (alterno)','Número de empleado (alterno)','Nombre del empleado responsable (alterno)',  empleados)"></button>
+                                                        </div> -->
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'nombreEmpleadoResponsableAlterno'
+                            ) && !modalBusquedaAbierto
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                    </div>
+                    <!-- *************************************************** -->
+
+                    <!-- *****************TV AZTECA************* -->
+                    <div class="grid-row" *ngIf="valorGrupo == 2">
+                      <div class="grid-column">
+                        <label class="label-alta text-overflow"
+                          >Responsable administrativo *</label
+                        >
+                        <input
+                          type="text"
+                          class="input search input-alta disabled-carret"
+                          placeholder="INGRESA NÚMERO"
+                          formControlName="numeroEmpleadoResponsableAdmin"
+                          (keypress)="deshabilitarInput()"
+                          [ngClass]="{
+                            'field-required':
+                              comunicacionService.Valida(
+                                FormDatosGenerales,
+                                'numeroEmpleadoResponsableAdmin'
+                              ) && !modalBusquedaAbierto
+                          }"
+                          (click)="
+                            abrirModalBusqueda(
+                              'EmpleadoResponsableAdmin',
+                              'responsable administrativo',
+                              'Número del empleado administrativo',
+                              'Número de empleado administrativo',
+                              'Nombre del empleado responsable administrativo',
+                              empleados,
+                              true
+                            )
+                          "
+                        />
+                        <!-- <div class="buscador">
+                                                            <input type="number" class="input input-alta" placeholder="INGRESA NÚMERO" formControlName="numeroEmpleadoResponsableAdmin" [ngClass]="{'field-required' : comunicacionService.Valida(FormDatosGenerales, 'numeroEmpleadoResponsableAdmin')}" (keypress)="deshabilitarInput()">
+                                                            <button type="submit" (click)="abrirModalBusqueda('EmpleadoResponsableAdmin', 'responsable administrativo', 'Número ó Nombre del empleado administrativo','Número de empleado administrativo','Nombre del empleado responsable administrativo', empleados)"></button>
+                                                        </div> -->
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'numeroEmpleadoResponsableAdmin'
+                            ) && !modalBusquedaAbierto
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+
+                      <div class="grid-column">
+                        <label class="label-alta text-overflow"
+                          >Nombre del empleado responsable administrativo
+                          *</label
+                        >
+                        <input
+                          type="text"
+                          class="input search input-alta disabled-carret"
+                          placeholder="INGRESA INFORMACIÓN"
+                          formControlName="nombreEmpleadoResponsableAdmin"
+                          [ngClass]="{
+                            'field-required':
+                              comunicacionService.Valida(
+                                FormDatosGenerales,
+                                'nombreEmpleadoResponsableAdmin'
+                              ) && !modalBusquedaAbierto
+                          }"
+                          (keypress)="deshabilitarInput()"
+                          (click)="
+                            abrirModalBusqueda(
+                              'EmpleadoResponsableAdmin',
+                              'responsable administrativo',
+                              'Nombre del empleado administrativo',
+                              'Número de empleado administrativo',
+                              'Nombre del empleado responsable administrativo',
+                              empleados
+                            )
+                          "
+                        />
+                        <!-- <div class="buscador">
+                                                            <input type="text" class="input input-alta" placeholder="INGRESA INFORMACIÓN" formControlName="nombreEmpleadoResponsableAdmin" [ngClass]="{'field-required' : comunicacionService.Valida(FormDatosGenerales, 'nombreEmpleadoResponsableAdmin')}" (keypress)="deshabilitarInput()">
+                                                            <button type="submit" (click)="abrirModalBusqueda('EmpleadoResponsableAdmin', 'responsable administrativo', 'Número ó Nombre del empleado administrativo','Número de empleado administrativo','Nombre del empleado responsable administrativo',  empleados)"></button>
+                                                        </div> -->
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDatosGenerales,
+                              'nombreEmpleadoResponsableAdmin'
+                            ) && !modalBusquedaAbierto
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                    </div>
+                    <!-- *************************************** -->
+                  </div>
+                </mat-expansion-panel>
+              </div>
+
+              <div class="cll-acordeon">
+                <div
+                  class="verificar-datos {{
+                    comunicacionService.ValidaFormulario(FormDatosGenerales) ==
+                    'VALID'
+                      ? 'datos-completos'
+                      : 'datos-incompletos'
+                  }}"
+                ></div>
+              </div>
+            </div>
+
+            <div class="tb-acordeon">
+              <div
+                class="cll-acordeon"
+                (click)="validarLastForm(FormDatosGenerales, panelStateDG)"
+              >
+                <!--  -->
+                <mat-expansion-panel
+                  [disabled]="
+                    comunicacionService.ValidaFormulario(FormDatosGenerales) ==
+                    'INVALID'
+                  "
+                  (opened)="panelStateAttr = true"
+                  (closed)="panelStateAttr = false"
+                >
+                  <mat-expansion-panel-header #panel2>
+                    <div class="tb-expancion-header">
+                      <div class="cll-expancion-header">
+                        <div class="img-categoria">
+                          <img src="assets/img/iconos/parametros.svg" />
+                        </div>
+                      </div>
+
+                      <div class="cll-expancion-header txt-bold overflow-datos">
+                        ATRIBUTOS
+                      </div>
+
+                      <div class="cll-expancion-header">
+                        <!-- <button class="btn-limpiar" [ngClass]="idAcordeon == 2 && panelAbierto ? 'limpiar-activo' : 'limpiar-inactivo'" (click)="LimpiarCampos(2)">
+                                                            <img src="assets/img/iconos/limpiar.svg"/>
+                                                        </button> -->
+                        <button
+                          class="btn-limpiar"
+                          [ngClass]="
+                            panelStateAttr
+                              ? 'limpiar-activo'
+                              : 'limpiar-inactivo'
+                          "
+                          (click)="panel2._toggle(); LimpiarCampos(2)"
+                        >
+                          <img src="assets/img/iconos/limpiar.svg" />
+                        </button>
+                      </div>
+
+                      <div class="cll-expancion-header">
+                        <!-- <button 
+                                                        class="btn-panel-alta toggle-panel" 
+                                                        (click)="panel2._toggle();togglePanel(2, FormDatosGenerales);" 
+                                                        [ngClass]="idAcordeon == 2 && panelAbierto ? 'panel-abierto' : 'panel-cerrado'"
+                                                        *ngIf="comunicacionService.ValidaFormulario(FormDatosGenerales) == 'VALID'">
+                                                            <img src="assets/img/iconos/arrow-perfilamiento.svg"/>
+                                                        </button> -->
+                        <!--  -->
+                        <button
+                          class="btn-panel-alta toggle-panel"
+                          [ngClass]="
+                            panelStateAttr ? 'panel-abierto' : 'panel-cerrado'
+                          "
+                          *ngIf="
+                            comunicacionService.ValidaFormulario(
+                              FormDatosGenerales
+                            ) == 'VALID'
+                          "
+                        >
+                          <img
+                            src="assets/img/iconos/arrow-perfilamiento.svg"
+                          />
+                        </button>
+
+                        <button
+                          class="btn-panel-alta toggle-panel panel-cerrado"
+                          *ngIf="
+                            comunicacionService.ValidaFormulario(
+                              FormDatosGenerales
+                            ) == 'INVALID'
+                          "
+                        >
+                          <img
+                            src="assets/img/iconos/arrow-perfilamiento.svg"
+                            class="disabled-color-icon"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </mat-expansion-panel-header>
+                  <div class="contenido-acordeon">
+                    <!-- ***************************TOTAL PLAY************************** -->
+                    <div *ngIf="valorGrupo == 3" [formGroup]="FormParametros">
+                      <div
+                        class="error-formulario"
+                        *ngIf="
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'moneda'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'estatus'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'areaFuncional'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'justificacion'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'unidadNegocio'
+                          )
+                        "
+                      >
+                        <div class="texto-error">
+                          Completa por favor los
+                          <span>campos obligatorios</span>
+                        </div>
+                      </div>
+
+                      <div class="grid-row">
+                        <div
+                          class="grid-column content-display-checkbox padding-content-checkbox"
+                        >
+                          <div class="box-check-atributos">
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="sppi"
+                                style="padding: 0px"
+                                formControlName="sppi"
+                              />
+                              <label for="sppi" class="label-alta">
+                                <div class="label-asignacion">SPPI</div>
+                              </label>
+                            </div>
+
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="ppto"
+                                style="padding: 0px"
+                                formControlName="ppto"
+                              />
+                              <label for="ppto" class="label-alta">
+                                <div class="label-asignacion">PPTO</div>
+                              </label>
+                            </div>
+
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="plantilla"
+                                style="padding: 0px"
+                                formControlName="plantilla"
+                              />
+                              <label for="plantilla" class="label-alta">
+                                <div class="label-asignacion">Plantilla</div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid-row">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Tipo de moneda *</label
+                          >
+                          <mat-select
+                            formControlName="moneda"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'moneda'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let moneda of monedas"
+                              [value]="moneda.id"
+                              >{{ moneda.nomenclatura }}-{{
+                                moneda.pais
+                              }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'moneda'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Estatus *</label
+                          >
+                          <mat-select
+                            formControlName="estatus"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'estatus'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let estat of estatus"
+                              [value]="estat.id"
+                              >{{ estat.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'estatus'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow" for="date"
+                            >Fecha *</label
+                          >
+                          <mat-form-field class="pickerMaterial">
+                            <input
+                              matInput
+                              [matDatepicker]="date"
+                              formControlName="fecha"
+                              class="input"
+                              (click)="date.open()"
+                              (change)="
+                                comunicacionService.setValueDateFormat(
+                                  $event,
+                                  FormParametros,
+                                  'fecha'
+                                )
+                              "
+                              (keydown)="
+                                comunicacionService.soloFormatoFecha($event)
+                              "
+                              [disabled]="false"
+                              placeholder="DD/MM/AAAA"
+                            />
+                            <mat-datepicker-toggle
+                              matSuffix
+                              [for]="date"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker
+                              #date
+                              disabled="false"
+                            ></mat-datepicker>
+                          </mat-form-field>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'fecha'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid-row">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Unidad de negocio *</label
+                          >
+                          <mat-select
+                            formControlName="unidadNegocio"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'unidadNegocio'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let area of areasFuncionales"
+                              [value]="area.id"
+                              >{{ area.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'unidadNegocio'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <!-- <div class="grid-column">
+                                                            <label class="label-alta text-overflow">Clase *</label>
+                                                            <mat-select formControlName="clase" [ngClass]="{'field-required' : comunicacionService.Valida(FormParametros, 'clase')}">
+                                                                <mat-option [value]="0">ELIGE UNA OPCIÓN</mat-option>
+                                                                <mat-option *ngFor="let clase of clases" [value]="clase.id">{{clase.nombre}}</mat-option>
+                                                            </mat-select>
+                                                            <div class="obligatorio" *ngIf="comunicacionService.Valida(FormParametros, 'clase')">Obligatorio</div>
+                                                        </div> -->
+
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Área Funcional *</label
+                          >
+                          <mat-select
+                            formControlName="areaFuncional"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'areaFuncional'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let areaFuncional of areasFuncionales"
+                              [value]="areaFuncional.id"
+                              >{{ areaFuncional.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'areaFuncional'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Color *</label
+                          >
+                          <mat-select
+                            formControlName="color"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'color'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let color of colores"
+                              [value]="color.id"
+                              >{{ color.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'color'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid-row-8">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Justificación *</label
+                          >
+                          <textarea
+                            rows="5"
+                            class="textarea textarea-ws input-alta"
+                            formControlName="justificacion"
+                            placeholder="INGRESA INFORMACIÓN"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'justificacion'
+                              )
+                            }"
+                            (keyup)="onkey($event)"
+                            maxlength="150"
+                          >
+                          </textarea>
+                          <div class="box-textarea">
+                            <div class="cll-textarea">
+                              <div
+                                class="obligatorio"
+                                *ngIf="
+                                  comunicacionService.Valida(
+                                    FormParametros,
+                                    'justificacion'
+                                  )
+                                "
+                              >
+                                Obligatorio
+                              </div>
+
+                              <div
+                                [className]="
+                                  activoTextoMaximo
+                                    ? 'caracteres-maximos-on'
+                                    : 'caracteres-maximos-off'
+                                "
+                              >
+                                Recuerda que solo tienes un máximo de
+                                <span>150 caractéres</span>
+                              </div>
+                            </div>
+                            <div class="cll-textarea">
+                              <div class="contador-caracteres">
+                                {{ contadorTextArea }} / 150 máx.
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- <label class="label-alta text-overflow">Justificación *</label>
+                                                            <textarea 
+                                                                rows="5" 
+                                                                class="textarea textarea-ws input-alta" 
+                                                                formControlName="justificacion" 
+                                                                [ngClass]="{'field-required' : comunicacionService.Valida(FormParametros, 'justificacion')}" placeholder="INGRESA INFORMACIÓN" 
+                                                                (keyup)="onkey($event)"
+                                                                maxlength='150'
+                                                            >
+                                                            </textarea>
+                                                            <div class="box-textarea">
+                                                                <div class="cll-textarea">
+                                                                    <div class="obligatorio" *ngIf="comunicacionService.Valida(FormParametros, 'justificacion')">Obligatorio</div>
+
+                                                                    <div  [className]="activoTextoMaximo ? 'caracteres-maximos-on':'caracteres-maximos-off'">Recuerda que solo tienes un maximo de <span>150 caracteres</span></div>
+                                                                </div>
+                                                                <div class="cll-textarea">
+                                                                    <div class="contador-caracteres">{{contadorTextArea}} / 150 máx.</div>
+                                                                </div>
+                                                            </div> -->
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ***************************TV AZTECA************************** -->
+                    <div *ngIf="valorGrupo == 2" [formGroup]="FormParametros">
+                      <div
+                        class="error-formulario"
+                        *ngIf="
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'moneda'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'estatus'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'areaFuncional'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'justificacion'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'departamento'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'fabrica'
+                          ) ||
+                          comunicacionService.Valida(FormParametros, 'clase') ||
+                          comunicacionService.Valida(FormParametros, 'color') ||
+                          comunicacionService.Valida(FormParametros, 'tipo')
+                        "
+                      >
+                        <div class="texto-error">
+                          Completa por favor los
+                          <span>campos obligatorios</span>
+                        </div>
+                      </div>
+
+                      <div class="grid-row">
+                        <div
+                          class="grid-column content-display-checkbox padding-content-checkbox"
+                        >
+                          <div class="box-check-atributos">
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="sppi"
+                                style="padding: 0px"
+                                formControlName="sppi"
+                              />
+                              <label
+                                class="label-alta"
+                                for="sppi"
+                                class="label-unico"
+                              >
+                                <div class="label-asignacion label-alta">
+                                  SPPI
+                                </div>
+                              </label>
+                            </div>
+
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="ppto"
+                                style="padding: 0px"
+                                formControlName="ppto"
+                              />
+                              <label
+                                class="label-alta"
+                                for="ppto"
+                                class="label-unico"
+                              >
+                                <div class="label-asignacion label-alta">
+                                  PPTO
+                                </div>
+                              </label>
+                            </div>
+
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="plantilla"
+                                style="padding: 0px"
+                                formControlName="plantilla"
+                              />
+                              <label
+                                class="label-alta"
+                                for="plantilla"
+                                class="label-unico"
+                              >
+                                <div class="label-asignacion label-alta">
+                                  Plantilla
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid-row">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Tipo de moneda *</label
+                          >
+                          <mat-select
+                            formControlName="moneda"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'moneda'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let moneda of monedas"
+                              [value]="moneda.id"
+                              >{{ moneda.nomenclatura }}-{{
+                                moneda.pais
+                              }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'moneda'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Estatus *</label
+                          >
+                          <mat-select
+                            formControlName="estatus"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'estatus'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let estat of estatus"
+                              [value]="estat.id"
+                              >{{ estat.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'estatus'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow" for="date"
+                            >Fecha *</label
+                          >
+                          <mat-form-field class="pickerMaterial">
+                            <input
+                              matInput
+                              [matDatepicker]="date"
+                              formControlName="fecha"
+                              class="input input-alta"
+                              (click)="date.open()"
+                              (change)="
+                                comunicacionService.setValueDateFormat(
+                                  $event,
+                                  FormParametros,
+                                  'fecha'
+                                )
+                              "
+                              (keydown)="
+                                comunicacionService.soloFormatoFecha($event)
+                              "
+                              placeholder="DD/MM/AAAA"
+                            />
+                            <mat-datepicker-toggle
+                              matSuffix
+                              [for]="date"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker
+                              #date
+                              disabled="false"
+                            ></mat-datepicker>
+                          </mat-form-field>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'fecha'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid-row">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Departamento</label
+                          >
+                          <mat-select
+                            formControlName="departamento"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'departamento'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let departamento of departamentos"
+                              [value]="departamento.id"
+                              >{{ departamento.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'departamento'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Área Funcional *</label
+                          >
+                          <mat-select
+                            formControlName="areaFuncional"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'areaFuncional'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let areaFuncional of areasFuncionales"
+                              [value]="areaFuncional.id"
+                              >{{ areaFuncional.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'areaFuncional'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Fábrica *</label
+                          >
+                          <mat-select
+                            formControlName="fabrica"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'fabrica'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let fabrica of fabricas"
+                              [value]="fabrica.id"
+                              >{{ fabrica.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'fabrica'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid-row">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Clase *</label
+                          >
+                          <mat-select
+                            formControlName="clase"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'clase'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let clase of clases"
+                              [value]="clase.id"
+                              >{{ clase.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'clase'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Color *</label
+                          >
+                          <mat-select
+                            formControlName="color"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'color'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let color of colores"
+                              [value]="color.id"
+                              >{{ color.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'color'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow">Tipo *</label>
+                          <mat-select
+                            formControlName="tipo"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'tipo'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let tipo of tipos"
+                              [value]="tipo.id"
+                              >{{ tipo.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(FormParametros, 'tipo')
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid-row-8">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Justificación *</label
+                          >
+                          <textarea
+                            rows="5"
+                            class="textarea textarea-ws input-alta"
+                            formControlName="justificacion"
+                            placeholder="INGRESA INFORMACIÓN"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'justificacion'
+                              )
+                            }"
+                            (keyup)="onkey($event)"
+                            maxlength="150"
+                          >
+                          </textarea>
+                          <div class="box-textarea">
+                            <div class="cll-textarea">
+                              <div
+                                class="obligatorio"
+                                *ngIf="
+                                  comunicacionService.Valida(
+                                    FormParametros,
+                                    'justificacion'
+                                  )
+                                "
+                              >
+                                Obligatorio
+                              </div>
+
+                              <div
+                                [className]="
+                                  activoTextoMaximo
+                                    ? 'caracteres-maximos-on'
+                                    : 'caracteres-maximos-off'
+                                "
+                              >
+                                Recuerda que solo tienes un maximo de
+                                <span>150 caracteres</span>
+                              </div>
+                            </div>
+                            <div class="cll-textarea">
+                              <div class="contador-caracteres">
+                                {{ contadorTextArea }} / 150 máx.
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- 
+                                                            <label class="label-alta text-overflow">Justificación *</label>
+                                                            <textarea rows="5" class="textarea textarea-ws input-alta" 
+                                                            placeholder="INGRESA INFORMACIÓN" formControlName="justificacion" 
+                                                            [ngClass]="{'field-required' : comunicacionService.Valida(FormParametros, 'justificacion')}"></textarea>
+                                                            <div class="box-textarea">
+                                                                <div class="cll-textarea">
+                                                                    <div class="obligatorio" *ngIf="comunicacionService.Valida(FormParametros, 'justificacion')">Obligatorio</div>
+                                                                </div>
+                                                                <div class="cll-textarea">
+                                                                    <div class="contador-caracteres">0 / 150 máx.</div>
+                                                                </div>
+                                                            </div> -->
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ***************************EU************************** -->
+                    <div *ngIf="valorGrupo == 5" [formGroup]="FormParametros">
+                      <div
+                        class="error-formulario"
+                        *ngIf="
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'estatus'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'justificacion'
+                          )
+                        "
+                      >
+                        <div class="texto-error">
+                          Completa por favor los
+                          <span>campos obligatorios</span>
+                        </div>
+                      </div>
+
+                      <div class="grid-row">
+                        <div
+                          class="grid-column content-display-checkbox padding-content-checkbox"
+                        >
+                          <div class="box-check-atributos">
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="sppi"
+                                style="padding: 0px"
+                                formControlName="sppi"
+                              />
+                              <label
+                                class="label-alta"
+                                for="sppi"
+                                class="label-unico"
+                              >
+                                <div class="label-asignacion label-alta">
+                                  SPPI
+                                </div>
+                              </label>
+                            </div>
+
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="ppto"
+                                style="padding: 0px"
+                                formControlName="ppto"
+                              />
+                              <label
+                                class="label-alta"
+                                for="ppto"
+                                class="label-unico"
+                              >
+                                <div class="label-asignacion label-alta">
+                                  PPTO
+                                </div>
+                              </label>
+                            </div>
+
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="plantilla"
+                                style="padding: 0px"
+                                formControlName="plantilla"
+                              />
+                              <label
+                                class="label-alta"
+                                for="plantilla"
+                                class="label-unico"
+                              >
+                                <div class="label-asignacion label-alta">
+                                  Plantilla
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid-row-1-eu">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Estatus *</label
+                          >
+                          <mat-select
+                            formControlName="estatus"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'estatus'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let estat of estatus"
+                              [value]="estat.id"
+                              >{{ estat.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'estatus'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow" for="date"
+                            >Fecha *</label
+                          >
+                          <mat-form-field class="pickerMaterial">
+                            <input
+                              matInput
+                              [matDatepicker]="date"
+                              formControlName="fecha"
+                              class="input"
+                              (click)="date.open()"
+                              (change)="
+                                comunicacionService.setValueDateFormat(
+                                  $event,
+                                  FormParametros,
+                                  'fecha'
+                                )
+                              "
+                              (keydown)="
+                                comunicacionService.soloFormatoFecha($event)
+                              "
+                              [disabled]="false"
+                              placeholder="DD/MM/AAAA"
+                            />
+                            <mat-datepicker-toggle
+                              matSuffix
+                              [for]="date"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker
+                              #date
+                              disabled="false"
+                            ></mat-datepicker>
+                          </mat-form-field>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'fecha'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid-row-8">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Justificación *</label
+                          >
+                          <textarea
+                            rows="5"
+                            class="textarea textarea-ws input-alta"
+                            formControlName="justificacion"
+                            placeholder="INGRESA INFORMACIÓN"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'justificacion'
+                              )
+                            }"
+                            (keyup)="onkey($event)"
+                            maxlength="150"
+                          >
+                          </textarea>
+                          <div class="box-textarea">
+                            <div class="cll-textarea">
+                              <div
+                                class="obligatorio"
+                                *ngIf="
+                                  comunicacionService.Valida(
+                                    FormParametros,
+                                    'justificacion'
+                                  )
+                                "
+                              >
+                                Obligatorio
+                              </div>
+
+                              <div
+                                [className]="
+                                  activoTextoMaximo
+                                    ? 'caracteres-maximos-on'
+                                    : 'caracteres-maximos-off'
+                                "
+                              >
+                                Recuerda que solo tienes un maximo de
+                                <span>150 caracteres</span>
+                              </div>
+                            </div>
+                            <div class="cll-textarea">
+                              <div class="contador-caracteres">
+                                {{ contadorTextArea }} / 150 máx.
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- <label class="label-alta text-overflow">Justificación *</label>
+                                                            <textarea rows="5" class="textarea textarea-ws input-alta" placeholder="INGRESA INFORMACIÓN" formControlName="justificacion" [ngClass]="{'field-required' : comunicacionService.Valida(FormParametros, 'justificacion')}"></textarea>
+                                                            
+                                                            <div class="box-textarea">
+                                                                <div class="cll-textarea">
+                                                                    <div class="obligatorio" *ngIf="comunicacionService.Valida(FormParametros, 'justificacion')">Obligatorio</div>
+                                                                </div>
+                                                                <div class="cll-textarea">
+                                                                    <div class="contador-caracteres">0 / 150 máx.</div>
+                                                                </div>
+                                                            </div> -->
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ***************************BOFF Y ELEKTRA************************** -->
+                    <div
+                      *ngIf="valorGrupo == 1 || valorGrupo == 4"
+                      [formGroup]="FormParametros"
+                    >
+                      <div
+                        class="error-formulario"
+                        *ngIf="
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'moneda'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'estatus'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormParametros,
+                            'justificacion'
+                          )
+                        "
+                      >
+                        <div class="texto-error">
+                          Completa por favor los
+                          <span>campos obligatorios</span>
+                        </div>
+                      </div>
+
+                      <div class="grid-row">
+                        <div
+                          class="grid-column content-display-checkbox padding-content-checkbox"
+                        >
+                          <div class="box-check-atributos">
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="sppi"
+                                style="padding: 0px"
+                                formControlName="sppi"
+                              />
+                              <label for="sppi" class="label-unico">
+                                <div class="label-asignacion label-alta">
+                                  SPPI
+                                </div>
+                              </label>
+                            </div>
+
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="ppto"
+                                style="padding: 0px"
+                                formControlName="ppto"
+                              />
+                              <label for="ppto" class="label-unico">
+                                <div class="label-asignacion label-alta">
+                                  PPTO
+                                </div>
+                              </label>
+                            </div>
+
+                            <div>
+                              <input
+                                type="checkbox"
+                                id="plantilla"
+                                style="padding: 0px"
+                                formControlName="plantilla"
+                              />
+                              <label for="plantilla" class="label-unico">
+                                <div class="label-asignacion label-alta">
+                                  Plantilla
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="grid-row">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Tipo de moneda *</label
+                          >
+                          <mat-select
+                            formControlName="moneda"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'moneda'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let moneda of monedas"
+                              [value]="moneda.id"
+                              >{{ moneda.nomenclatura }}-{{
+                                moneda.pais
+                              }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'moneda'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Estatus *</label
+                          >
+                          <mat-select
+                            formControlName="estatus"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'estatus'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let estat of estatus"
+                              [value]="estat.id"
+                              >{{ estat.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'estatus'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow" for="date"
+                            >Fecha *</label
+                          >
+                          <mat-form-field class="pickerMaterial">
+                            <input
+                              matInput
+                              [matDatepicker]="date"
+                              formControlName="fecha"
+                              class="input"
+                              (click)="date.open()"
+                              (change)="
+                                comunicacionService.setValueDateFormat(
+                                  $event,
+                                  FormParametros,
+                                  'fecha'
+                                )
+                              "
+                              (keydown)="
+                                comunicacionService.soloFormatoFecha($event)
+                              "
+                              [disabled]="false"
+                              placeholder="DD/MM/AAAA"
+                            />
+                            <mat-datepicker-toggle
+                              matSuffix
+                              [for]="date"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker
+                              #date
+                              disabled="false"
+                            ></mat-datepicker>
+                          </mat-form-field>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'fecha'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Clase *</label
+                          >
+                          <mat-select
+                            formControlName="clase"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'clase'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let clase of clases"
+                              [value]="clase.id"
+                              >{{ clase.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'clase'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Color *</label
+                          >
+                          <mat-select
+                            formControlName="color"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'color'
+                              )
+                            }"
+                          >
+                            <mat-option [value]="0"
+                              >ELIGE UNA OPCIÓN</mat-option
+                            >
+                            <mat-option
+                              *ngFor="let color of colores"
+                              [value]="color.id"
+                              >{{ color.nombre }}</mat-option
+                            >
+                          </mat-select>
+                          <div
+                            class="obligatorio"
+                            *ngIf="
+                              comunicacionService.Valida(
+                                FormParametros,
+                                'color'
+                              )
+                            "
+                          >
+                            Obligatorio
+                          </div>
+                        </div>
+
+                        <!-- <div class="grid-column">
+                                                            <label class="label-alta text-overflow">Tipo *</label>
+                                                            <mat-select formControlName="tipo" [ngClass]="{'field-required' : comunicacionService.Valida(FormParametros, 'tipo')}">
+                                                                <mat-option [value]="0">ELIGE UNA OPCIÓN</mat-option>
+                                                                <mat-option *ngFor="let tipo of tipos" [value]="tipo.id">{{tipo.nombre}}</mat-option>
+                                                            </mat-select>
+                                                            <div class="obligatorio" *ngIf="comunicacionService.Valida(FormParametros, 'tipo')">Obligatorio</div>
+                                                        </div> -->
+                      </div>
+
+                      <div class="grid-row-8">
+                        <div class="grid-column">
+                          <label class="label-alta text-overflow"
+                            >Justificación *</label
+                          >
+                          <textarea
+                            rows="5"
+                            class="textarea textarea-ws input-alta"
+                            formControlName="justificacion"
+                            placeholder="INGRESA INFORMACIÓN"
+                            [ngClass]="{
+                              'field-required': comunicacionService.Valida(
+                                FormParametros,
+                                'justificacion'
+                              )
+                            }"
+                            (keyup)="onkey($event)"
+                            maxlength="150"
+                          >
+                          </textarea>
+                          <div class="box-textarea">
+                            <div class="cll-textarea">
+                              <div
+                                class="obligatorio"
+                                *ngIf="
+                                  comunicacionService.Valida(
+                                    FormParametros,
+                                    'justificacion'
+                                  )
+                                "
+                              >
+                                Obligatorio
+                              </div>
+
+                              <div
+                                [className]="
+                                  activoTextoMaximo
+                                    ? 'caracteres-maximos-on'
+                                    : 'caracteres-maximos-off'
+                                "
+                              >
+                                Recuerda que solo tienes un maximo de
+                                <span>150 caracteres</span>
+                              </div>
+                            </div>
+                            <div class="cll-textarea">
+                              <div class="contador-caracteres">
+                                {{ contadorTextArea }} / 150 máx.
+                              </div>
+                            </div>
+                          </div>
+                          <!-- <label class="label-alta text-overflow">Justificación *</label>
+                                                            <textarea rows="5" class="textarea textarea-ws input-alta" placeholder="INGRESA INFORMACIÓN" formControlName="justificacion" [ngClass]="{'field-required' : comunicacionService.Valida(FormParametros, 'justificacion')}"></textarea>
+                                                            
+                                                            <div class="box-textarea">
+                                                                <div class="cll-textarea">
+                                                                    <div class="obligatorio" *ngIf="comunicacionService.Valida(FormParametros, 'justificacion')">Obligatorio</div>
+                                                                </div>
+                                                                <div class="cll-textarea">
+                                                                    <div class="contador-caracteres">0 / 150 máx.</div>
+                                                                </div>
+                                                            </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+              <div class="cll-acordeon">
+                <div
+                  class="verificar-datos {{
+                    comunicacionService.ValidaFormulario(FormParametros) ==
+                    'VALID'
+                      ? 'datos-completos'
+                      : 'datos-incompletos'
+                  }}"
+                ></div>
+              </div>
+            </div>
+
+            <div class="tb-acordeon" *ngIf="valorGrupo !== 5">
+              <div
+                class="cll-acordeon"
+                (click)="validarLastForm(FormParametros, panelStateAttr)"
+              >
+                <!--  -->
+                <mat-expansion-panel
+                  [disabled]="
+                    comunicacionService.ValidaFormulario(FormParametros) ==
+                    'INVALID'
+                  "
+                  (opened)="panelStateDir = true"
+                  (closed)="panelStateDir = false"
+                >
+                  <mat-expansion-panel-header #panel3>
+                    <div class="tb-expancion-header">
+                      <div class="cll-expancion-header">
+                        <div class="img-categoria">
+                          <img src="assets/img/iconos/direccion.svg" />
+                        </div>
+                      </div>
+
+                      <div class="cll-expancion-header txt-bold overflow-datos">
+                        DIRECCIÓN
+                      </div>
+
+                      <div class="cll-expancion-header">
+                        <!-- <button class="btn-limpiar" [ngClass]="idAcordeon == 3 && panelAbierto ? 'limpiar-activo' : 'limpiar-inactivo'" (click)="LimpiarCampos(3)">
+                                                            <img src="assets/img/iconos/limpiar.svg"/>
+                                                        </button> -->
+                        <button
+                          class="btn-limpiar"
+                          [ngClass]="
+                            panelStateDir
+                              ? 'limpiar-activo'
+                              : 'limpiar-inactivo'
+                          "
+                          (click)="panel3._toggle(); LimpiarCampos(3)"
+                        >
+                          <img src="assets/img/iconos/limpiar.svg" />
+                        </button>
+                      </div>
+
+                      <div class="cll-expancion-header">
+                        <!-- <button 
+                                                        class="btn-panel-alta toggle-panel" 
+                                                        (click)="$event.stopPropagation(); panel3._toggle(); togglePanel(3, FormParametros);" 
+                                                        [ngClass]="idAcordeon == 3 && panelAbierto ? 'panel-abierto' : 'panel-cerrado'"
+                                                        *ngIf="comunicacionService.ValidaFormulario(FormParametros) == 'VALID'"
+                                                        > -->
+                        <!--  -->
+                        <button
+                          class="btn-panel-alta toggle-panel"
+                          [ngClass]="
+                            panelStateDir ? 'panel-abierto' : 'panel-cerrado'
+                          "
+                          *ngIf="
+                            comunicacionService.ValidaFormulario(
+                              FormParametros
+                            ) == 'VALID'
+                          "
+                        >
+                          <img
+                            src="assets/img/iconos/arrow-perfilamiento.svg"
+                          />
+                        </button>
+
+                        <button
+                          class="btn-panel-alta toggle-panel panel-cerrado"
+                          *ngIf="
+                            comunicacionService.ValidaFormulario(
+                              FormParametros
+                            ) == 'INVALID'
+                          "
+                        >
+                          <img
+                            src="assets/img/iconos/arrow-perfilamiento.svg"
+                            class="disabled-color-icon"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </mat-expansion-panel-header>
+
+                  <div class="contenido-acordeon" [formGroup]="FormDireccion">
+                    <div
+                      class="error-formulario"
+                      *ngIf="
+                        (comunicacionService.Valida(FormDireccion, 'estado') ||
+                          comunicacionService.Valida(
+                            FormDireccion,
+                            'municipio'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDireccion,
+                            'colonia'
+                          ) ||
+                          comunicacionService.Valida(FormDireccion, 'calle') ||
+                          comunicacionService.Valida(
+                            FormDireccion,
+                            'numeroExt'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDireccion,
+                            'entreCalle'
+                          ) ||
+                          comunicacionService.Valida(
+                            FormDireccion,
+                            'yCalle'
+                          )) &&
+                        !modalBusquedaCPAbierto
+                      "
+                    >
+                      <div class="texto-error">
+                        Completa por favor los <span>campos obligatorios</span>
+                      </div>
+                    </div>
+
+                    <div class="grid-row">
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Código postal *</label
+                        >
+                        <!-- <div class="buscador">
+                                                            <input type="text" id="inputCP" class="input input-alta-busqueda" formControlName="cp" placeholder="INGRESA C.P." (keypress)="comunicacionService.soloNumerico($event)" [ngClass]="{'field-required' : comunicacionService.Valida(FormDireccion, 'cp')}">
+                                                            <button type="submit" (click)="buscarCodigoPostal()"></button>
+                                                        </div> -->
+                        <input
+                          type="text"
+                          class="input search input-alta disabled-carret"
+                          placeholder="INGRESA C.P."
+                          formControlName="cp"
+                          (click)="buscarCodigoPostal()"
+                          (keypress)="deshabilitarInput()"
+                          (paste)="deshabilitarInput()"
+                          [ngClass]="{
+                            'field-required':
+                              comunicacionService.Valida(FormDireccion, 'cp') &&
+                              !modalBusquedaCPAbierto
+                          }"
+                        />
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(FormDireccion, 'cp') &&
+                            !modalBusquedaCPAbierto
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="grid-row">
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Estado</label
+                        >
+                        <input
+                          type="text"
+                          class="input disabledInput"
+                          placeholder=""
+                          formControlName="estado"
+                          readonly
+                        />
+                      </div>
+
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Alcaldía / Municipio</label
+                        >
+                        <input
+                          type="text"
+                          class="input disabledInput"
+                          placeholder=""
+                          formControlName="municipio"
+                          readonly
+                        />
+                      </div>
+
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Localidad / Colonia</label
+                        >
+                        <input
+                          type="text"
+                          class="input disabledInput"
+                          placeholder=""
+                          formControlName="colonia"
+                          readonly
+                        />
+                      </div>
+                    </div>
+
+                    <div class="grid-row-3-direccion">
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Calle *
+                        </label>
+                        <input
+                          type="text"
+                          class="input input-alta"
+                          placeholder="INGRESA INFORMACIÓN"
+                          formControlName="calle"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDireccion,
+                              'calle'
+                            )
+                          }"
+                          (keypress)="
+                            comunicacionService.soloAlfaNumerico($event)
+                          "
+                          (paste)="deshabilitarInput()"
+                        />
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(FormDireccion, 'calle')
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Núm. exterior *</label
+                        >
+                        <input
+                          type="text"
+                          class="input input-alta"
+                          placeholder="INGRESA NÚMERO"
+                          (keypress)="
+                            comunicacionService.soloAlfaNumerico($event)
+                          "
+                          (paste)="deshabilitarInput()"
+                          formControlName="numeroExt"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDireccion,
+                              'numeroExt'
+                            )
+                          }"
+                        />
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDireccion,
+                              'numeroExt'
+                            )
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Núm. interior</label
+                        >
+                        <input
+                          type="text"
+                          class="input input-alta"
+                          placeholder="INGRESA NÚMERO"
+                          (keypress)="
+                            comunicacionService.soloAlfaNumerico($event)
+                          "
+                          (paste)="deshabilitarInput()"
+                          formControlName="numeroInt"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="grid-row">
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Entre calle *</label
+                        >
+                        <input
+                          type="text"
+                          class="input input-alta"
+                          placeholder="INGRESA INFORMACIÓN"
+                          formControlName="entreCalle"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDireccion,
+                              'entreCalle'
+                            )
+                          }"
+                          (keypress)="
+                            comunicacionService.soloAlfaNumerico($event)
+                          "
+                          (paste)="deshabilitarInput()"
+                        />
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(
+                              FormDireccion,
+                              'entreCalle'
+                            )
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Y calle *</label
+                        >
+                        <input
+                          type="text"
+                          class="input input-alta"
+                          placeholder="INGRESA INFORMACIÓN"
+                          formControlName="yCalle"
+                          [ngClass]="{
+                            'field-required': comunicacionService.Valida(
+                              FormDireccion,
+                              'yCalle'
+                            )
+                          }"
+                          (keypress)="
+                            comunicacionService.soloAlfaNumerico($event)
+                          "
+                          (paste)="deshabilitarInput()"
+                        />
+                        <div
+                          class="obligatorio"
+                          *ngIf="
+                            comunicacionService.Valida(FormDireccion, 'yCalle')
+                          "
+                        >
+                          Obligatorio
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="grid-row">
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Latitud</label
+                        >
+                        <input
+                          type="text"
+                          class="input input-alta"
+                          placeholder="INGRESA INFORMACIÓN"
+                          formControlName="lat"
+                          (keypress)="
+                            comunicacionService.caracteresCoordenadas($event)
+                          "
+                        />
+                        <!-- <div class="buscador">
+                                                            <input type="text" class="input input-alta" placeholder="INGRESA INFORMACIÓN" formControlName="lat" (keypress)="deshabilitarInput()">
+                                                            <button type="submit" (click)="mapa()"></button>
+                                                        </div> -->
+                      </div>
+
+                      <div class="grid-column">
+                        <label class="label label-alta text-overflow"
+                          >Longitud</label
+                        >
+                        <input
+                          type="text"
+                          class="input input-alta"
+                          placeholder="INGRESA INFORMACIÓN"
+                          formControlName="lng"
+                          (keypress)="
+                            comunicacionService.caracteresCoordenadas($event)
+                          "
+                        />
+                        <!-- <div class="buscador">
+                                                            <input type="text" class="input input-alta" placeholder="INGRESA INFORMACIÓN" formControlName="lng" (keypress)="deshabilitarInput()">
+                                                            <button type="submit" (click)="mapa()"></button>
+                                                        </div> -->
+                      </div>
+
+                      <div class="grid-column">
+                        <button
+                          type="button"
+                          class="btn btn-abrir-mapa"
+                          (click)="mapa()"
+                        >
+                          <div class="tooltip-mapa">
+                            Haz clic para obtener las coordenadas de la
+                            dirección.
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+              <div class="cll-acordeon">
+                <div
+                  class="verificar-datos {{
+                    comunicacionService.ValidaFormulario(FormDireccion) ==
+                    'VALID'
+                      ? 'datos-completos'
+                      : 'datos-incompletos'
+                  }}"
+                ></div>
+              </div>
+            </div>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bnt-center">
+    <button class="btn btn-secundario">Cancelar</button>
+    <button
+      class="btn"
+      *ngIf="valorGrupo !== 5"
+      [ngClass]="{ 'btn-desabled': encenderApagarBoton() }"
+      (click)="ResumenAlta()"
+      [disabled]="encenderApagarBoton()"
+    >
+      Aceptar
+    </button>
+
+    <button
+      class="btn"
+      *ngIf="valorGrupo === 5"
+      [ngClass]="{ 'btn-desabled': encenderApagarBotonEU() }"
+      (click)="ResumenAlta()"
+      [disabled]="encenderApagarBotonEU()"
+    >
+      Aceptar
+    </button>
+  </div>
+</div>

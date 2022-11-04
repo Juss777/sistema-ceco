@@ -1,0 +1,74 @@
+<div class="contenedor-login loginCeco">
+    <div class="formulario">
+
+        <img src="assets/img/iconos/logoGrupoSalinas.svg" class="logoGS">
+        <p>Iniciar sesión</p>
+
+        <div class="tb-idiomas">
+            <div class="cll-idiomas">Selecciona tu idioma</div>
+            <div  class="cll-idiomas">
+                <img src="assets/img/iconos/icono_mexico.jpg">
+                <img src="assets/img/iconos/icono_usa.jpg">
+            </div>
+        </div>
+        
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="padding">
+                <div class="cajaInput  cont-imputs">
+                    <button 
+                        class="btTooltip"  
+                        matTooltip="Tu usuario es tu número de Socio" 
+                        matTooltipPosition="above"
+                        type="button"
+                        >
+                    </button> 
+                      
+                    <input type="text" 
+                        formControlName="nombreUsuario" 
+                        placeholder="Usaurio:"
+                        [ngClass]="{ 
+                            alertaError: submitted && f.nombreUsuario.errors 
+                        }"
+                    />
+
+                    <div *ngIf="submitted && f.nombreUsuario.errors">
+                        <div *ngIf="f.nombreUsuario.errors.required" class="mensajeError">
+                            Agrega tu numero de usuario
+                        </div>
+                    </div>
+                </div><br>
+
+                <div class="cajaInput  cont-imputs">
+                    <button 
+                        class="btTooltip"  
+                        matTooltip="Tu Llave Maestra es la contraseña para utilizar los  servicios y aplicaciones." 
+                        matTooltipPosition="above"
+                        type="button"
+                    >
+                    </button>
+
+                    <input 
+                        type="password" 
+                        formControlName="llaveMaestra" 
+                        placeholder="Llave"
+                        [ngClass]="{alertaError: submitted && f.llaveMaestra.errors }" 
+                   />
+
+                    <div *ngIf="submitted && f.llaveMaestra.errors">
+                        <div *ngIf="f.llaveMaestra.errors.required" class="mensajeError">
+                            Agrega tu llave maestra
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="benviarForm">Aceptar</button>
+        </form>
+
+        <div class="lista-auyuda">
+            <a href="#" id="aviso"></a>
+        <a href="https://sync.socio.gs/sspr/private/login">Olvidé mi Llave Maestra</a>
+            <a href="https://sync.socio.gs/sspr/private/login">Cambiar Llave Maestra</a>
+            <a href="https://botonrojo.socio.gs/HomeBR/" style="color:blue; ">Soporte técnico</a>
+        </div>
+    </div>
+</div>

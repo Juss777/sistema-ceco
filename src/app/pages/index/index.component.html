@@ -1,0 +1,21 @@
+<div class="margin-componente top-slider">
+    <ceco-carousel></ceco-carousel>
+
+    <div class="contenedor">
+        <div class="textbienvenida">
+            {{textbienvenida}} <b>{{textsistema}}</b><br>
+            {{textutilidades}}
+        </div>
+
+        <div class="contenedor-botones-secciones"> 
+            <div *ngFor="let seccion of secciones">
+                <a routerLink="/{{seccion.link}}"   class="btn-secciones">
+                    <div class="imgbox"> 
+                        <img src="assets/img/iconos/{{seccion.img}}.svg" alt="adoministracion"/>
+                    </div>
+                    <button class="btn-index"><b>{{seccion.textBoton}}</b></button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

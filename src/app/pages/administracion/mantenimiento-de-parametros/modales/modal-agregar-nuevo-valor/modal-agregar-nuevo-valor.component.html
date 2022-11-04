@@ -1,0 +1,44 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" (click)="cerrarModal()"></button>
+        </div>
+    </div>
+
+    <div class="tb-input-parametro" [formGroup]="valorForm">
+       <div class="cll-input-parametro">
+            <label class="label">Parámetro</label>
+            <input type="hidden" formControlName="id"/>
+            <input type="hidden" formControlName="idParametro"/>
+            <input type="text" class="input disabledInput" formControlName="parametro" readonly/>
+        </div>
+
+       <div class="cll-input-parametro">
+            <label class="label">Descripción</label>
+            <input type="text" class="input" formControlName="descripcion"/>
+            <span class="obligatorio" *ngIf="Valida('descripcion')">Obligatorio</span>
+       </div>
+
+        <div class="cll-input-parametro">
+            <label class="label">Valor</label>
+            <input type="text" class="input" formControlName="valor" [readonly]="data.id > 0" [ngClass]="{'disabledInput' : data.id > 0}"/>
+            <span class="obligatorio" *ngIf="Valida('valor')">Obligatorio</span>
+        </div>
+    </div>
+
+  
+
+    <div class="bnt-center btn-modal-canales">
+        <button
+            class="btn btn-secundario" 
+            (click)="cerrarModal()">
+            Cancelar
+        </button>
+        <button
+            class="btn" 
+            (click)="GetData()">
+            Aceptar
+        </button>
+    </div>
+</div>

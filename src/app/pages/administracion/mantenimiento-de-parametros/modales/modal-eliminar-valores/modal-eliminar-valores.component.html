@@ -1,0 +1,24 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+   </div>
+
+    <div class="contenidoModal">
+        <div id="TextoAlerta" class="textoAlerta text-center">{{textoAlerta}}</div>
+    
+        <div class="bnt-center top-botones-modal">
+            <button
+                class="btn btn-secundario " 
+                (click)="closeModal()">
+                {{textoNo}}
+            </button>
+    
+            <button
+                class="btn" 
+                (click)="closeModal()">
+                {{textoSi}}
+            </button>
+        </div>
+    </div>
+</div>
+ 

@@ -1,0 +1,357 @@
+<ceco-headerubicacion></ceco-headerubicacion>
+
+<ceco-spinner-carga [textCarga]="textoCatalogos" [ngClass]="spinerExportar ? 'spiner-on': 'spiner-off'"></ceco-spinner-carga>
+
+<div class="contenedor-seccion">
+    
+    <div class="titulo-seccion doble-titulo">
+        <div>Título</div>
+        <div>
+            <div class="instrucciones-editar">Para EDITAR algún elemento, activa el botón de edición</div>
+        </div>
+    </div>
+    <div class="contenedor-gris">
+        <!-- **********************PAISES************************** -->
+        <div class="tit-contenedor">Países</div> 
+        <div class="cont-paises">
+            <div class="cont-banderas">
+
+                <div class="bandera hover-active hover-top" [ngClass]="{'active-bandera': toggleActive == i }" *ngFor="let pais of comunicacionService.paises, let i = index">
+
+                    <div class="img-bandera" (click)="toggleBtn(i)" >
+                        <img src="{{pais.img}}"/>
+                    </div>
+                    <div class="nombre-bandera texto-pais-elipsis">{{ pais.id }} {{ pais.pais }}</div>
+                    <div class="tooltip-banderas">
+                        <div class="cont-edicion-tooltip" *ngIf="engraneBandera">
+                            <div class="editar-tooltip" (click)="editarPais(pais.id, 1, i )"><img src="assets/img/iconos/editar-bandera-ico.svg" alt=""></div>
+                        </div>
+                        <ul class="info-bandera" >
+                            <li *ngFor="let elemento of pais.elementos">{{ elemento.elementoPais}}</li>
+                        </ul>
+                    </div>
+                </div>
+
+               
+                
+            </div>
+            <div class="engrane-bandera" (click)="toggleEngraneBandera()" [ngClass]="{'active-eb': engraneBandera}"></div>
+            <div class="agregar-bandera" *ngIf="engraneBandera" (click)="agregarBandera(1)"></div>
+        </div>
+
+        <div style="height: 30px;"></div>
+        <!-- *******************ÁRBOL RAÍZ************************** -->
+        <div class="jsContentAllLists">
+            <div>
+                <div class="jsContentInputFilter">
+                    <div class="box-raiz">
+                        <label class="font-bold btn-margiin-r">Raíz</label>
+                        <div class="engrane-raiz" (click)="ActivarModificacionRaiz('raiz')"  [ngClass]="{'active-eb': activarModificarRaiz}"></div>
+                    </div>
+                </div>
+              
+                <div class="jsLista" style="background-color: #fff5cf;">
+                    <div class="div-content-tables">
+                        <table>
+                            <tbody id="tbody-raiz">
+                                <tr *ngFor="let r of DataRaiz; let i = index;" [ngClass]="{'content-tooltip': activarModificarRaiz}">
+                                    <div id="ToolTipRaiz-{{i}}" class="tooltip-editar tooptip-lista-raiz">
+                                        <span (click)="EditarItemRaiz('raiz', r)">
+                                            <img src="assets/img/iconos/editar-ico.svg" alt="">
+                                        </span>
+                                    </div>
+                                    <td id="TD-raiz-{{i}}" (click)="ActivarItemRaiz(i, 'raiz');TraerHijosRaiz('raiz', r.id)" style="cursor: pointer;" class="style-tr-raiz">
+                                        <span class="font-bold">{{r.id}} - {{r.nombre}}</span>
+                                        <span *ngIf="r.children.length > 0" class="sp-delta">
+                                            <img src="assets/img/iconos/flecha-dos.svg" alt="">
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="jsContentInputFilter" style="text-align: initial;">
+                    <label class="font-bold">Grupo Empresarial</label>
+                    <div class="box-filtro">
+                        <input type="text" class="input js-input-filtro search-menu ico-lupa" (keyup)="FiltrarRaiz($event, 'grupoEmpresarial');" placeholder="Buscar">
+
+                        <div class="cll-box">
+                            <div *ngIf="activarModificarGrupoEmpresa" class="agregar-raiz btn-margiin-r" (click)="AgregarARaiz('grupoEmpresarial')"></div>
+                            <div class="engrane-raiz btn-margiin-r" (click)="ActivarModificacionRaiz('grupoEmpresarial')"  [ngClass]="{'active-eb': activarModificarGrupoEmpresa}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="jsLista">
+                    <div class="div-content-tables">
+                        <table *ngIf="!busquedaGrupoEmpresarial">
+                            <tbody id="tbody-grupoEmpresarial">
+                                <tr *ngFor="let g of listaGrupoEmpresarial; let i = index;" [ngClass]="{'content-tooltip': activarModificarGrupoEmpresa}">
+                                    <div id="ToolTipGrupoEmpresarial-{{i}}" class="tooltip-editar tooptip-lista-raiz">
+                                        <span (click)="EditarItemRaiz('grupoEmpresarial', g)" class="ico-editar-raizEmpresarial">
+                                            <img src="assets/img/iconos/editar-ico.svg" alt="">
+                                        </span>
+                                        <span (click)="ConfirmarEliminarItemRaiz('grupoEmpresarial', g, i)">
+                                            <img src="assets/img/iconos/eliminar-ico.svg" alt="">
+                                        </span>
+                                    </div>
+                                    <td id="TD-grupoEmpresarial-{{i}}" (click)="ActivarItemRaiz(i, 'grupoEmpresarial');TraerHijosRaiz('grupoEmpresarial', g.id)" style="cursor: pointer; display: inline-block; width: 100%;" class="style-tr-raiz border-raiz-tr">
+                                    
+                                    <div class="flex-lista-raiz">
+                                        <div class="font-bold elipsis-raiz">{{g.id}} - {{g.nombre}}</div>
+                                        <div> {{g.raiz}}</div>
+                                        <div *ngIf="g.children.length > 0" class="sp-delta">
+                                            <img src="assets/img/iconos/flecha-dos.svg" alt="">
+                                        </div>
+                                    </div>
+
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                        <table *ngIf="busquedaGrupoEmpresarial">
+                            <tbody id="tbody-grupoEmpresarial">
+                                <tr *ngFor="let g of tempListaGrupoEmpresarial; let i = index;" [ngClass]="{'content-tooltip': activarModificarGrupoEmpresa}">
+                                    <div id="ToolTipGrupoEmpresarial-{{i}}" class="tooltip-editar tooptip-lista-raiz">
+                                        <span (click)="EditarItemRaiz('grupoEmpresarial', g)" class="ico-editar-raizEmpresarial">
+                                            <img src="assets/img/iconos/editar-ico.svg" alt="">
+                                        </span>
+                                        <span (click)="ConfirmarEliminarItemRaiz('grupoEmpresarial', g, i)">
+                                            <img src="assets/img/iconos/eliminar-ico.svg" alt="">
+                                        </span>
+                                    </div>
+                                    <td id="TD-grupoEmpresarial-{{i}}" (click)="ActivarItemRaiz(i, 'grupoEmpresarial');TraerHijosRaiz('grupoEmpresarial', g.id)" style="cursor: pointer; display: inline-block; width: 100%;" class="style-tr-raiz">
+                                        <span class="font-bold" style="display: inline-block; width: 65%;">{{g.id}} - {{g.nombre}}</span>
+                                        <span style="display: inline-block; width: 30%;"><strong>|</strong>  {{g.raiz}}</span>
+                                        <span *ngIf="g.children.length > 0" class="sp-delta">
+                                            <img src="assets/img/iconos/flecha-dos.svg" alt="">
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div>
+                <div class="jsContentInputFilter">
+
+                    <span class="font-bold">División</span>
+                    <div class="box-filtro">
+
+                        <input type="text" class="input js-input-filtro search-menu ico-lupa" (keyup)="FiltrarRaiz($event, 'division');" placeholder="Buscar">
+
+                        <div class="cll-box">
+                            <div *ngIf="activarModificarDivision" class="agregar-raiz btn-margiin-r"  (click)="AgregarARaiz('division')"></div>
+                            <div class="engrane-raiz btn-margiin-r" (click)="ActivarModificacionRaiz('division')"  [ngClass]="{'active-eb': activarModificarDivision}"></div>
+                        </div>
+
+                    </div>
+
+                    
+                </div>
+                <div class="jsLista">
+                    <div class="div-content-tables">
+                        <table *ngIf="!busquedaDivision">
+                            <tbody id="tbody-division">
+                                <tr *ngFor="let d of listaDivision; let i = index;" [ngClass]="{'content-tooltip': activarModificarDivision}">
+                                    <div id="ToolTipDivision-{{i}}" class="tooltip-editar tooptip-lista-raiz">
+                                        <span (click)="EditarItemRaiz('division', d)" class="ico-editar-raizEmpresarial">
+                                            <img src="assets/img/iconos/editar-ico.svg" alt="">
+                                        </span>
+                                        <span (click)="ConfirmarEliminarItemRaiz('division', d, i)">
+                                            <img src="assets/img/iconos/eliminar-ico.svg" alt="">
+                                        </span>
+                                    </div>
+                                    <td id="TD-division-{{i}}" (click)="ActivarItemRaiz(i, 'division');TraerHijosRaiz('division', d.id)" style="cursor: pointer;" class="style-tr-raiz border-raiz-tr">
+                                        <span>{{d.id}} - {{d.nombre}}</span>
+                                        <span *ngIf="d.children.length > 0" class="sp-delta">
+                                            <img src="assets/img/iconos/flecha-dos.svg" alt="">
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                        <table *ngIf="busquedaDivision">
+                            <tbody id="tbody-division">
+                                <tr *ngFor="let d of tempListaDivision; let i = index;" [ngClass]="{'content-tooltip': activarModificarDivision}">
+                                    <div id="ToolTipDivision-{{i}}" class="tooltip-editar tooptip-lista-raiz">
+                                        <span (click)="EditarItemRaiz('division', d)" class="ico-editar-raizEmpresarial">
+                                            <img src="assets/img/iconos/editar-ico.svg" alt="">
+                                        </span>
+                                        <span (click)="ConfirmarEliminarItemRaiz('division', d, i)">
+                                            <img src="assets/img/iconos/eliminar-ico.svg" alt="">
+                                        </span>
+                                    </div>
+                                    <td id="TD-division-{{i}}" (click)="ActivarItemRaiz(i, 'division');TraerHijosRaiz('division', d.id)" style="cursor: pointer;" class="style-tr-raiz ">
+                                        <span>{{d.id}} - {{d.nombre}}</span>
+                                        <span *ngIf="d.children.length > 0" class="sp-delta">
+                                            <img src="assets/img/iconos/flecha-dos.svg" alt="">
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="jsContentInputFilter">
+                    <span class="font-bold">Entidad</span>
+                    
+                    <div class="box-filtro">
+                        <input type="text" class="input js-input-filtro search-menu ico-lupa " (keyup)="FiltrarRaiz($event, 'entidad');" placeholder="Buscar">
+
+                        <div class="cll-box">
+                            <div *ngIf="activarModificarEntidad" class="agregar-raiz btn-margiin-r"  (click)="AgregarARaiz('entidad')"></div>
+                            <div class="engrane-raiz" (click)="ActivarModificacionRaiz('entidad')"  [ngClass]="{'active-eb': activarModificarEntidad}"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="jsLista">
+                    <div class="div-content-tables">
+                        <table *ngIf="!busquedaEntidad">
+                            <tbody id="tbody-entidad">
+                                <tr *ngFor="let e of listaEntidad; let i = index;" [ngClass]="{'content-tooltip': activarModificarEntidad}">
+                                    <div id="ToolTipEntidad-{{i}}" class="tooltip-editar tooptip-lista-raiz">
+                                        <span (click)="EditarItemRaiz('entidad', e)" class="ico-editar-raizEmpresarial">
+                                            <img src="assets/img/iconos/editar-ico.svg" alt="">
+                                        </span>
+                                        <span (click)="ConfirmarEliminarItemRaiz('entidad', e, i)">
+                                            <img src="assets/img/iconos/eliminar-ico.svg" alt="">
+                                        </span>
+                                    </div>
+                                    <td id="TD-entidad-{{i}}" (click)="ActivarItemRaiz(i, 'entidad');TraerHijosRaiz('entidad', e.id);" style="cursor: pointer;" class="style-tr-raiz border-raiz-tr">
+                                        <span>{{e.id}} - {{e.nombre}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                        <table *ngIf="busquedaEntidad">
+                            <tbody id="tbody-entidad">
+                                <tr *ngFor="let e of tempListaEntidad; let i = index;" [ngClass]="{'content-tooltip': activarModificarEntidad}">
+                                    <div id="ToolTipEntidad-{{i}}" class="tooltip-editar tooptip-lista-raiz">
+                                        <span (click)="EditarItemRaiz('entidad', e)" class="ico-editar-raizEmpresarial">
+                                            <img src="assets/img/iconos/editar-ico.svg" alt="">
+                                        </span>
+                                        <span (click)="ConfirmarEliminarItemRaiz('entidad', e, i)">
+                                            <img src="assets/img/iconos/eliminar-ico.svg" alt="">
+                                        </span>
+                                    </div>
+                                    <td id="TD-entidad-{{i}}" (click)="ActivarItemRaiz(i, 'entidad');TraerHijosRaiz('entidad', e.id);" style="cursor: pointer;" class="style-tr-raiz">
+                                        <span>{{e.id}} - {{e.nombre}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="height: 30px;"></div>
+        <!-- *********************CANALES************************** -->
+        <div class="seccion-canales">
+            <div class="tit-contenedor"><b>Canales</b></div>
+  
+            <div class="contenedor-buscador-canales">
+              <div class="cll-busador-canales">
+                <input type="text" class="buscador-canales ico-lupa" placeholder="Buscar" (keyup)="filtrarCanales($event)"/>
+              </div>
+  
+              <div class="cll-busador-canales" >
+                <button class="agregar-canales" (click)="modalCanales()" [ngClass]="{'btn-canales-visible':engraneCanales}" ></button>
+              </div>
+  
+              <div class="cll-busador-canales">
+                <button class="activar-canales" (click)="toggleEngraneCanales()" [ngClass]="{'active-eb': engraneCanales}"></button>
+              </div>
+            </div>
+  
+            <div class="borde-contenedor-canales">
+              <button class="arrow-despliege" (click)="collapseCanales()" [ngClass]="{'active-arrow-collapse ': arrowCanales}"></button>
+  
+              <div class="hiden-canales">
+                  <div class="box-lista-canales" [ngClass]="collapse ? 'collapse-visible' : 'collapse-hidden'">
+                    <!-- **********************************Datos compleos*********************************************** -->
+                      <ul class="lista-canales" *ngIf="!buscarCanales">
+  
+                        <li *ngFor="let canal of canales; let i = index"  [ngClass]="{'hover-active':engraneCanales}">
+                            {{ canal.idCanales }} {{ canal.nombreDelCanal }}
+                            <div class="tooltip-canales">
+                                <div class="cont-canales-tooltip">
+                                    <div class="editar-tooltip"  (click)="modalCanales(canal, i)">
+                                      <img src="assets/img/iconos/editar-ico.svg" style="width:16px; margin-right:10px;">
+                                    </div>
+                                    <div class="editar-tooltip"  >
+                                      <img src="assets/img/iconos/eliminar-ico.svg" (click)="modalEliminarCanal(canal, i)" style="width:12px;">
+                                    </div>
+                                </div>
+                            </div>
+  
+                            
+                        </li>
+                      </ul>
+  
+                      <!-- **********************************Datos de busqueda*********************************************** -->
+                      <ul class="lista-canales" *ngIf="buscarCanales">
+                        <li *ngFor="let canal of canalesTem; let i = index;" [ngClass]="{'hover-active':engraneCanales}">
+                            {{ canal.idCanales }} {{ canal.nombreDelCanal }}  
+                            <div class="tooltip-canales">
+                              <div class="cont-canales-tooltip">
+                                  <div class="editar-tooltip"  (click)="modalCanales(canal, i)">
+                                    <img src="assets/img/iconos/editar-ico.svg" style="width:16px; margin-right:10px;">
+                                  </div>
+                                  <div class="editar-tooltip"  >
+                                    <img src="assets/img/iconos/eliminar-ico.svg" (click)="modalEliminarCanal(canal, i)" style="width:12px;">
+                                  </div>
+                              </div>
+                          </div>
+  
+                        </li>
+                      </ul>
+                  </div>
+                
+              </div>
+            </div>
+  
+            <br>
+  
+            <div class="contenedor-selector-catalogo">
+              <div class="titulo-selector-catalogo">Selecciona el catálogo que deseas exportar</div>
+  
+                <mat-select class="select-catalogo">
+                  <mat-option *ngFor="let grupo of grupos" [value]="grupo.value">
+                  {{grupo.viewValue}}
+                  </mat-option>
+                </mat-select> 
+            </div>
+  
+            <div class="bnt-center">
+              <button class="btn btn-excel" (click)="toggleSpiner()" >
+                <img src="assets/img/iconos/excel-ico.svg"/>
+                Exportar Excel
+              </button>
+            </div>
+          </div>
+    </div>
+
+    
+</div>
+
+
+

@@ -1,0 +1,19 @@
+<owl-carousel-o [options]="customOptions">
+    <ng-container *ngFor="let slide of slidesStore">
+        <ng-template carouselSlide [id]="slide.id">
+            <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+
+            <div class="btnBanner">
+                <div class="btnBox">
+                    <div class="txtTitulo"> {{slide.titulo}} <span> {{slide.resaltado}}</span></div>
+                    <div class="txtSuptitulo">{{slide.suptitulo}}</div>
+                    <a routerLink="/{{slide.link}}"  class="btnCarousel">{{slide.botton}}</a>
+
+                    <div class="txtIntrucciones">{{slide.descripcion}}</div>
+                </div>
+            </div>
+
+        </ng-template>
+    </ng-container>
+</owl-carousel-o>
+

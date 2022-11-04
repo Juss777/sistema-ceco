@@ -1,0 +1,37 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div><button class="cerrar-modal"(click)="onNoClick()"></button></div>
+    </div>
+        
+    <div class="tb-agregar-grupo-empresarial" [formGroup]="FormRaiz">
+        <div class="cll-agregar-grupo-empresarial">
+            <label  class="label">Id</label>
+            <input type="text" class="input" formControlName="id" (keyup)="ValidarId($event)" (keydown)="comunicacionService.SoloNumeros($event)" [readonly]="data.type == 'update'">
+            <span class="requerido" *ngIf="ValidaValue('id')">Obligatorio</span>
+            <div *ngIf="disponible == 1" >
+                <span class="requerido">Id no disponible</span>
+            </div>
+            <div *ngIf="disponible == 2" >
+                <span class="id-valido">Id disponible</span>
+            </div>
+        </div>
+
+        <div class="cll-agregar-grupo-empresarial">
+            <label  class="label">Descripción</label>
+            <input type="text"  class="input upperCase" formControlName="descripcion">
+            <span class="requerido" *ngIf="ValidaValue('descripcion')">Obligatorio</span>
+        </div>
+
+        <div class="cll-agregar-grupo-empresarial" *ngIf="column == 'grupoEmpresarial'">
+            <label  class="label">Grupo CO</label>
+            <input type="text"  class="input upperCase" formControlName="grupo">
+            <span class="requerido" *ngIf="ValidaValue('grupo')">Obligatorio</span>
+        </div>
+    </div>
+
+    <div class="bnt-center">
+        <button class="btn btn-secundario" (click)="onNoClick()">Cancelar</button>
+        <button class="btn" (click)="EnviarData()">{{data.type == 'create' ? 'Agregar' : 'Aceptar'}}</button>
+    </div>
+</div>

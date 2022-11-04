@@ -1,0 +1,392 @@
+<ceco-headerubicacion></ceco-headerubicacion>
+
+<div class="contenedor-seccion">
+
+    <div class="titulo-seccion titulo-perfilamiento">
+        <div>
+            <b>Menús</b>
+        </div>
+        <div>
+            <div class="botones-titulo">
+                <button class="btn-agregar" *ngIf="engraneTitulo" (click)="AgregarMenu()"></button>
+                <button class="btn-engrane" (click)="toggleEngraneTitulo()" [ngClass]="{'btn-engrane-active': engraneTitulo}"></button>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="contenedor-acordion">
+        <div class="instrucciones-perfiles" *ngIf="engraneTitulo">
+            <b>Selecciona el menú que deseas EDITAR</b>
+        </div>
+
+        <mat-accordion class="listaPerfilamiento"  cdkDropList #unassignedList="cdkDropList" [cdkDropListData]="MenuPerfilamiento" (cdkDropListDropped)="drop($event)" >
+
+            <mat-expansion-panel cdkDrag *ngFor="let items of MenuPerfilamiento; let a = index" [cdkDragDisabled]="!engraneTitulo">
+                <mat-expansion-panel-header #panelPrincipal (click)="panelPrincipal._toggle()">
+                    <div class="panelPrincipal-placeholder" *cdkDragPlaceholder></div>
+                    
+                    
+                    <div class="box-principal-expancion">
+
+                        <div class="cll-principal-expancion">
+                            <div class="img-padre" [ngClass]="{'box-img-seccion': engraneTitulo}" cdkDragHandle>
+                                <img src="{{items.iconoB64}}"/>
+                            </div>
+                        </div>
+
+                        <div class="cll-principal-expancion">
+                            <div class="box-id">{{a+1}}</div>
+                        </div>
+
+                        <div class="cll-principal-expancion">
+                            <div class="box-descripcion">
+                                {{items.nombre }}
+                            </div>
+                        </div>
+
+                        <div class="cll-principal-expancion">
+                            <div class="box-btn-panel-principal" *ngIf="engraneTitulo">
+                                <button *ngFor="let boton of items.botones" class="{{boton}}" (click)="boton == 'btn-agregar' ? AgregarMenu(items, 'familia-1') : ''" (click)="boton == 'btn-editar' ? EditarMenu(items, a) : ''" (click)="boton == 'btn-eliminar' ? EliminarItemMenu(a) : ''"></button>
+                            </div>
+                        </div>
+
+                        <div class="cll-principal-expancion">
+                            <button *ngIf="items.children.length > 0" class="btn-panel-perfilamiento" (click)="panelPrincipal._toggle()" (click)="togglePanel(items.id);"  [ngClass]="items.id == idMenu && panelAbierto ? 'panel-abierto' : 'panel-cerrado'">
+                                <img src="assets/img/iconos/arrow-perfilamiento.svg"/>
+                           </button>
+                        </div>
+
+                    </div>
+                  
+                    
+                </mat-expansion-panel-header>
+             
+                <!-- *********************HIJO*************************** -->
+                <div class="hijosPerfilamiento" cdkDropList (cdkDropListDropped)="dropChildren(items.children,$event)">
+                    <div class="overflow-drag scroll-arbol">
+                        <div id="Hijo-{{items.id}}" class="familia-1 ng-border1">
+                            <div *ngFor="let child of items.children;let b = index" cdkDrag [cdkDragDisabled]="!engraneTitulo">
+                      
+                                <div class="panel-hijos-placeholder" *cdkDragPlaceholder>
+                                    <div class="fondo-placeholder-hijos"></div>
+                                    <div style="clear: both;"></div>
+                                </div>
+                        
+                                <div class="box-children hijos nivel1">
+                                    <div class="border-children">
+                                        <div class="contenedor-children">
+                                            <div class="cell-children">
+                                                <div class="box-id-children">{{b+1}}</div>
+                                            </div>
+                                            
+                                            <div class="cell-children">
+                                                <div [ngClass]="{'img-children': engraneTitulo}" cdkDragHandle>
+                                                    <img class="img-children-img" src="{{child.iconoB64}}"/>
+                                                </div>
+                                            </div>
+                                                    
+                                            <div class="cell-children">
+                                                <div class="scroll-items">
+                                                    <div class="nombre-children">{{child.nombre}}</div>
+                                                    <div class="ruta-children">{{child.url}}</div>
+                                                </div>
+                                            </div>
+                    
+                                            <div class="cell-children">
+                                                <div class="box-btn-panel-children" *ngIf="engraneTitulo" >
+                                                    <div *ngFor="let boton of child.botones">
+                                                        <button class="{{boton}}" (click)="boton == 'btn-agregar' ? AgregarMenu(child, 'familia-1') : ''" (click)="boton == 'btn-editar' ? EditarMenu(child, b, items) : ''" (click)="boton == 'btn-eliminar' ? EliminarItemMenu(b, items) : ''"></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+    
+                                            <div class="cell-children btn-arrow">
+                                                <button *ngIf="child.children.length > 0" class="btn-panel-hijos" (click)="AbrirCerrar(child.id, $event, items.id, items.children.length, b, 'familia-1');">
+                                                    <img src="assets/img/iconos/arrow-perfilamiento.svg"/>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- *********************NIETO*************************** -->
+                                <div  class="hijosPerfilamiento hidden "  id="{{child.id}}" cdkDropList (cdkDropListDropped)="dropChildren(child.children,$event)">
+                                    <div class="overflow-drag borde-uno">
+                                        <div id="Hijo-{{child.id}}" class="familia-hijos ng-border2">
+                                            <div *ngFor="let nietos of child.children;let c = index" cdkDrag [cdkDragDisabled]="!engraneTitulo">
+                                                
+                                                <div class="panel-nietos-placeholder" *cdkDragPlaceholder>
+                                                    <div class="fondo-placeholder-nietos"></div>
+                                                    <div style="clear: both;"></div>
+                                                </div>
+                                 
+    
+                                                <div class="box-children hijos nivel2">
+                                                    <div class="border-children">
+    
+                                                        <div class="contenedor-children">
+    
+                                                            <div class="cell-children">
+                                                                <div class="box-id-children">{{c+1}}</div>
+                                                            </div>
+                                        
+                                                            <div class="cell-children">
+                                                                <div [ngClass]="{'img-children': engraneTitulo}" cdkDragHandle>
+                                                                    <img class="img-children-img" src="{{nietos.iconoB64}}"/>
+                                                                </div>
+                                                            </div>
+                                        
+                                                            <div class="cell-children">
+                                                                <div class="scroll-items">
+                                                                    <div class="nombre-children">{{nietos.nombre}}</div>
+                                                                    <div class="ruta-children">{{nietos.url}}</div>
+                                                                </div>
+                                                            </div>
+                                        
+                                                            <div class="cell-children">
+                                                                <div class="box-btn-panel-children" *ngIf="engraneTitulo" >
+                                                                    <div *ngFor="let boton of nietos.botones">
+                                                                        <button class="{{boton}}" (click)="boton == 'btn-agregar' ? AgregarMenu(nietos, 'familia-hijos') : ''" (click)="boton == 'btn-editar' ? EditarMenu(nietos, c, child) : ''" (click)="boton == 'btn-eliminar' ? EliminarItemMenu(c, child) : ''"></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+    
+                                                            <div class="cell-children btn-arrow">
+                                                                <button *ngIf="nietos.children.length > 0" class="btn-panel-hijos" (click)="AbrirCerrar(nietos.id, $event);">
+                                                                    <img src="assets/img/iconos/arrow-perfilamiento.svg"/>
+                                                               </button>
+                                                            </div>
+    
+                                                        </div>
+                                                    </div>
+                                                </div>
+    
+                                                <!-- *********************BISNIETO*************************** -->
+                                                <div class="overflow-drag borde-dos">
+                                                    <div id="Hijo-{{nietos.id}}" class="familia-nietos ng-border3">
+                                                        <div class="hijosPerfilamiento  hidden" id="{{nietos.id}}"  cdkDropList (cdkDropListDropped)="dropChildren(nietos.children,$event)">
+                                                            <div *ngFor="let bisnietos of nietos.children;let d = index" cdkDrag [cdkDragDisabled]="!engraneTitulo">
+    
+                                                                <div class="panel-bisnietos-placeholder" *cdkDragPlaceholder>
+                                                                    <div class="fondo-placeholder-bisnietos"></div>
+                                                                    <div style="clear: both;"></div>
+                                                                </div>
+    
+                                                                <div class="box-children hijos nivel3">
+                                                                    <div class="border-children">
+                                                                        <div class="contenedor-children">
+                                                                            <div class="cell-children">
+                                                                                <div class="box-id-children">{{d+1}}</div>
+                                                                            </div>
+                                                        
+                                                                            <div class="cell-children">
+                                                                                <div [ngClass]="{'img-children': engraneTitulo}" cdkDragHandle>
+                                                                                    <img class="img-children-img" src="{{bisnietos.iconoB64}}"/>
+                                                                                </div>
+                                                                            </div>
+                                                        
+                                                                            <div class="cell-children">
+                                                                                <div class="scroll-items">
+                                                                                    <div class="nombre-children">{{bisnietos.nombre}}</div>
+                                                                                    <div class="ruta-children">{{bisnietos.url}}</div>
+                                                                                </div>
+                                                                            </div>
+                                                        
+                                                                            <div class="cell-children">
+                                                                                <div class="box-btn-panel-children" *ngIf="engraneTitulo" >
+                                                                                    <div *ngFor="let boton of bisnietos.botones">
+                                                                                        <button class="{{boton}}" (click)="boton == 'btn-agregar' ? AgregarMenu(bisnietos, 'familia-nietos') : ''" (click)="boton == 'btn-editar' ? EditarMenu(bisnietos, d, nietos) : ''" (click)="boton == 'btn-eliminar' ? EliminarItemMenu(d, nietos) : ''"></button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+    
+                                                                            <div class="cell-children btn-arrow">
+                                                                                <button *ngIf="bisnietos.children.length > 0" class="btn-panel-hijos" (click)="AbrirCerrar(bisnietos.id, $event);">
+                                                                                    <img src="assets/img/iconos/arrow-perfilamiento.svg"/>
+                                                                               </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+    
+                                                                <!-- *********************HIJO E*************************** -->
+                                                                <div class="overflow-drag borde-tres">
+                                                                    <div id="Hijo-{{bisnietos.id}}" class="ng-border4">
+                                                                        <div class="nivelCuatro familia-bisnieto hidden"  id="{{bisnietos.id}}" cdkDropList (cdkDropListDropped)="dropChildren(bisnietos.children,$event)">
+                                                                            <div *ngFor="let itemE of bisnietos.children; let e = index" cdkDrag [cdkDragDisabled]="!engraneTitulo">
+    
+                                                                                <div class="panel-bisnietos-placeholder" *cdkDragPlaceholder>
+                                                                                    <div class="fondo-placeholder-bisnietos"></div>
+                                                                                    <div style="clear: both;"></div>
+                                                                                </div>
+                
+                                                                                <div class="box-children hijos nivel4">
+                                                                                    <div class="border-children">
+                                                                                        <div class="contenedor-children">
+                                                                                            <div class="cell-children">
+                                                                                                <div class="box-id-children">{{e+1}}</div>
+                                                                                            </div>
+                                                                        
+                                                                                            <div class="cell-children">
+                                                                                                <div [ngClass]="{'img-children': engraneTitulo}" cdkDragHandle>
+                                                                                                    <img class="img-children-img" src="{{itemE.iconoB64}}"/>
+                                                                                                </div>
+                                                                                            </div>
+                                                                        
+                                                                                            <div class="cell-children">
+                                                                                                <div class="scroll-items">
+                                                                                                    <div class="nombre-children">{{itemE.nombre}}</div>
+                                                                                                    <div class="ruta-children">{{itemE.url}}</div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                        
+                                                                                            <div class="cell-children">
+                                                                                                <div class="box-btn-panel-children" *ngIf="engraneTitulo" >
+                                                                                                    <div *ngFor="let boton of itemE.botones">
+                                                                                                        <button class="{{boton}}" (click)="boton == 'btn-agregar' ? AgregarMenu(itemE, 'familia-bisnieto') : ''" (click)="boton == 'btn-editar' ? EditarMenu(itemE, e, bisnietos) : ''" (click)="boton == 'btn-eliminar' ? EliminarItemMenu(e, bisnietos) : ''"></button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+    
+                                                                                            <div class="cell-children btn-arrow">
+                                                                                                <button *ngIf="itemE.children.length > 0" class="btn-panel-hijos" (click)="AbrirCerrar(itemE.id, $event);">
+                                                                                                    <img src="assets/img/iconos/arrow-perfilamiento.svg"/>
+                                                                                               </button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+    
+                                                                                <!-- *********************HIJO F************************ -->
+                                                                                <div class="overflow-drag borde-cuatro">
+                                                                                    <div id="Hijo-{{itemE.id}}" class="ng-border5">
+                                                                                        <div class="nivelCinco familia-E  hidden"  id="{{itemE.id}}" cdkDropList (cdkDropListDropped)="dropChildren(itemE.children,$event)">
+                                                                                            <div *ngFor="let itemF of itemE.children; let f = index" cdkDrag [cdkDragDisabled]="!engraneTitulo">
+                
+                                                                                                <div class="panel-bisnietos-placeholder" *cdkDragPlaceholder>
+                                                                                                    <div class="fondo-placeholder-bisnietos"></div>
+                                                                                                    <div style="clear: both;"></div>
+                                                                                                </div>
+                                
+                                                                                                <div class="box-children hijos nivel5">
+                                                                                                    <div class="border-children">
+                                                                                                        <div class="contenedor-children">
+                                                                                                            <div class="cell-children">
+                                                                                                                <div class="box-id-children">{{f+1}}</div>
+                                                                                                            </div>
+                                                                                        
+                                                                                                            <div class="cell-children">
+                                                                                                                <div [ngClass]="{'img-children': engraneTitulo}" cdkDragHandle>
+                                                                                                                    <img class="img-children-img" src="{{itemF.iconoB64}}"/>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                        
+                                                                                                            <div class="cell-children">
+                                                                                                                <div class="scroll-items">
+                                                                                                                    <div class="nombre-children">{{itemF.nombre}}</div>
+                                                                                                                    <div class="ruta-children">{{itemF.url}}</div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                        
+                                                                                                            <div class="cell-children">
+                                                                                                                <div class="box-btn-panel-children" *ngIf="engraneTitulo" >
+                                                                                                                    <div *ngFor="let boton of itemF.botones">
+                                                                                                                        <button class="{{boton}}" (click)="boton == 'btn-agregar' ? AgregarMenu(itemF, 'familia-E') : ''" (click)="boton == 'btn-editar' ? EditarMenu(itemF, f, itemE) : ''" (click)="boton == 'btn-eliminar' ? EliminarItemMenu(f, itemE) : ''"></button>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+    
+                                                                                                            <div class="cell-children btn-arrow">
+                                                                                                                <button *ngIf="itemF.children.length > 0" class="btn-panel-hijos" (click)="AbrirCerrar(itemF.id, $event);">
+                                                                                                                    <img src="assets/img/iconos/arrow-perfilamiento.svg"/>
+                                                                                                               </button>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+    
+                                                                                                <!-- ***************HIJO G*************** -->
+                                                                                                <div class="overflow-drag borde-cinco">
+                                                                                                    <div id="Hijo-{{itemF.id}}" class="ng-border6">
+                                                                                                        <div class="nivelSeis familia-F  hidden"  id="{{itemF.id}}" cdkDropList (cdkDropListDropped)="dropChildren(itemF.children,$event)">
+                                                                                                            <div *ngFor="let itemG of itemF.children; let g = index" cdkDrag [cdkDragDisabled]="!engraneTitulo">
+                                
+                                                                                                                <div class="panel-bisnietos-placeholder" *cdkDragPlaceholder>
+                                                                                                                    <div class="fondo-placeholder-bisnietos"></div>
+                                                                                                                    <div style="clear: both;"></div>
+                                                                                                                </div>
+                                                
+                                                                                                                <div class="box-children hijos nivel6">
+                                                                                                                    <div class="border-children">
+                                                                                                                        <div class="contenedor-children">
+                                                                                                                            <div class="cell-children">
+                                                                                                                                <div class="box-id-children">{{g+1}}</div>
+                                                                                                                            </div>
+                                                                                                        
+                                                                                                                            <div class="cell-children">
+                                                                                                                                <div [ngClass]="{'img-children': engraneTitulo}" cdkDragHandle>
+                                                                                                                                    <img class="img-children-img" src="{{itemG.iconoB64}}"/>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                        
+                                                                                                                            <div class="cell-children">
+                                                                                                                                <div class="scroll-items">
+                                                                                                                                    <div class="nombre-children">{{itemG.nombre}}</div>
+                                                                                                                                    <div class="ruta-children">{{itemG.url}}</div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                        
+                                                                                                                            <div class="cell-children">
+                                                                                                                                <div class="box-btn-panel-children" *ngIf="engraneTitulo" >
+                                                                                                                                    <div *ngFor="let boton of itemG.botones">
+                                                                                                                                        <button class="{{boton}}" *ngIf="boton != 'btn-agregar'" (click)="boton == 'btn-agregar' ? AgregarMenu(itemG, 'familia-F') : ''" (click)="boton == 'btn-editar' ? EditarMenu(itemG, g, itemF) : ''" (click)="boton == 'btn-eliminar' ? EliminarItemMenu(g, itemF) : ''"></button>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                
+                                                                                                                            <!-- <div class="cell-children btn-arrow">
+                                                                                                                                <button *ngIf="itemG.children.length > 0" class="btn-panel-hijos" (click)="AbrirCerrar(itemG.id, $event);">
+                                                                                                                                    <img src="assets/img/iconos/arrow-perfilamiento.svg"/>
+                                                                                                                               </button>
+                                                                                                                            </div> -->
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+    
+                                                                                                                
+                                                                                                            
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                </div>
+
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>
+
+

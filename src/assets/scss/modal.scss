@@ -1,0 +1,125 @@
+.cuadro-grande > mat-dialog-container{
+    width: 80%!important;
+    max-width: 800px!important;
+    margin: 0 auto!important;
+    position: relative;
+}
+
+.cuadro-grande2 > mat-dialog-container {
+    width:100%!important;
+    max-width: 800px!important;
+    margin: 0 auto!important;
+    position: relative;
+}
+
+
+.cuadro-big > mat-dialog-container{
+    width:900px!important;
+    max-width:900px!important;
+    margin: 0 auto!important;
+    position: relative;
+}
+
+.cuadro-extra > mat-dialog-container{
+    width:1000px!important;
+    max-width:1000px!important;
+    margin: 0 auto!important;
+    position: relative;
+}
+
+.cuadro-extra{max-width:100%!important;}
+
+.modal-mediano > mat-dialog-container {
+    width:600px!important;
+    max-width:600px!important;
+}
+
+.modal-chico > mat-dialog-container {
+    width: 500px!important;
+    max-width: 500px!important;
+}
+
+.padding-modal{
+    padding:14px;
+    box-sizing:border-box;
+}
+
+.modalAviso.modalMediano {text-align: center;}
+
+.top-botones-moda{margin-top: 30px;}
+
+.contenidoModal {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.headerModal {position: relative;}
+
+.cerrar-modal{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image:url('../img/iconos/cerrar.svg');
+}
+
+
+.mat-dialog-container{
+    border-radius: 0px!important;
+    padding: 0px 0px 0px 0px!important;
+}
+
+.textModal {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.textoAlerta {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+
+
+.modal {
+    padding: 15px 20px 20px;
+    position: relative;
+}
+
+.titulo-modal {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ffcd00;
+    
+}
+
+.cerrar-modal{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url('../img/iconos/cerrar.svg');
+    cursor: pointer;
+}
+
+.imgAlerta-modal-canales{
+    width:90px;
+    height:90px;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+
+.sub-modal-canales{
+    font-weight:bold;
+    border-bottom:1px solid #ffd51d;
+    text-align:left;
+}

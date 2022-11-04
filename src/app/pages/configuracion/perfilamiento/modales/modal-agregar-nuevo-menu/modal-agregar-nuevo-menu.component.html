@@ -1,0 +1,72 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" mat-dialog-close></button>
+        </div>
+   </div>
+
+   <div class="campos-obligatorios-modal">*Campos obligatorios</div>
+
+
+    <div class="contenedor-agregar-menu" [formGroup]="FormMenu">
+
+        <div class="flex-nombre-menu">
+            <div class="cll-nombre-menu">
+                <label class="label"><span class="obligatorio">*</span>Nombre del menú</label>
+                <input type="text"  class="input" placeholder="Coloca un nombre" formControlName="nombre"/>
+                <span class="obligatorio" *ngIf="Valida('nombre')">Obligatorio</span>
+            </div>
+
+            <div class="cll-nombre-menu">
+                <label class="label">URL del menú</label>
+                <input type="text" class="input" placeholder="Coloca una url" formControlName="url"/>
+            </div>
+        </div>
+
+        <div class="flex-agregar-perfil">
+            <div class="cll-agregar-perfil" *ngIf="data.id > 0">
+                <label class="label">
+                    Orden
+                </label>
+                <input type="text" class="input disabledInput" placeholder="Coloca un orden" formControlName="orden" readonly/>
+            </div>
+            
+            <div class="cll-agregar-perfil">
+                <label class="label">Perfiles</label>
+                <mat-select  multiple [formControl]="formPerfiles" [(ngModel)]="perfilesSeleccionados">
+                    <mat-option [value]="0" (click)="SeleccionarTodo()">Seleccionar todos...</mat-option>
+                    <mat-option *ngFor="let perfil of perfiles" [value]="perfil.value">
+                        {{perfil.viewValue}}
+                    </mat-option>
+                </mat-select>
+                <span class="obligatorio" *ngIf="Valida('perfiles')">Obligatorio</span>
+            </div>
+        </div>
+
+        <div class="carga-imagen-modal">
+            <label class="label">Agregar ícono</label>
+            <div 
+                class="custom-dropzone" 
+                ngx-dropzone  
+                [disableClick]="false" 
+                
+                [accept]="'image/*'" 
+                (change)="onSelect($event)"
+            >
+                <ngx-dropzone-label>
+                    <img src="assets/img/iconos/carga-imagen-menu.svg" class="imagen-carga-menu"/>
+                    <div>ARRASTRA AQUI EL ÍCONO DEL MENÚ</div>
+                </ngx-dropzone-label>
+                <ngx-dropzone-image-preview class="hola" ngProjectAs="ngx-dropzone-preview" *ngFor="let f of files" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                  
+                </ngx-dropzone-image-preview>
+            </div>
+        </div>
+    </div>
+
+    <div class="bnt-center btn-modal-canales">
+        <button mat-dialog-close class="btn btn-secundario">{{bntCancelar}}</button>
+        <button class="btn" (click)="GetData()">{{bntAceptar}}</button>
+    </div>
+</div>

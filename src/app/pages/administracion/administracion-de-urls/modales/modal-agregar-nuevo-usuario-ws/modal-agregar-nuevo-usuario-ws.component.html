@@ -1,0 +1,59 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" (click)="cerrarModal()" ></button>
+        </div>
+    </div>
+
+    <div class="obligatorio alerta-modal-ws">*Campos obligatorios</div>
+
+    <div [formGroup]="FormWS">
+
+        <div class="input-ws">
+            <div class="label">
+                <span class="obligatorio">*</span>
+                Nombre de usuario
+            </div>
+            <input type="text" class="input" formControlName="usuario"/>
+        </div>
+
+        <div class="input-ws">
+            <div class="label">
+                <span class="obligatorio">*</span>
+                Contraseña
+            </div>
+            <input type="text" class="input" formControlName="llave"/>
+        </div>
+
+        <div class="input-ws">
+            <div class="label">Sistema</div>
+            <mat-select formControlName="sistema">
+                <mat-option *ngFor="let sistemasWs of sistemaWs" [value]="sistemasWs.id">
+                    {{sistemasWs.nombre}}
+                </mat-option>
+            </mat-select>
+        </div>
+
+        <div class="input-ws">
+            <div class="label">IP's</div>
+            <textarea class="textarea textarea-ws" formControlName="valor"></textarea>
+        </div>
+
+        <div class="bnt-center btn-modal-urls">
+            <button 
+                class="btn btn-secundario" 
+                (click)="cerrarModal()"
+            >
+                Cancelar
+            </button>
+            <button 
+                class="btn" 
+                (click)="GetData()"
+            >
+                {{textoBoton}}
+            </button>
+        </div>
+
+    </div>
+</div>

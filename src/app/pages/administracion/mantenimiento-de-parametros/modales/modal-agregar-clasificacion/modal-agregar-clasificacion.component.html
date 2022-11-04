@@ -1,0 +1,34 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" mat-dialog-close></button>
+        </div>
+   </div>
+
+   <div class="tb-input-clasificacion" [formGroup]="clasificacionForm">
+        <label class="label">Descripción</label>
+        <input type="hidden" formControlName="value"/>
+        <input type="hidden" formControlName="idGrupo"/>
+        <input type="text" class="input" formControlName="viewValue"/>
+        <span class="obligatorio" *ngIf="Valida('viewValue')">Obligatorio</span>
+    </div>
+
+    <div class="bnt-center btn-modal-canales">
+        <button
+            mat-dialog-close
+            class="btn btn-secundario">
+            {{bntCancelar}}
+        </button>
+        <button
+            class="btn" 
+            (click)="cerrarModal(true)">
+            {{bntAceptar}}
+        </button>
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,83 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" (click)="dialogRef.close()" ></button>
+        </div>
+    </div>
+
+    <div class="contenedo-modal">
+
+        <div class="bloque-capsulas">
+            <div class="tb-capsula-folio">
+                <div class="cll-capsula-folio folio-solicitado">Folio Solicitud:</div>
+                <div class="cll-capsula-folio folio-ok">A000003001</div>
+            </div>
+
+            <div class="tb-capsula-folio">
+                <div class="cll-capsula-folio folio-cc">Centro de Costo:</div>
+                <div class="cll-capsula-folio folio-ok">{{centroCosto.numeroCentroCosto}}</div>
+            </div>
+        </div>
+
+        <div class="bt-resumen-folio">
+            <div class="cll-resumen-folio">
+                <div class="resumen-bold">Grupo:</div>
+                <div>{{GetDescripcion(gruposEmpresariales, centroCosto.idGrupoEmpresarial).name}}</div>
+            </div>
+            <div class="cll-resumen-folio">
+                <div class="resumen-bold">País:</div> 
+                <div>{{GetDescripcionPais(paises, centroCosto.datosGenerales.idPais).viewValue}}</div>
+            </div>
+            <div class="cll-resumen-folio">
+                <div class="resumen-bold">Entidad:</div>
+                <div>{{GetDescripcion(entidades, centroCosto.datosGenerales.entidad).id}} - {{GetDescripcion(entidades, centroCosto.datosGenerales.entidad).nombre}}</div>
+            </div>
+            <div class="cll-resumen-folio">
+                <div class="resumen-bold">Nombre CC:</div>
+                <div>{{centroCosto.nombreCentroCosto}}</div>
+            </div>
+            
+        </div>
+        
+        <div class="overflow-tabla" style="min-height: 230px;">
+            <table mat-table [dataSource]="dataSource" matSort #sort class="tablaGeneral">
+              <ng-container matColumnDef="envioSistema">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="resumen-bold">Envío a sistema</div></th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.envioSistema}} 
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="folioEnvio">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="resumen-bold">Folio de envío</div></th>
+                <td mat-cell *matCellDef="let element; let i = index;">
+                  {{element.folioEnvio}} 
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="mensaje">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: center;"><div class="resumen-bold">Mensaje</div></th>
+                  <td mat-cell *matCellDef="let element; let i = index;">
+                    {{element.mensaje}} 
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="estatus">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><div class="resumen-bold">Estatus</div></th>
+                  <td mat-cell *matCellDef="let element; let i = index;">
+                    <img *ngIf="element.estatus == 'ES001'" src="assets/img/iconos/ico_ok.svg" class="ico-estatus">
+                    <img *ngIf="element.estatus == 'ES002'" src="assets/img/iconos/ico_alert.svg" class="ico-estatus">
+                    <img *ngIf="element.estatus == 'ES003'" src="assets/img/iconos/ico_error.svg" class="ico-estatus">
+                  </td>
+                </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnTable"></tr>
+              <tr mat-row  *matRowDef="let row; let i = index; columns: columnTable;"></tr>
+            </table>
+        </div>
+        <mat-paginator #paginador [pageSizeOptions]="[ 10, 25, 100]" class="paginador-tabla"></mat-paginator>
+    </div>
+
+    <div class="bnt-center">
+        <button class="btn boton-aceptar-mapa" (click)="dialogRef.close(true)">Aceptar</button>
+    </div>
+</div>

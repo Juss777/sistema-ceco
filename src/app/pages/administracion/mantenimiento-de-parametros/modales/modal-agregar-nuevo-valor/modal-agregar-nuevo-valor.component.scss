@@ -1,0 +1,23 @@
+.tb-input-parametro{
+    margin-top:20px;
+    margin-bottom:20px;
+}
+.cll-input-parametro {
+    height: 67px;
+    margin-bottom: 6px;
+}
+
+.tb-empresarial{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom:20px;
+}
+.cll-empresarial{
+    width:50%;
+}
+
+.disabledInput{
+    background-color: #f4f4f4 !important;
+    color: #bebebe !important;
+}

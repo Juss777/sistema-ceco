@@ -1,0 +1,655 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" (click)="cerrarModal()" ></button>
+        </div>
+    </div>
+
+    <div class="contenedor-modal-resumen-alta">
+
+        <mat-tab-group mat-align-tabs="center" class="tab-resumen">
+            <mat-tab label="Datos Generales">
+                <div class="contenedor-resumen">
+                    
+                    <div class="padding-seccion-modal">
+
+                        <div class="row-datos-generales">
+
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Grupo</div>
+                                <div class="informacion">{{GetDescripcion(gruposEmpresariales, grupoEmpresarial).name}}</div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Número CC</div>
+                                    <div class="informacion">{{numeroCentroCosto == '' ? '---' : numeroCentroCosto}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && !esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Nombre del CC</div>
+                                <div class="informacion">{{nombreCentroCosto == '' ? '---' : nombreCentroCosto}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="row-datos-generales">
+                            <div class="grid-column">
+                                <div class="titulo-informacion">País</div>
+                                <div class="informacion">{{GetDescripcionPais(paises, datosGenerales.idPais).viewValue}}</div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Entidad</div>
+                                <div class="informacion">{{GetDescripcion(entidades, datosGenerales.entidad).id}} - {{GetDescripcion(entidades, datosGenerales.entidad).nombre}}</div>
+                            </div>
+
+                            <div class="grid-column" *ngIf="grupoEmpresarial == 1 || grupoEmpresarial == 3 || grupoEmpresarial == 4">
+                                <div class="titulo-informacion">Tipo de sucursal</div>
+                                <div class="informacion">{{GetDescripcion(tiposSucursal, datosGenerales.tipoSucursal).nombre}}</div>
+                            </div>
+
+                            <!-- <div class="grid-column">
+                                <div class="titulo-informacion">Tipo de sucursal</div>
+                                <div class="informacion">--</div>
+                            </div> -->
+
+                        </div>
+    
+                        <div class="row-datos-generales">
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Canal</div>
+                                <div class="informacion">{{GetDescripcionCanal(canales, datosGenerales.idCanal).idCanales}} - {{GetDescripcionCanal(canales, datosGenerales.idCanal).nombreDelCanal}}</div>
+                            </div>
+                            <div class="grid-column" *ngIf="grupoEmpresarial !== 5">
+                                <div class="titulo-informacion">Unidad de negocio</div>
+                                <div class="informacion">{{GetDescripcion(unidadesNegocio, datosGenerales.unidadNegocio).nombre}} </div>
+                            </div>
+                        </div>
+    
+                        <div class="row-datos-generales" *ngIf="grupoEmpresarial !== 5">
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Número CC Padre</div>
+                                <div class="informacion">{{datosGenerales.numeroCCPadre == '' ? '---' : datosGenerales.numeroCCPadre}}</div>
+                            </div>
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Nombre CC Padre</div>
+                                <div class="informacion">{{datosGenerales.nombreCCPadre == '' ? '---' : datosGenerales.nombreCCPadre}}</div>
+                            </div>
+                            
+                        </div>
+    
+                        <div class="row-datos-generales-responsable" *ngIf="grupoEmpresarial !== 5">
+                            <div class="grid-column">
+                                
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Responsable</div>
+                                    <div class="informacion">{{datosGenerales.numeroEmpleadoResponsable == '' ? '---' : datosGenerales.numeroEmpleadoResponsable}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+                            <div class="grid-column">
+                                
+
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Nombre del empleado responsable</div>
+                                    <div class="informacion">{{datosGenerales.nombreEmpleadoResponsable == '' ? '---' : datosGenerales.nombreEmpleadoResponsable}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="row-datos-generales-responsable-alterno" *ngIf="grupoEmpresarial !== 5">
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Responsable alterno</div>
+                                <div class="informacion">{{datosGenerales.numeroEmpleadoResponsableAlterno == '' ? '---' : datosGenerales.numeroEmpleadoResponsableAlterno}}</div>
+                            </div>
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Nombre del empleado responsable alterno</div>
+                                <div class="informacion">{{datosGenerales.nombreEmpleadoResponsableAlterno == '' ? '---' : datosGenerales.nombreEmpleadoResponsableAlterno}}</div>
+                            </div>
+                        </div>
+    
+                        <div class="row-datos-generales-responsable-admin" *ngIf="grupoEmpresarial == 2">
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Responsable administrativo</div>
+                                <div class="informacion">{{datosGenerales.numeroEmpleadoResponsableAdmin == '' ? '---' : datosGenerales.numeroEmpleadoResponsableAdmin}}</div>
+                            </div>
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Nombre del empleado responsable administrativo</div>
+                                <div class="informacion">{{datosGenerales.nombreEmpleadoResponsableAdmin == '' ? '---' : datosGenerales.nombreEmpleadoResponsableAdmin}}</div>
+                            </div>
+                        </div>
+    
+                        <div class="row-datos-generales" *ngIf="grupoEmpresarial == 2">
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Segmento</div>
+                                <div class="informacion">{{datosGenerales.segmento == '' ? '---' : datosGenerales.segmento}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </mat-tab>
+
+            <mat-tab label="Atributos">
+                <div class="contenedor-resumen">
+                    <div class="padding-seccion-modal">
+
+                        <div class="row-1-atributos">
+                            <div class="grid-column">
+                                <div class="titulo-informacion">SPPI</div>
+                                <div class="informacion">{{parametros.sppi ? 'SI' : 'NO'}}</div>
+                            </div>
+
+                            <div class="grid-column">
+                                
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">PPTO</div>
+                                    <div class="informacion">{{parametros.ppto ? 'SI' : 'NO'}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Plantilla</div>
+                                    <div class="informacion">{{parametros.plantilla ? 'SI' : 'NO'}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+
+                            <div class="grid-column" *ngIf="grupoEmpresarial !== 5">
+                                <div class="titulo-informacion">Tipo de moneda</div>
+                                <div class="informacion">{{GetDescripcion(monedas, parametros.moneda).nomenclatura}} - {{GetDescripcion(monedas, parametros.moneda).pais}}</div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Estatus</div>
+                                    <div class="informacion">{{GetDescripcion(estatus, parametros.estatus).nombre}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Fecha</div>
+                                <div class="informacion">{{parametros.fecha == '' ? '---' : parametros.fecha | date : 'dd/MM/yyyy'}}</div>
+                            </div>
+
+                            <div class="grid-column" *ngIf="grupoEmpresarial == 2">
+                                <div class="titulo-informacion">Departamento</div>
+                                <div class="informacion">{{GetDescripcion(departamentos, parametros.departamento).nombre}}</div>
+                            </div>
+
+                            <div class="grid-column" *ngIf="grupoEmpresarial == 2">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Clase</div>
+                                    <div class="informacion">{{GetDescripcion(clases, parametros.clase).nombre}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+
+                            <div class="grid-column" *ngIf="grupoEmpresarial == 2">
+                                <div class="titulo-informacion">Fabrica</div>
+                                <div class="informacion">{{GetDescripcion(fabricas, parametros.fabrica).nombre}}</div>
+                            </div>
+
+                            <div class="grid-column" *ngIf="grupoEmpresarial == 2 || grupoEmpresarial == 3">
+                                <div class="titulo-informacion">Área funcional</div>
+                                <div class="informacion">{{GetDescripcion(areasFuncionales, parametros.areaFuncional).nombre}}</div>
+                            </div>
+
+                            <div class="grid-column" *ngIf="grupoEmpresarial == 2">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Color</div>
+                                    <div class="informacion">{{GetDescripcion(colores, parametros.color).nombre}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+
+                            <div class="grid-column" *ngIf="grupoEmpresarial == 2">
+                                <div class="titulo-informacion">Tipo</div>
+                                <div class="informacion">{{GetDescripcion(tipos, parametros.tipo).nombre}}</div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Justificación</div>
+                                <div class="informacion">{{parametros.justificacion == '' ? '---' : parametros.justificacion}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </mat-tab>
+
+            <mat-tab label="Dirección" *ngIf="grupoEmpresarial !== 5">
+                <div class="contenedor-resumen">
+                    <div class="padding-seccion-modal">
+                        
+                        <div class="row-1-direccion">
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">C.P</div>
+                                    <div class="informacion">{{direccion.cp == '' ? '---' : direccion.cp}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-2-direccion">
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Estado</div>
+                                <div class="informacion">{{direccion.estado == '' ? '---' : direccion.estado}}</div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Acaldía / Municipio</div>
+                                <div class="informacion">{{direccion.municipio == '' ? '---' : direccion.municipio}}</div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Localidad</div>
+                                    <div class="informacion">{{direccion.colonia == '' ? '---' : direccion.colonia}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>                            
+
+                            <div class="grid-column">
+                                
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Calle</div>
+                                    <div class="informacion">{{direccion.calle == '' ? '---' : direccion.calle}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Núm.exterior</div>
+                                    <div class="informacion">{{direccion.numeroExt == '' ? '---' : direccion.numeroExt}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div class="titulo-informacion">Núm.interior</div>
+                                <div class="informacion">{{direccion.numeroInt == '' ? '---' : direccion.numeroInt}}</div>
+                            </div>
+                        </div>
+
+                        <div class="row-3-direccion">
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Entre calle</div>
+                                    <div class="informacion">{{direccion.entreCalle == '' ? '---' : direccion.entreCalle}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Y calle</div>
+                                    <div class="informacion">{{direccion.yCalle == '' ? '---' : direccion.yCalle}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row-4-direccion">
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Latitud</div>
+                                    <div class="informacion">{{direccion.lat == '' ? '---' : direccion.lat}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+
+                            <div class="grid-column">
+                                <div style="display: inline-block;">
+                                    <div class="titulo-informacion">Longitud</div>
+                                    <div class="informacion">{{direccion.lng == '' ? '---' : direccion.lng}}</div>
+                                </div>
+                                
+                                <div style="display: inline-block; margin-left: 10px;" *ngIf="!create && esModificar">
+                                    <img src="assets/img/iconos/seccion-on.svg" style="width:15px;">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+
+
+        <div class="tb-resumen">
+            <!-- <div class="cll-resumen">
+                <div class="titulo-modal-datos">Datos Generales</div>
+                <div class="contenedor-resumen">
+                    <div class="padding-seccion-modal">
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Grupo</div>
+                                <div class="informacion">{{GetDescripcion(gruposEmpresariales, grupoEmpresarial).name}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Número CC</div>
+                                <div class="informacion">{{numeroCC == '' ? '---' : numeroCC}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Nombre del CC</div>
+                                <div class="informacion">{{nombreCC == '' ? '---' : nombreCC}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">País</div>
+                                <div class="informacion">{{GetDescripcion(paises, datosGenerales.idPais).viewValue}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Entidad</div>
+                                <div class="informacion">{{GetDescripcion(entidades, datosGenerales.entidad).id}} - {{GetDescripcion(entidades, datosGenerales.entidad).nombre}}</div>
+                            </div>
+                            <div class="cll-informacion" *ngIf="grupoEmpresarial == 1 || grupoEmpresarial == 3 || grupoEmpresarial == 4">
+                                <div class="titulo-informacion">Tipo de sucursal</div>
+                                <div class="informacion">{{GetDescripcion(tiposSucursal, datosGenerales.tipoSucursal).nombre}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Canal</div>
+                                <div class="informacion">{{GetDescripcionCanal(canales, datosGenerales.idCanal).idCanales}} - {{GetDescripcionCanal(canales, datosGenerales.idCanal).nombreDelCanal}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Unidad de negocio</div>
+                                <div class="informacion">{{GetDescripcion(unidadesNegocio, datosGenerales.unidadNegocio).nombre}} </div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Número CC Padre</div>
+                                <div class="informacion">{{datosGenerales.numeroCCPadre == '' ? '---' : datosGenerales.numeroCCPadre}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Nombre CC Padre</div>
+                                <div class="informacion">{{datosGenerales.nombreCCPadre == '' ? '---' : datosGenerales.nombreCCPadre}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">#Empleado (Responsable)</div>
+                                <div class="informacion">{{datosGenerales.numeroEmpleadoResponsable == '' ? '---' : datosGenerales.numeroEmpleadoResponsable}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Nombre del empleado</div>
+                                <div class="informacion">{{datosGenerales.nombreEmpleadoResponsable == '' ? '---' : datosGenerales.nombreEmpleadoResponsable}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">#Empleado (Responsable alterno)</div>
+                                <div class="informacion">{{datosGenerales.numeroEmpleadoResponsableAlterno == '' ? '---' : datosGenerales.numeroEmpleadoResponsableAlterno}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Nombre del empleado</div>
+                                <div class="informacion">{{datosGenerales.nombreEmpleadoResponsableAlterno == '' ? '---' : datosGenerales.nombreEmpleadoResponsableAlterno}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion" *ngIf="grupoEmpresarial == 2">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">#Empleado (Responsable administrativo)</div>
+                                <div class="informacion">{{datosGenerales.numeroEmpleadoResponsableAdmin == '' ? '---' : datosGenerales.numeroEmpleadoResponsableAdmin}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Nombre del empleado</div>
+                                <div class="informacion">{{datosGenerales.nombreEmpleadoResponsableAdmin == '' ? '---' : datosGenerales.nombreEmpleadoResponsableAdmin}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion" *ngIf="grupoEmpresarial == 2">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Segmento</div>
+                                <div class="informacion">{{datosGenerales.segmento == '' ? '---' : datosGenerales.segmento}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="cll-resumen">
+                <div class="titulo-modal-datos">Parámetros</div>
+                <div class="contenedor-resumen">
+                    <div class="padding-seccion-modal">
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">SPPI</div>
+                                <div class="informacion">{{parametros.sppi ? 'SI' : 'NO'}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">PPTO</div>
+                                <div class="informacion">{{parametros.ppto ? 'SI' : 'NO'}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Plantilla</div>
+                                <div class="informacion">{{parametros.plantilla ? 'SI' : 'NO'}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion" *ngIf="grupoEmpresarial == 2">
+                                <div class="titulo-informacion">Departamento</div>
+                                <div class="informacion">{{GetDescripcion(departamentos, parametros.departamento).nombre}}</div>
+                            </div>
+
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Moneda</div>
+                                <div class="informacion">{{GetDescripcion(monedas, parametros.moneda).nombre}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Estatus</div>
+                                <div class="informacion">{{GetDescripcion(estatus, parametros.estatus).nombre}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Fecha</div>
+                                <div class="informacion">{{parametros.fecha == '' ? '---' : parametros.fecha | date : 'dd/MM/yyyy'}}</div>
+                            </div>
+
+                            <div class="cll-informacion" *ngIf="grupoEmpresarial == 2">
+                                <div class="titulo-informacion">Clase</div>
+                                <div class="informacion">{{GetDescripcion(clases, parametros.clase).nombre}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion" *ngIf="grupoEmpresarial == 2 || grupoEmpresarial == 3">
+                                <div class="titulo-informacion">Área funcional</div>
+                                <div class="informacion">{{GetDescripcion(areasFuncionales, parametros.areaFuncional).nombre}}</div>
+                            </div>
+
+                            <div class="cll-informacion" *ngIf="grupoEmpresarial == 2">
+                                <div class="titulo-informacion">Fabrica</div>
+                                <div class="informacion">{{GetDescripcion(fabricas, parametros.fabrica).nombre}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion" *ngIf="grupoEmpresarial == 2">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Color</div>
+                                <div class="informacion">{{GetDescripcion(colores, parametros.color).nombre}}</div>
+                            </div>
+
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Tipo</div>
+                                <div class="informacion">{{GetDescripcion(tipos, parametros.tipo).nombre}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Justificación</div>
+                                <div class="informacion">{{parametros.justificacion == '' ? '---' : parametros.justificacion}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="cll-resumen">
+                <div class="titulo-modal-datos">Dirección</div>
+                <div class="contenedor-resumen">
+                    <div class="padding-seccion-modal">
+                        
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">C.P</div>
+                                <div class="informacion">{{direccion.cp == '' ? '---' : direccion.cp}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Núm.exterior</div>
+                                <div class="informacion">{{direccion.numeroExt == '' ? '---' : direccion.numeroExt}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Estado</div>
+                                <div class="informacion">{{direccion.estado == '' ? '---' : direccion.estado}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Núm.interior</div>
+                                <div class="informacion">{{direccion.numeroInt == '' ? '---' : direccion.numeroInt}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Acaldía / Municipio</div>
+                                <div class="informacion">{{direccion.municipio == '' ? '---' : direccion.municipio}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Entre calle</div>
+                                <div class="informacion">{{direccion.entreCalle == '' ? '---' : direccion.entreCalle}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Colonia</div>
+                                <div class="informacion">{{direccion.colonia == '' ? '---' : direccion.colonia}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Y calle</div>
+                                <div class="informacion">{{direccion.yCalle == '' ? '---' : direccion.yCalle}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Localidad</div>
+                                <div class="informacion">{{direccion.colonia == '' ? '---' : direccion.colonia}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Latitud</div>
+                                <div class="informacion">{{direccion.lat == '' ? '---' : direccion.lat}}</div>
+                            </div>
+                        </div>
+
+                        <div class="tb-informacion">
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Calle</div>
+                                <div class="informacion">{{direccion.calle == '' ? '---' : direccion.calle}}</div>
+                            </div>
+                            <div class="cll-informacion">
+                                <div class="titulo-informacion">Longitud</div>
+                                <div class="informacion">{{direccion.lng == '' ? '---' : direccion.lng}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="bnt-center">
+        <button class="btn boton-aceptar-mapa" (click)="salvarDatos()">{{textoBtn}}</button>
+    </div>
+</div>

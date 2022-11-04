@@ -1,0 +1,70 @@
+.contenedo-modal-codigo-postal{
+    margin-top:20px;
+}
+.buscador-cp-modal{
+    width:200px;
+}
+
+.contenedor-tabla-cp{
+    margin-top:20px;
+}
+
+.content-inputs{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.grid-column{
+    width: 18%;
+    margin: 15px 1%;
+}
+
+.check-asignacion {
+    margin-top: 12px;
+    margin-left: 6px;
+    font-size:12px;
+}
+
+.label-unico{
+    width: 100%;
+    padding: 4px 0px 0px 24px;
+    line-height: 22px;
+}
+
+.label-asignacion{
+    width:100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.input-alta-busqueda::-webkit-input-placeholder {font-size:10px; font-family: "Avenir_Next_Demi_Bold";}
+.input-alta-busqueda:-ms-input-placeholder{font-size:10px; font-family: "Avenir_Next_Demi_Bold";}
+.input-alta-busqueda:placeholder {font-size:10px; font-family: "Avenir_Next_Demi_Bold";}
+
+.text-buscador-codigo{
+    margin-bottom: 7px;
+    display: block;
+}
+
+
+
+@media screen and (max-width:970px){
+    .grid-column{
+        width: 31%;
+        margin: 10px 1%;
+    }
+
+}
+
+@media screen and (max-width:690px){
+    .content-inputs{
+        display:block;
+        width:100%;
+    }
+    .grid-column{
+        width:100%;
+    }
+}
+

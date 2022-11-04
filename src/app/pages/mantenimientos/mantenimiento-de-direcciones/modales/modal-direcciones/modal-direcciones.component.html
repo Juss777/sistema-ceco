@@ -1,0 +1,88 @@
+<div class="modal">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" mat-dialog-close></button>
+        </div>
+    </div>
+    
+    <div class="campos-obligatorios">*Campos obligatorios</div>
+    <div class="tb-modal-direcciones" [formGroup]="FormDirecciones">
+        <div class="cll-modal-direcciones">
+            <label class="label">
+                <span class="obligatorio">*</span>
+                País
+            </label>
+            <mat-select formControlName="idPais">
+                <mat-option *ngFor="let pais of paises" [value]="pais.value" (click)="GetEstado(pais.value)">
+                    {{pais.viewValue}} 
+                </mat-option>
+            </mat-select>
+        </div>
+
+        <div class="cll-modal-direcciones">
+            <label class="label">
+                <span class="obligatorio">*</span>
+                Estado
+            </label>
+            <mat-select formControlName="idEstado" [ngModel]="estadoSelected">
+                <mat-option [value]="0" *ngIf="estados.length > 0">Selecciona un estado...</mat-option>
+                <mat-option [value]="-1" *ngIf="estados.length == 0">Sin estados...</mat-option>
+                <mat-option *ngFor="let estado of estados" [value]="estado.id" (click)="GetMunicipio(estado.id)">
+                    {{estado.nombre}} 
+                </mat-option>
+            </mat-select>
+        </div>
+
+        <div class="cll-modal-direcciones">
+            <label class="label">
+                <span class="obligatorio">*</span>
+                Municipio / Alcaldía
+            </label>
+            <mat-select formControlName="idMunicipio" [ngModel]="municipioSelected">
+                <mat-option [value]="0" *ngIf="municipios.length > 0">Selecciona un municipio...</mat-option>
+                <mat-option [value]="-1" *ngIf="municipios.length == 0">Sin municipios...</mat-option>
+                <mat-option *ngFor="let municipio of municipios" [value]="municipio.id" (click)="GetColonia(municipio.id)">
+                    {{municipio.nombre}} 
+                </mat-option>
+            </mat-select>
+        </div>
+
+        <div class="cll-modal-direcciones">
+            <label class="label">
+                <span class="obligatorio">*</span>
+                Localidad / Colonia
+            </label>
+            <mat-select formControlName="idColonia" [ngModel]="coloniaSelected">
+                <mat-option [value]="0" *ngIf="colonias.length > 0">Selecciona un colonia...</mat-option>
+                <mat-option [value]="-1" *ngIf="colonias.length == 0">Sin colonias...</mat-option>
+                <mat-option *ngFor="let colonia of colonias" [value]="colonia.id">
+                    {{colonia.nombre}} 
+                </mat-option>
+            </mat-select>
+        </div>
+
+        <div class="cll-modal-direcciones">
+            <label class="label">
+                <span class="obligatorio">*</span>
+                Código postal
+            </label>
+            <input type="text" class="input" formControlName="cp" (keydown)="comunicacionService.SoloNumeros($event)" maxlength="5" minlength="1">
+            <span class="obligatorio" *ngIf="Valida('cp')">Obligatorio</span>
+        </div>
+    </div>
+
+    
+    <div class="bnt-center btn-modal-canales">
+        <button
+            mat-dialog-close
+            class="btn btn-secundario">
+            Cancelar
+        </button>
+        <button
+            class="btn" 
+            (click)="GetData()">
+            {{btnAceptar}}
+        </button>
+    </div>
+</div>

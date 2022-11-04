@@ -1,0 +1,110 @@
+<div class="padding-modal">
+    <div class="titulo-modal">
+        <div><b>Crear un nuevo auncio</b></div>
+        <div class="cerrar-modal" (click)="onCancel()"></div>
+    </div>
+
+    <div class="informacion-banner">
+        <div class="contenedor-banner">
+            <img class="image-rounded " [src]="imgUrl"   style="width:100%;"> <br/>
+            <label for="cargaImagen" class="cargo">
+
+                <div class="instrucciones-carga" [ngClass]="status ? 'instrucciones-none' : 'instrucciones-block'">
+                    <div class="bg-instrucciones">
+                        <div class="top-instrucciones">
+                            <div class="instruccionUno">Da clic aquí o arrastra la imagen desde tu computadora</div>
+                            <div class="instruccionDos">para agregar la imagen que irá en el carrusel.</div>
+                            <div class="instruccionTres">Selecciona una imagen de 1920 x 435 pixeles</div>
+                        </div>
+                    </div>
+                </div> 
+
+            </label>
+            <input class="image-file"  id="cargaImagen" type='file' (change)="onSelectFile($event)">
+        </div>
+
+        <div class="overflow-anuncio">
+            <div class="tb-info-banner">
+                <div class="cll-info-banner"> 
+                    <div class="input-banner">
+                        <label class="label">Nombra tu anuncio <span class="obligatorio">*</span></label>
+                        <input type="text" class="input" [(ngModel)]="textNombreAnuncio">
+                        <div class="numeroCaracteres">
+                            <span>{{contadorTextoTitulo()}} / 60</span> Caracteres
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="tb-info-banner">
+                <div class="cll-info-banner">
+                    <div class="input-banner">
+                        <label class="label">Coloca el texto principal del anuncio <span class="obligatorio">*</span></label>
+                        <angular-editor [(ngModel)]="textPrincipalAgregado" [config]="config" (blur)="obtenerHtml(textPrincipalAgregado)"></angular-editor>
+                        <div class="numeroCaracteres">
+                            <span>{{contadorTextoPrincipal()}} / 60</span> Caracteres
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="cll-info-banner">
+                    <div class="input-banner">
+                        <label class="label">Coloca el texto secundario del anuncio</label>
+                        <angular-editor [(ngModel)]="textSecundarioAgregado" [config]="configSecundario" (blur)="obtenerHtml(textSecundarioAgregado)"></angular-editor>
+                        <div class="numeroCaracteres">
+                            <span>{{contadorTextoSecundario()}} / 60</span> Caracteres
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cll-info-banner">
+                    <div class="input-banner">
+                        <label  class="label">Coloca el texto del botón</label>
+                        <input type="text"  class="input" [(ngModel)]="textBotonAgregado">
+                        <div class="numeroCaracteres">
+                            <span>{{contadorTextoBoton()}} / 60</span> Caracteres
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cll-info-banner">
+                    <div class="input-banner">
+                        <label  class="label">Coloca el enlace del botón</label>
+                        <input type="text"  class="input" >
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="tb-info-banner">
+                <div class="cll-info-banner"> 
+                    <div class="input-banner">
+                        <mat-select>
+                            <mat-option *ngFor="let food of foods" [value]="food.value">
+                            {{food.viewValue}} 
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="obligatorioFooter">
+        Campos obligatorios <span class="obligatorio">*</span>
+    </div>
+
+
+    <div class="bnt-center btn-modal-anuncio">
+        <button class="btn  btn-secundario" (click)="onCancel()">Descartar anuncio</button>
+        <button class="btn" (click)="onSubmit()">Crear anuncio</button>
+    </div>
+</div>
+
+
+
+
+
+

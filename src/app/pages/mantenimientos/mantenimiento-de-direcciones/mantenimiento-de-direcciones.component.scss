@@ -1,0 +1,117 @@
+.box-direccion{
+    margin:0 auto;
+    margin-top:20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width:50%;
+    
+}
+.cll-direccion{
+    width:46%;
+    min-height: 76px;
+}
+
+.sub-titulo-flex{
+    display: flex;
+    align-items: center;
+}
+.sub-titulo-flex > div > button{ margin-left:6px;}
+
+.cont-tb-direcciones{margin-top:50px;}
+
+.header-tabla-resultados{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.cll-tabla-resultados:nth-child(1){width:70%;}
+.cll-tabla-resultados:nth-child(2){width:30%;}
+
+.contenedor-tabla-direcciones{
+    background-color: #fff;
+    border-left: 1px solid #E0DDD2;
+    border-right: 1px solid #E0DDD2;
+    border-bottom: 1px solid #E0DDD2;
+    border-style: dashed;
+    position: relative;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.box-avanzada{
+    width:80%;
+    margin:0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.cll-avanzada{
+    width:31.3%;
+    margin:12px 1%;
+    height:66px;
+}
+.active-busqueda-avanzada{
+    background-color: #ffcc00;
+    display:block;
+    color: #000;
+}
+
+
+
+.text-center{
+    text-align: center;
+}
+
+.alert-campos-obligatorios-busqueda{
+    margin: 0 auto;
+    margin-top: 9px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 79%;
+    font-size: 13px;
+    color: red;
+}
+.obligatorio-direcciones{margin: 10px auto;}
+
+
+
+@media screen and (max-width:800px){
+    .box-direccion,
+    .box-avanzada{
+        width:90%;
+    }
+}
+
+@media screen and (max-width:670px){
+    .box-avanzada{
+        width:100%;
+    }
+    .cll-avanzada{
+        width:100%;
+    }
+}
+
+@media screen and (max-width:500px){
+    .box-direccion{
+        display:block;
+        width:100%;
+    }
+    .cll-direccion{
+        width:100%;
+    }
+
+    .header-tabla-resultados{
+        display:block;
+    }
+    .cll-tabla-resultados{
+        width:100%!important;
+        margin-bottom: 10px;
+    }
+}

@@ -1,0 +1,109 @@
+.header{
+    width:100%;
+    position:fixed;
+    top:0;
+    background-color:#FFFFFF;
+    border-bottom: 2px solid #ffcd00;
+    z-index:999;
+}
+
+.tb-header{
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:10px 0px;
+    box-sizing:border-box;
+}
+
+.cll-header{width:33.33%;}
+
+.hamburgesa{
+    width:20px;
+    height:20px;
+    cursor: pointer;
+}
+
+.logo-header{
+    width:60px;
+    display:block;
+    margin:0 auto;
+    cursor: pointer;
+}
+
+.tb-usuario{
+    display:flex;
+    align-items:center;
+    float:right;
+}
+
+.nombre-usuario {
+    width:172px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #000;
+    text-align: right;
+    transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+}
+
+.perfil{
+    text-align:right;
+    transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+}
+
+.imagen-usuario{
+    width:38px;
+    height:38px;
+    background: #FFFFFF;
+    border: solid 1px #666666;
+    border-radius: 50%;
+    overflow:hidden;
+    margin-left:10px;
+}
+
+.usuario-header{
+    width:100%;
+    margin:-4px 0px;
+}
+
+.arrow-sesion{margin:23px 4px 0px 4px;}
+
+.arrow-sesion > img{
+    width:10px;
+    cursor: pointer;
+}
+
+.fecha {
+    font-size:11px;
+    line-height:15px;
+    padding:0px 6px;
+    transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+}
+
+
+@media screen and (max-width:768px){
+    .nombre-usuario,
+    .perfil{
+        font-size:0px;
+        transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -webkit-transition: all 0.3s ease-out;
+    }
+}
+
+@media screen and (max-width:500px){
+    .fecha{
+        font-size:0px;
+        transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -webkit-transition: all 0.3s ease-out;
+    }
+}
+

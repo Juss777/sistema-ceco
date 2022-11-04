@@ -1,0 +1,228 @@
+<ceco-headerubicacion></ceco-headerubicacion>
+
+<div class="contenedor-seccion">
+
+    <div class="titulo-seccion titulo-flex">
+        <div>
+           <b>Selecciona un Grupo Empresarial y su Clasificación</b>
+        </div>
+
+        <div>
+            <b>Para EDITAR o ELIMINAR algún parámetro, haz clic derecho sobre el</b>
+        </div>
+    </div>
+
+    <div class="contenedor-gris">
+      <div class="tb-grupo-empresarial">
+        <div class="cll-grupo-empresarial">
+          <div class="contenedor-slect-grupo">
+            <label class="label">Grupo empresarial</label>
+            <mat-select [(value)]="selectedGrupoEmpresarial.id">
+
+              <mat-select-trigger>
+                <img *ngIf="selectedGrupoEmpresarial.icon != ''" src="assets/img/iconos/{{selectedGrupoEmpresarial.icon}}.svg" class="icono-select"/>
+                {{ selectedGrupoEmpresarial.name }}
+              </mat-select-trigger>
+
+              <mat-option *ngFor="let grupo of gruposMatSelect" [value]="grupo.id" (click)="TraerClasificacion(grupo.id); TraerParametros(0, ''); Descheck();">
+                <img *ngIf="grupo.icon != ''" src="assets/img/iconos/{{grupo.icon}}.svg" class="icono-select"/>
+                {{grupo.name}}
+              </mat-option>
+
+            </mat-select>
+          </div>
+        </div>
+
+        <div class="cll-grupo-empresarial">
+
+          <div class="contenedor-slect-clasificacion">
+
+            <label class="label">Clasificación</label>
+
+            <div class="tb-clasificacion">
+              <mat-select class="select-catalogo" [(value)]="itemSelected">
+                  <mat-option *ngFor="let clasificacion of clasificacionesFiltradas" [value]="clasificacion.value" (click)="TraerParametros(clasificacion.value, clasificacion.viewValue); Descheck();">
+                    <div [ngClass]="{'select-clasificacion': activoEngrane && clasificacion.value > 0}">
+                      <div class="box-btn-select">
+                        <span>{{clasificacion.viewValue}}</span>
+                        <span class="content-btn-clasificacion">
+                          <div class="contenedor-btn-catalogo">
+                            <button class="btn-select editar-select" *ngIf="activoEngrane" (click)="AgregarEditarClasificacion(clasificacion.value)"></button>
+                            <button class="btn-select eliminar-select" *ngIf="activoEngrane" (click)="ConfirmarEliminarClasificacion(clasificacion.value)"></button>
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                  </mat-option>
+              </mat-select>
+              <button class="btn-agregar ml" *ngIf="activoEngrane" (click)="AgregarEditarClasificacion()"></button>
+              <button class="btn-engrane ml"  (click)="toggleFiltoEmpClas()" [ngClass]="{'btn-engrane-active': activoEngrane}"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="tb-resultados">
+      <div class="cll-resultados">
+
+        <div class="tb-titulo-tabla titulo-seccion">
+          <div class="cll-titulo-tabla">
+            <div class="sub-titulo-flex">
+              <div>
+                <b>Parámetros</b>
+              </div>
+              <div>
+                <button class="btn-agregar ml" *ngIf="activoEngraneParametros" (click)="AgregarEditarParametro()" ></button>
+                <button class="btn-engrane ml"  (click)="toggleParametros()" [ngClass]="{'btn-engrane-active': activoEngraneParametros}"></button>
+              </div>
+            </div>
+          </div>
+
+          <div  class="cll-titulo-tabla">
+            <input type="text"  class="input search search-tabla" (keyup)="filtro($any($event.target).value)" placeholder="Buscar">
+          </div>
+        </div>
+
+        <div class="contenedor-tabla-mantenimiento">
+
+          <div class="overflow-tabla" style="min-height: 230px;">
+            <table mat-table [dataSource]="dataTablaParametros" matSort #tablaParametros class="tablaGeneral tablaParametros" >
+
+              <ng-container matColumnDef="check">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  <div class="select-all input-checkbox">
+                    <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                  </div>
+                </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center; margin: 0 auto;">
+                  <div class="select-all input-checkbox">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(element) : null"
+                      [checked]="selection.isSelected(element)" [aria-label]="checkboxLabel(element)" style="margin-left: -16px;">
+                    </mat-checkbox>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="parametro">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Parámetro</b></th>
+                <td mat-cell *matCellDef="let element; let i = index"  [ngClass]="{'hover-active':activoEngraneParametros}">
+                  {{element.parametro}} 
+
+                  <div class="tooltips {{i == 0 ? '' : 'tooltips-arriba'}}">
+                    <div class="cont-tooltips">
+                        <div class="editar-tooltip" >
+                          <img src="assets/img/iconos/editar-ico.svg" (click)="AgregarEditarParametro(element.id)" style="width:16px;">
+                        </div>
+                        <div class="editar-tooltip"  >
+                          <img src="assets/img/iconos/eliminar-ico.svg" (click)="ConfirmarEliminarParametro(element.id)" style="width:12px;">
+                        </div>
+                    </div>
+                  </div>
+
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="grupos">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Grupo(s) empresarial(es)</b></th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="contenedor-imagen-parametros">
+                    <div *ngFor="let grupo of element.grupos">
+                      <img src="assets/img/iconos/{{gruposIcon[grupo - 1].icono}}.svg" alt="img-logo" class="{{grupo > 3 ? 'iconos-boof-eu' : 'negocio-tabla'}}">
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnasTablaParametros"></tr>
+              <tr mat-row (click)="GetDataValores(row.id)" [class.row-is-clicked]="idParametroSeleccionado == row.id" *matRowDef="let row; let i = index; columns: columnasTablaParametros;"></tr>
+            </table>
+          </div>
+          <mat-paginator #paginadorParametros  [pageSizeOptions]="[ 10, 25, 100]" class="paginador-tabla"></mat-paginator>
+        </div>
+   
+        <button class="btn btn-excel exp-parametros" (click)="ExportarXLSX()">
+          <img src="assets/img/iconos/excel-ico.svg"/>
+            Exportar Excel
+        </button>
+
+      </div>
+      <div class="cll-resultados">
+
+
+        <div class="tb-titulo-tabla titulo-seccion">
+          <div class="cll-titulo-tabla">
+            <div class="sub-titulo-flex">
+              <div>
+                <b>Valores</b>
+              </div>
+              <div>
+                <button class="btn-agregar ml" *ngIf="activoEngraneValores" (click)="AgregarEditarValor()"></button>
+                <button class="btn-engrane ml"  (click)="toggleValores()" [ngClass]="{'btn-engrane-active': activoEngraneValores}"></button>
+              </div>
+            </div>
+          </div>
+
+          <div  class="cll-titulo-tabla">
+            <input type="text"  class="input search search-tabla" (keyup)="filtroValores($any($event.target).value)" placeholder="Buscar">
+          </div>
+        </div>
+
+        <div class="contenedor-tabla-mantenimiento">
+
+          <div class="overflow-tabla" style="min-height: 230px;">
+
+            <table mat-table [dataSource]="dataTablaValores" matSort  #tablaValores class="tablaGeneral tabla-mantenimiento">
+
+              <ng-container matColumnDef="valor" >
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Valor</b></th>
+                <td mat-cell *matCellDef="let element" [ngClass]="{ 'disableRow': !element.visible }">
+                  {{element.valor}} 
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Descripción</b></th>
+                <td mat-cell *matCellDef="let element; let i = index;" [ngClass]="{'hover-active': activoEngraneValores && element.visible, 'disableRow': !element.visible }" >
+                  {{element.descripcion}} 
+
+                  <div class="tooltips tooltip-left {{i == 0 ? '' : 'tooltips-arriba'}}">
+                    <div class="cont-tooltips">
+                        <div class="editar-tooltip" >
+                          <img src="assets/img/iconos/editar-ico.svg" (click)="AgregarEditarValor(element.id)" style="width:16px;">
+                        </div>
+                        <div class="editar-tooltip"  >
+                          <img src="assets/img/iconos/eliminar-ico.svg" (click)="ConfirmarEliminarValor(element.id)" style="width:12px;">
+                        </div>
+                    </div>
+                  </div>
+
+                </td>
+              </ng-container>
+              
+              <ng-container matColumnDef="visible">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><b>Visible en su GE</b></th>
+                <td mat-cell *matCellDef="let element" [ngClass]="{ 'disableRow': !element.visible }">
+                  <button class="btn-visible" [ngClass]="{'active' : !element.visible}" (click)="ActivaDesactivaVisible(element)"></button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnasTablaValores"></tr>
+              <tr mat-row  *matRowDef="let row; let i = index; columns: columnasTablaValores;" [id]="'fila' + i"></tr>
+            </table>
+          </div>
+          <mat-paginator #paginadorValores [pageSizeOptions]="[ 10, 25, 100]" class="paginador-tabla"></mat-paginator>
+        </div>
+
+
+        
+
+
+      </div>
+    </div>
+
+</div>
+

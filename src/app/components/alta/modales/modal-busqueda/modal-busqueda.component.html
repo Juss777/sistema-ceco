@@ -1,0 +1,212 @@
+<div class="modal">
+  <div class="titulo-modal">
+    <div>
+      <b>Búsqueda de {{ nombreCampo }}</b>
+    </div>
+    <div>
+      <button class="cerrar-modal" (click)="matDialogRef.close()"></button>
+    </div>
+  </div>
+
+  <div class="contenedo-modal">
+    <!-- <div class="buscador-modal buscador-modal-cc">
+            <label class="label  text-buscador-cc">{{labelInputBusqueda}}</label>
+            <input type="text" class="input search input-alta-busqueda" placeholder="Buscar" (keyup)="filtro($any($event.target).value)" >
+        </div> -->
+
+    <div class="buscador-modal buscador-modal-cc">
+      <label class="label text-buscador-cc">{{ labelInputBusqueda }}</label>
+      <div class="buscador">
+        <input
+          type="text"
+          id="inputSearch"
+          class="input input-alta-busqueda"
+          placeholder="BUSCAR"
+          (keyup.enter)="buscar()"
+          (keypress)="
+            isNumber
+              ? comunicacionService.soloNumerico($event)
+              : comunicacionService.soloAlfaNumerico($event)
+          "
+          (paste)="deshabilitarInput()"
+        />
+        <button type="submit" (click)="buscar()"></button>
+      </div>
+    </div>
+
+    <div class="contenedor-tabla" *ngIf="!centroCosto">
+      <div style="min-height: 230px">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          matSort
+          #sort
+          class="tablaGeneral tabla-modal-cc"
+          *ngIf="dataSource.filteredData.length > 0"
+          style="min-width: 700px"
+        >
+          <ng-container matColumnDef="numero">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <div class="label-alta">{{ headerColumnaNumero }}</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.numero }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="nombre">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <div class="label-alta">{{ headerColumnaNombre }}</div>
+            </th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{ element.nombre }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnTable"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; let i = index; columns: columnTable"
+            (click)="GetSelected(row)"
+          ></tr>
+        </table>
+
+        <table
+          style="width: 100%; min-width: 700px"
+          *ngIf="dataSource.filteredData.length == 0"
+        >
+          <thead>
+            <tr class="encabezados-tabla-alerta">
+              <th>
+                <div class="label-alta">{{ headerColumnaNumero }}</div>
+              </th>
+              <th>
+                <div class="label-alta">{{ headerColumnaNombre }}</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2" class="alerta-tabla">
+                No se encontraron registros con el criterio de búsqueda.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <mat-paginator
+        #paginador
+        [length]="dataSource.data.length"
+        [pageSize]="5"
+        [pageSizeOptions]="[10, 25, 100]"
+        class="paginador-tabla"
+      ></mat-paginator>
+    </div>
+
+    <!-- BÚSQUEDA CENTRO DE COSTOS -->
+    <div class="contenedor-tabla" *ngIf="centroCosto">
+      <div style="min-height: 230px">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          matSort
+          #sort
+          class="tablaGeneral tabla-modal-cc"
+          *ngIf="dataSource.filteredData.length > 0"
+          style="min-width: 700px"
+        >
+          <ng-container matColumnDef="grupoEmpresarial">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <div class="label-alta">Grupo Empresarial</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.idGrupoEmpresarial }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="entidad">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <div class="label-alta">Entidad</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.datosGenerales.entidad }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="numeroCC">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <div class="label-alta">Número de CECO</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.numeroCentroCosto }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="descripcion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <div class="label-alta">Descripción</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.nombreCentroCosto }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="pais">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <div class="label-alta">País</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.datosGenerales.idPais }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnTable"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; let i = index; columns: columnTable"
+            (click)="GetSelected(row)"
+          ></tr>
+        </table>
+
+        <table
+          style="width: 100%; min-width: 700px"
+          *ngIf="dataSource.filteredData.length == 0"
+        >
+          <thead>
+            <tr class="encabezados-tabla-alerta">
+              <th>
+                <div class="label-alta">Grupo Empresarial</div>
+              </th>
+              <th>
+                <div class="label-alta">Entidad</div>
+              </th>
+              <th>
+                <div class="label-alta">Número de CECO</div>
+              </th>
+              <th>
+                <div class="label-alta">Descripción</div>
+              </th>
+              <th>
+                <div class="label-alta">País</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2" class="alerta-tabla">
+                No se encontraron registros con el criterio de búsqueda.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <mat-paginator
+        #paginador
+        [length]="dataSource.data.length"
+        [pageSize]="5"
+        [pageSizeOptions]="[10, 25, 100]"
+        class="paginador-tabla"
+      ></mat-paginator>
+    </div>
+  </div>
+</div>

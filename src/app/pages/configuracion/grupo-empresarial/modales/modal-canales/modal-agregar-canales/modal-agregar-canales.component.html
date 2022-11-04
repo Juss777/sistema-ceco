@@ -1,0 +1,61 @@
+<div class="modal" [formGroup]="FormCanales">
+    <div class="titulo-modal">
+        <div><b>{{tituloModal}}</b></div>
+        <div>
+            <button class="cerrar-modal" (click)="cerrarModal()"></button>
+        </div>
+   </div>
+
+
+   <div class="tb-input-canales">
+        <div class="cll-input-canales">
+            <label class="label">Id</label>
+            <input type="text" class="input-modal-canales" formControlName="idCanales" [readonly]="data.funcion == 'update'" placeholder="Id del canal" (keydown)="comunicacionService.SoloNumeros($event)" minlength="1"/>
+            <span class="requerido" *ngIf="Valida('idCanales')">Obligatorio</span>
+        </div>
+    </div>
+
+    <div class="tb-input-canales">
+        <div class="cll-input-canales mr">
+            <label class="label">Nombre del canal</label>
+            <input type="text" class="input-modal-canales upperCase" id="nombreDelCanal" formControlName="nombreDelCanal" placeholder="Nombre del canal"/>
+            <span class="requerido" *ngIf="Valida('nombreDelCanal')">Obligatorio</span>
+        </div>
+        <div class="cll-input-canales">
+            <label class="label">Nombre largo del canal</label>
+            <input type="text"  class="input-modal-canales upperCase" id="nombreLargoDelCanal" formControlName="nombreLargoDelCanal"/>
+            <span class="requerido" *ngIf="Valida('nombreLargoDelCanal')">Obligatorio</span>
+        </div>
+    </div>
+
+    <div class="tb-input-canales">
+        <div class="cll-input-canales mr">
+            <label class="label">Tipo de canal</label>
+            <input type="text" class="input-modal-canales" id="tipoDelCanal" formControlName="tipoDeCanal" placeholder="Tipo de canal" (keydown)="comunicacionService.SoloNumeros($event)" maxlength="3" minlength="1"/>
+            <span class="requerido" *ngIf="Valida('tipoDeCanal')">Obligatorio</span>
+        </div>
+        <div class="cll-input-canales">
+            <label class="label">Canal CrediMax</label>
+            <input type="text" class="input-modal-canales upperCase" id="canalCrediMax"  formControlName="canalCrediMax" placeholder="Canal CrediMax"/><!-- *******CAMBIOS***** -->
+                <span class="requerido" *ngIf="Valida('canalCrediMax')">Obligatorio</span>
+        </div>
+    </div>
+        
+    <div class="bnt-center btn-modal-canales">
+        <button
+            class="btn btn-secundario" 
+            (click)="cerrarModal()">
+            {{textoBotonDos}}
+        </button>
+        <button
+            class="btn" 
+            (click)="guardarDatos()">
+            {{textoBoton}}
+        </button>
+    </div>
+    
+</div>
+
+
+
+

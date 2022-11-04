@@ -1,0 +1,35 @@
+.obligatorio.alerta-modal-url{
+    text-align:right;
+    margin: 10px 0px 0px 0px;
+}
+
+.alerta-modal-url{
+    width:100%;
+    margin:10px 10px 10px 10px;
+}
+
+.input-url{
+    margin-bottom:10px;
+}
+
+.tb-url{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.cll-url{
+    width:48%;
+    min-height: 70px;
+}
+
+@media screen and (max-width:500px){
+    .tb-url{
+        display:block;
+    }
+    .cll-url{
+        width:100%;
+    }
+}

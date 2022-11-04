@@ -1,0 +1,124 @@
+.label {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+input.input[type="text"],
+input.input[type="number"] {
+  background-color: #fff;
+  color: #2e2925;
+  position: relative;
+  font-size: 12px;
+  height: 29px;
+  width: 100%;
+  border: 1px solid #bfbfbf;
+  outline: none;
+  padding: 0px 10px 0px 10px;
+  text-transform: uppercase;
+}
+
+input.input[type="number"]::-webkit-inner-spin-button,
+input.input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input.inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.inputfile + label {
+  cursor: pointer;
+  display: block;
+  overflow: hidden;
+  padding: 0px 1.25rem;
+}
+.inputfile + label {
+  cursor: pointer;
+  background-size: 17px;
+  background-position: 97% 35%;
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 0px;
+  border: 1px solid #b0b0aa;
+  position: relative;
+  font-size: 14px;
+  padding: 0px 10px;
+  line-height: 30px;
+  text-align: center;
+  height: 32px;
+  border-radius: 4px;
+  background: #eaeaea;
+  width: 100%;
+}
+
+.upperCase {
+  text-transform: uppercase;
+}
+
+.disabledInput {
+  background-color: #f4f4f4 !important;
+  color: #bebebe !important;
+}
+
+input[type="checkbox"] + label {
+  padding-left: 22px;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  cursor: pointer;
+  display: inline-block;
+  background-image: url("../img/iconos/checkbox.svg");
+  background-position: 0px 7px;
+  padding: 6px 30px 5px 22px;
+  line-height: 23px;
+  height: 30px;
+}
+
+input[type="checkbox"]:checked + label {
+  background-image: url("../img/iconos/checkbox1.svg");
+}
+
+.field-required {
+  border: 1px solid #ff0000 !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+div.buscador input[type="text"],
+div.buscador input[type="number"] {
+  padding: 10px;
+  font-size: 12px;
+  border: 1px solid #c4c4c4;
+  border-right: none;
+  float: left;
+  width: 80%;
+  background: #fff;
+}
+
+div.buscador button {
+  float: left;
+  width: 20%;
+  height: 29px;
+  padding: 0px;
+  border: 1px solid #c4c4c4;
+  border-left: none;
+  background-color: #fff;
+  background-image: url("../img/iconos/lupa.svg");
+  background-repeat: no-repeat;
+  background-position: 50% 6px;
+  background-size: 14px;
+  cursor: pointer;
+}

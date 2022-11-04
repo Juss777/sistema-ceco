@@ -1,0 +1,284 @@
+<ceco-headerubicacion></ceco-headerubicacion>
+<div class="contenedor-seccion">
+
+    <div class="contenedor-seccion-administracion">
+
+        <mat-tab-group class="tabs-administracion">
+            <mat-tab> 
+                <ng-template mat-tab-label>
+                    <span class="titulo-tabs">Usuarios</span>
+                </ng-template>
+
+                <div class="contenido-tabs-administracion">
+                    <div class="padding-tabs-administracion"> 
+
+                        <div class="tb-titulo-administracion-url">
+                            <div class="cll-titulo-administracion-url">
+                                <input type="text" class="input search search-tabla FiltroURLS-movil" (keyup)="FiltroURLS($any($event.target).value)" placeholder="Buscar" *ngIf="tipoUsuarioSelected == 1"/>
+                                <input type="text" class="input search search-tabla FiltroWS-movil " (keyup)="FiltroWS($any($event.target).value)" placeholder="Buscar" *ngIf="tipoUsuarioSelected == 2"/>
+                            
+                                <div class="tb-botones-edicion">
+
+                                    <div>
+                                        <b>Administración de URL’s</b>
+                                    </div>
+                                
+                                    <div *ngIf="tipoUsuarioSelected">
+                                        <button class="btn-engrane" (click)="toggleEngraneUrls()" [ngClass]="{'btn-engrane-active': engraneUrls}"></button>
+                                    </div>
+
+                                    <div *ngIf="tipoUsuarioSelected == 1">
+                                        <button class="btn-agregar" *ngIf='engraneUrls' (click)="AgregarEditarUrl()"></button>
+                                    </div>
+
+                                    <div *ngIf="tipoUsuarioSelected == 2">
+                                        <button class="btn-agregar" *ngIf='engraneUrls' (click)="AgregarEditarWS()"></button>
+                                    </div>
+
+                                    <div *ngIf="tipoUsuarioSelected != 0">
+                                        <button class="btn-actualizar" *ngIf='engraneUrls'></button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                            <div class="cll-titulo-administracion-url">
+                                <input type="text" class="input search search-tabla FiltroURLS-pc" (keyup)="FiltroURLS($any($event.target).value)" placeholder="Buscar" *ngIf="tipoUsuarioSelected == 1"/>
+                                <input type="text" class="input search search-tabla FiltroWS-pc" (keyup)="FiltroWS($any($event.target).value)" placeholder="Buscar" *ngIf="tipoUsuarioSelected == 2"/>
+                            </div>
+                        </div>
+
+                        <div class="borde-tabla">
+
+                            <div class="buscador-tipo-de-usuario" [formGroup]="FormSelectTipoUser">
+                                <div class="label">Tipo de usuario</div>
+                                <mat-select (selectionChange)="onPorUrl($event.value)" [(ngModel)]="tipoUsuarioSelected" formControlName="tipoUser">
+                                    <mat-option [value]="0"> SELECCIONA UNA OPCIÓN</mat-option>
+                                    <mat-option *ngFor="let tipoUsuario of tipoDeUsuario"[value]="tipoUsuario.id" (click)="ActualizarTabla(tipoUsuario.id)">
+                                    {{tipoUsuario.nombre}} 
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+
+                            <!--********************************TABLA URLS*****************************-->
+                            <div *ngIf="tbWs">
+
+                                <div class="overflow-tabla" style="min-height: 230px;">
+
+                                    <table mat-table [dataSource]="dataSourceURLS"  #sortURLS class="tablaGeneral tabla-urls">
+                                        <ng-container matColumnDef="sistema">
+                                            <th mat-header-cell *matHeaderCellDef>Sistema</th>
+                                            <td mat-cell *matCellDef="let tbUrls; let i = index" [ngClass]="{'hover-active':activarEngrane && tbUrls.status, 'disableRow': !tbUrls.status}">
+                                                {{GetNombreSistema(tbUrls.sistema)}}
+                                                <div class="tooltips {{i == 0 ? '' : 'tooltips-arriba'}}">
+                                                    <div class="cont-tooltips">
+                                                        <div class="editar-tooltip">
+                                                            <img src="assets/img/iconos/editar-ico.svg"  (click)="AgregarEditarUrl(tbUrls)" style="width:16px;" >
+                                                        </div>
+                                                        <div class="editar-tooltip">
+                                                            <img src="assets/img/iconos/eliminar-ico.svg" (click)="EliminarUrl(tbUrls)"  style="width:12px;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="alias">
+                                            <th mat-header-cell *matHeaderCellDef>Alias</th>
+                                            <td mat-cell *matCellDef="let tbUrls" [ngClass]="{'disableRow': !tbUrls.status}"> {{tbUrls.alias}} </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="descripcion">
+                                            <th mat-header-cell *matHeaderCellDef>Descripción</th>
+                                            <td mat-cell *matCellDef="let tbUrls" [ngClass]="{'disableRow': !tbUrls.status}"> {{tbUrls.descripcion}} </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="tipo">
+                                            <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                                            <td mat-cell *matCellDef="let tbUrls" [ngClass]="{'disableRow': !tbUrls.status}"> {{GetNombreTipo(tbUrls.tipo)}} </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="valor">
+                                            <th mat-header-cell *matHeaderCellDef>Valor</th>
+                                            <td mat-cell *matCellDef="let tbUrls">
+                                                <input type="text" class="input" [ngClass]="{'disabledInput': !tbUrls.status}" value="{{tbUrls.valor}}" readonly>
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="activarDesactivar">
+                                            <th mat-header-cell *matHeaderCellDef>Desactivar / Activar</th>
+                                            <td mat-cell *matCellDef="let tbUrls">
+                                                <div class="box-switch" (click)="ActualizarStatus(tbUrls)">
+                                                    <input type="checkbox"/> 
+                                                    <div class="switch" [ngClass]="tbUrls.status ? 'switchOn' : 'switchOff'"></div>
+                                                </div>
+                                            </td>
+                                        </ng-container>
+                                        
+                                        <tr mat-header-row *matHeaderRowDef="columnsUrls"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: columnsUrls; let i = index"></tr>
+                                    </table>
+                                </div>
+                                <mat-paginator #paginadorURLS [pageSizeOptions]="[ 10, 25, 100]" class="paginador-tabla"></mat-paginator>
+                            </div>
+
+                            <!--********************************TABLA WEB SERVICE*****************************-->
+                            <div *ngIf="tbUrl">
+                                <div class="overflow-tabla" style="min-height: 230px;">
+                                    <table mat-table [dataSource]="dataSourceWS" #sortWS class="tablaGeneral tabla-web-services" >
+
+                                        <ng-container matColumnDef="usuario">
+                                            <th mat-header-cell *matHeaderCellDef>Usuario</th>
+                                            <td mat-cell *matCellDef="let element" [ngClass]="{'disableRow': !element.status}"> {{element.usuario}} </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="sistema">
+                                            <th mat-header-cell *matHeaderCellDef> Sistema </th>
+                                            <td mat-cell *matCellDef="let element;let i = index" [ngClass]="{'hover-active':activarEngrane && element.status, 'disableRow': !element.status}">
+                                                {{GetNombreSistema(element.sistema)}} 
+                                                <div class="tooltips {{i == 0 ? '' : 'tooltips-arriba'}}">
+                                                    <div class="cont-tooltips">
+                                                        <div class="editar-tooltip">
+                                                            <img src="assets/img/iconos/editar-ico.svg" (click)="AgregarEditarWS(element)" style="width:16px;">
+                                                        </div>
+                                                        <div class="editar-tooltip"  >
+                                                            <img src="assets/img/iconos/eliminar-ico.svg" (click)="EliminarWS(element)"  style="width:12px;">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="llave">
+                                            <th mat-header-cell *matHeaderCellDef>Llave</th>
+                                            <td mat-cell *matCellDef="let element" [ngClass]="{'disableRow': !element.status}"> {{element.llave}} </td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="valor">
+                                            <th mat-header-cell *matHeaderCellDef>Valor</th>
+                                            <td mat-cell *matCellDef="let element"><input type="text" class="input" [ngClass]="{'disabledInput': !element.status}" readonly value="{{element.valor}}"></td>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="intentos">
+                                            <th mat-header-cell *matHeaderCellDef>#Intentos </th>
+                                            <td mat-cell *matCellDef="let element" [ngClass]="{'disableRow': !element.status}"> {{element.intentos}} </td>
+                                        </ng-container>
+
+
+                                        <ng-container matColumnDef="activarDesactivar">
+                                            <th mat-header-cell *matHeaderCellDef>Desactivar / Activar</th>
+                                            <td mat-cell *matCellDef="let element">
+                                                <div class="box-switch" (click)="ActualizarStatusWS(element)">
+                                                    <input type="checkbox"/> 
+                                                    <div class="switch" [ngClass]="element.status ? 'switchOn' : 'switchOff'"></div>
+                                                </div>
+                                            </td>
+                                        </ng-container>
+                                    
+                                        <tr mat-header-row *matHeaderRowDef="columnsTabWeb"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: columnsTabWeb;"></tr>
+                                    </table>
+                                </div>
+                                <mat-paginator #paginadorWS [pageSizeOptions]="[ 10, 25, 100]" class="paginador-tabla"></mat-paginator>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            
+            <mat-tab> 
+                <ng-template mat-tab-label>
+                    <div class="contenedor-tab-sistemas" (click)="GetDataSatelites()">
+                        <span class="titulo-tabs tab-objetivos-archivados" >Sistemas</span>
+                    </div>
+                </ng-template>
+
+                <div class="contenido-tabs-administracion">
+                    <div class="padding-tabs-administracion"> 
+
+                        <div class="tb-titulo-administracion-satelites">
+                            <div class="cll-titulo-administracion-satelites">
+
+                                <input type="text" class="input search search-tabla FiltroSatelites-movil" (keyup)="FiltroSatelites($any($event.target).value)" placeholder="Buscar"/> 
+
+                                <div class="tb-botones-edicion">
+                                    <div>
+                                        <b>Sistemas satélites</b>
+                                    </div>
+                                    <div>
+                                        <button class="btn-engrane" (click)="toggleEngraneSatelites()" [ngClass]="{'btn-engrane-active': engraneSatelites}"></button>
+                                    </div>
+                                    <div>
+                                        <button class="btn-agregar"  *ngIf='engraneSatelites' (click)="AgregarEditarSatelites()"></button>
+                                    </div>
+                                    <div>
+                                        <button class="btn-actualizar" *ngIf='engraneSatelites'></button>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="cll-titulo-administracion-satelites">
+                                <input type="text" class="input search search-tabla FiltroSatelites-pc" (keyup)="FiltroSatelites($any($event.target).value)" placeholder="Buscar"/> 
+                            </div>
+                        </div>
+
+                        <div class="borde-tabla">
+                           <!--********************************TABLA SATELITES****************************-->
+                            <div class="overflow-tabla" style="min-height: 230px;">
+                                <table mat-table [dataSource]="dataSourceSatelites" #sortSatelite class="tablaGeneral tabla-satelites">
+
+                                    <ng-container matColumnDef="sistema">
+                                        <th mat-header-cell *matHeaderCellDef>ID Sistema</th>
+                                        <td mat-cell *matCellDef="let element" [ngClass]="{'disableRow': !element.status}"> {{element.id}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="nombre">
+                                        <th mat-header-cell *matHeaderCellDef>Nombre del Sistema</th>
+                                        <td mat-cell *matCellDef="let element;let i = index" [ngClass]="{'hover-active':activarEngraneSatelites && element.status, 'disableRow': !element.status}">
+                                            {{element.nombre}} 
+                                            <div class="tooltips {{i == 0 ? '' : 'tooltips-arriba'}}">
+                                                <div class="cont-tooltips">
+                                                    <div class="editar-tooltip">
+                                                        <img src="assets/img/iconos/editar-ico.svg" (click)="AgregarEditarSatelites(element)" style="width:16px;">
+                                                    </div>
+                                                    <div class="editar-tooltip"  >
+                                                        <img src="assets/img/iconos/eliminar-ico.svg" (click)="EliminarSatelites(element)"  style="width:12px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="responsable">
+                                        <th mat-header-cell *matHeaderCellDef>Responsable</th>
+                                        <td mat-cell *matCellDef="let element" [ngClass]="{'disableRow': !element.status}"> {{element.responsable}} </td>
+                                    </ng-container>
+
+                                    <ng-container matColumnDef="activarDesactivar">
+                                        <th mat-header-cell *matHeaderCellDef>Desactivar / Activar</th>
+                                        <td mat-cell *matCellDef="let element" [ngClass]="{'disableRow': !engraneSatelites}">
+                                            <div class="box-switch" (click)="ActualizarStatusSatelites(element)">
+                                                <input type="checkbox"/> 
+                                                <div class="switch" [ngClass]="element.status ? 'switchOn' : 'switchOff'"></div>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    
+                                    <tr mat-header-row *matHeaderRowDef="columnsSatelites"></tr>
+                                    <tr mat-row *matRowDef="let row; columns:columnsSatelites;"></tr>
+                                </table>
+                            </div>
+                            <mat-paginator #paginadorSatelite [pageSizeOptions]="[ 10, 25, 100]" class="paginador-tabla"></mat-paginator>
+                        </div>
+
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+     
+        <div class="bnt-center">
+            <button class="btn">Regresar</button>
+        </div>
+    </div>
+</div>
