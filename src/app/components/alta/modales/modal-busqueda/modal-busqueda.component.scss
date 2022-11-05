@@ -23,6 +23,15 @@
     align-items: center;
 }
 
+.scroll-copia{
+    min-height:230px;
+    overflow: auto; 
+}
+.scroll-copia::-webkit-scrollbar {height:6px!important;}
+.scroll-copia::-webkit-scrollbar-track {background-color:#E0DDD2;}
+.scroll-copia::-webkit-scrollbar-thumb {background-color:#FFCD00; }
+.scroll-copia::-webkit-scrollbar-thumb:hover {background-color:#FFCD00;}
+
 
 @media screen and (max-width:900px){
     .buscador-modal-cc{

@@ -9,10 +9,6 @@
   </div>
 
   <div class="contenedo-modal">
-    <!-- <div class="buscador-modal buscador-modal-cc">
-            <label class="label  text-buscador-cc">{{labelInputBusqueda}}</label>
-            <input type="text" class="input search input-alta-busqueda" placeholder="Buscar" (keyup)="filtro($any($event.target).value)" >
-        </div> -->
 
     <div class="buscador-modal buscador-modal-cc">
       <label class="label text-buscador-cc">{{ labelInputBusqueda }}</label>
@@ -35,7 +31,7 @@
     </div>
 
     <div class="contenedor-tabla" *ngIf="!centroCosto">
-      <div style="min-height: 230px">
+      <div class="scroll-copia">
         <table
           mat-table
           [dataSource]="dataSource"
@@ -87,7 +83,7 @@
           </thead>
           <tbody>
             <tr>
-              <td colspan="2" class="alerta-tabla">
+              <td colspan="6" class="alerta-tabla">
                 No se encontraron registros con el criterio de búsqueda.
               </td>
             </tr>
@@ -105,7 +101,7 @@
 
     <!-- BÚSQUEDA CENTRO DE COSTOS -->
     <div class="contenedor-tabla" *ngIf="centroCosto">
-      <div style="min-height: 230px">
+      <div class="scroll-copia">
         <table
           mat-table
           [dataSource]="dataSource"
@@ -193,7 +189,7 @@
           </thead>
           <tbody>
             <tr>
-              <td colspan="2" class="alerta-tabla">
+              <td colspan="6" class="alerta-tabla">
                 No se encontraron registros con el criterio de búsqueda.
               </td>
             </tr>

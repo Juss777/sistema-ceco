@@ -1,9 +1,7 @@
-<!-- <ceco-headerubicacion></ceco-headerubicacion> -->
+
 
 <div class="contenedor-seccion">
-  <!-- <ng-template mat-tab-label>
-    <span class="titulo-tabs">Alta CECO</span>
-  </ng-template> -->
+
   <div class="contenido-tabs-acc">
     <div class="padding-tabs-acc">
       <div class="titulo-seccion titulo-alta">
@@ -54,16 +52,17 @@
 
           <div *ngIf="!create">
             <div
+              style="margin-bottom:10px; margin-top: 20px;"
               class="box-switch content-switch"
               (click)="cambiarModo('checkModo')"
             >
-              <span>Modificación</span>
+              <span [ngClass]="{'check-bod':esModificar}">Modificación</span>
               <input id="checkModo" type="checkbox" />
               <div
-                class="switch"
-                [ngClass]="esModificar ? 'switchOn' : 'switchOff'"
+                class="switch-modificacion"
+                [ngClass]="esModificar ? 'switch-modificacion-on' : 'switch-modificacion-off'"
               ></div>
-              <span>Copia</span>
+              <span [ngClass]="{'check-bod':!esModificar}">Copia</span>
             </div>
           </div>
 
@@ -2743,17 +2742,6 @@
                               </div>
                             </div>
                           </div>
-                          <!-- <label class="label-alta text-overflow">Justificación *</label>
-                                                            <textarea rows="5" class="textarea textarea-ws input-alta" placeholder="INGRESA INFORMACIÓN" formControlName="justificacion" [ngClass]="{'field-required' : comunicacionService.Valida(FormParametros, 'justificacion')}"></textarea>
-                                                            
-                                                            <div class="box-textarea">
-                                                                <div class="cll-textarea">
-                                                                    <div class="obligatorio" *ngIf="comunicacionService.Valida(FormParametros, 'justificacion')">Obligatorio</div>
-                                                                </div>
-                                                                <div class="cll-textarea">
-                                                                    <div class="contador-caracteres">0 / 150 máx.</div>
-                                                                </div>
-                                                            </div> -->
                         </div>
                       </div>
                     </div>
